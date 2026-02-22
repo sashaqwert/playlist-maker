@@ -22,12 +22,12 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="@dimen/padding_horizontal_button_main"
         android:text="@string/search"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22sp"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/radius_button"
         app:icon="@drawable/icon_search"
         app:iconGravity="textStart"
         app:iconTint="@color/black" />
@@ -45,8 +45,8 @@
         app:icon="@drawable/icon_media"
         app:iconGravity="textStart"
         app:iconTint="@color/black"
-        android:paddingHorizontal="16dp"
-        app:cornerRadius="16dp"/>
+        android:paddingHorizontal="@dimen/padding_horizontal_button_main"
+        app:cornerRadius="@dimen/radius_button"/>
 
     <Button
         android:id="@+id/button3"
@@ -61,6 +61,6 @@
         app:icon="@drawable/icon_settings"
         app:iconGravity="textStart"
         app:iconTint="@color/black"
-        android:paddingHorizontal="16dp"
-        app:cornerRadius="16dp"/>
+        android:paddingHorizontal="@dimen/padding_horizontal_button_main"
+        app:cornerRadius="@dimen/radius_button"/>
 </LinearLayout>
