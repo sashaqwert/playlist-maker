@@ -16,8 +16,6 @@ class SettingsActivity : AppCompatActivity() {
 
         val action_back = findViewById<ImageView>(R.id.settings_action_back)
         action_back.setOnClickListener {
-            //val intent = Intent(this@SettingsActivity, MainActivity::class.java)
-            //startActivity(intent)
             finish()
         }
     }
