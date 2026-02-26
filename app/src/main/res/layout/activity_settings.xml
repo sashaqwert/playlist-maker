@@ -8,7 +8,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+        <!--паддинг от перекрытия строкой состояния-->
 
         <ImageView
             android:id="@+id/settings_action_back"
