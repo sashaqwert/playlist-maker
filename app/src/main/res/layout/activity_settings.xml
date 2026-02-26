@@ -32,6 +32,11 @@
 
     </LinearLayout>
 
+    <!--Отступ-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"/>
+
     <Switch
         android:id="@+id/settings_dark_theme"
         android:layout_width="match_parent"
