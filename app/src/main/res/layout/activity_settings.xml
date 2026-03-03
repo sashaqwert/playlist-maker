@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+        <!--паддинг от перекрытия строкой состояния-->
+
+        <ImageView
+            android:id="@+id/settings_action_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:srcCompat="@drawable/action_back"
+            android:foreground="?attr/selectableItemBackground"/>
+
+        <TextView
+            android:id="@+id/title_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="26dp"
+            android:paddingVertical="5dp"
+            android:text="@string/settings"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <!--Отступ-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"/>
+
+    <Switch
+        android:id="@+id/settings_dark_theme"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/settings_dark_theme"
+        android:textSize="@dimen/settings_font_size"
+        android:paddingLeft="16dp"/>
+
+    <Button
+        android:id="@+id/button4"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/settings_shareapp"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:icon="@drawable/action_share"
+        app:iconGravity="end"
+        app:iconTint="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/button5"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/settings_emailtosupport"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:icon="@drawable/action_support"
+        app:iconGravity="end"
+        app:iconTint="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/button6"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/settings_useragement"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:icon="@drawable/action_on_next_activity"
+        app:iconGravity="end"
+        app:iconTint="@android:color/darker_gray" />
+
+</LinearLayout>
