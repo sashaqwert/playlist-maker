@@ -16,19 +16,14 @@
             android:id="@+id/settings_action_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            app:srcCompat="@drawable/action_back"
-            android:foreground="?attr/selectableItemBackground"/>
+            style="@style/ActionBackStyle" />
 
         <TextView
             android:id="@+id/title_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="26dp"
-            android:paddingVertical="5dp"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="22sp" />
+            style="@style/ActivityTitleStyle"
+            android:text="@string/settings" />
 
     </LinearLayout>
 
