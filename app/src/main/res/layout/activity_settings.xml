@@ -36,9 +36,10 @@
         android:id="@+id/settings_dark_theme"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
+        android:fontFamily="@font/ys_display_regular"
+        android:paddingLeft="16dp"
         android:text="@string/settings_dark_theme"
-        android:textSize="@dimen/settings_font_size"
-        android:paddingLeft="16dp"/>
+        android:textSize="@dimen/settings_font_size" />
 
     <Button
         android:id="@+id/button4"
