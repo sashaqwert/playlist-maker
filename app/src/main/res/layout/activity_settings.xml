@@ -47,41 +47,26 @@
 
     <Button
         android:id="@+id/button4"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
         android:text="@string/settings_shareapp"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:icon="@drawable/action_share"
-        app:iconGravity="end"
-        app:iconTint="@android:color/darker_gray" />
+        app:icon="@drawable/action_share"/>
 
     <Button
         android:id="@+id/button5"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
         android:text="@string/settings_emailtosupport"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:icon="@drawable/action_support"
-        app:iconGravity="end"
-        app:iconTint="@android:color/darker_gray" />
+        app:icon="@drawable/action_support" />
 
     <Button
         android:id="@+id/button6"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
         android:text="@string/settings_useragement"
-        android:textAlignment="textStart"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:icon="@drawable/action_on_next_activity"
-        app:iconGravity="end"
-        app:iconTint="@android:color/darker_gray" />
+        app:icon="@drawable/action_on_next_activity" />
 
 </LinearLayout>

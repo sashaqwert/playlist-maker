@@ -17,4 +17,13 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:shadowRadius">0</item>
     </style>
+    <style name="SettingsButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="layout_constraintWidth">match_parent</item>
+        <item name="android:layout_height">@dimen/settings_item_height</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="iconGravity">end</item>
+        <item name="iconTint">@android:color/darker_gray</item>
+    </style>
 </resources>
