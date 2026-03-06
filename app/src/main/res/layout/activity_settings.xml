@@ -42,7 +42,7 @@
         android:textSize="@dimen/settings_font_size" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/action_share"
         style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
@@ -50,7 +50,7 @@
         app:icon="@drawable/action_share"/>
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/action_support"
         style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
@@ -58,7 +58,7 @@
         app:icon="@drawable/action_support" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/action_user_agreement"
         style="@style/SettingsButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
