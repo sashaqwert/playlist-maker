@@ -35,4 +35,10 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/black</item>
     </style>
+    <style name="SearchClearStyle">
+        <item name="android:text">@string/clearButtonText</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>
