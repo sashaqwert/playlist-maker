@@ -43,18 +43,11 @@
 
             <EditText
                 android:id="@+id/search"
+                style="@style/SearchStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="center"
-                android:drawableStart="@drawable/search_input_icon"
-                android:drawablePadding="8dp"
-                android:ems="10"
-                android:fontFamily="@font/ys_display_regular"
-                android:hint="@string/search"
-                android:inputType="text"
-                android:maxLines="1"
-                android:background="@null" />
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/clear_search"
