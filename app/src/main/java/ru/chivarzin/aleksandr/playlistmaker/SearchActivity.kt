@@ -17,8 +17,8 @@ import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
 
-    lateinit var search : EditText
-    var search_text = ""
+    private lateinit var search : EditText
+    private var search_text = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
