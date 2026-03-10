@@ -35,29 +35,30 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp">
 
-        <LinearLayout
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:orientation="horizontal"
             android:background="@drawable/search_background">
 
             <EditText
                 android:id="@+id/search"
                 style="@style/SearchStyle"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center" />
+                android:layout_gravity="center_vertical|left" />
 
             <TextView
                 android:id="@+id/clear_search"
                 style="@style/SearchClearStyle"
                 android:layout_width="40dp"
                 android:layout_height="36dp"
+                android:layout_gravity="right|center_vertical"
                 android:gravity="center"
                 android:text="@string/clearButtonText"
                 android:visibility="gone"/>
-        </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>
