@@ -2,6 +2,7 @@ package ru.chivarzin.aleksandr.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -15,6 +16,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
+
+    lateinit var search : EditText
+    var search_text = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        val search = findViewById<EditText>(R.id.search)
+        search = findViewById<EditText>(R.id.search)
         val clear_search = findViewById<TextView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
@@ -52,8 +57,20 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 // empty
-            }
+                search_text = s.toString()
+0            }
         }
         search.addTextChangedListener(simpleTextWatcher)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outState.putString("search_text", search_text)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
+        search_text = savedInstanceState?.getString("search_text", "") ?: ""
+        search.setText(search_text)
     }
 }
