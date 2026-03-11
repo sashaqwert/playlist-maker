@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,21 +9,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="8dp">
-        <!--паддинг от перекрытия строкой состояния-->
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/settings_action_back"
+            style="@style/ActionBackStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/ActionBackStyle" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/title_settings"
+            style="@style/ActivityTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/ActivityTitleStyle"
             android:text="@string/settings" />
 
     </LinearLayout>
@@ -30,7 +29,7 @@
     <!--Отступ-->
     <View
         android:layout_width="match_parent"
-        android:layout_height="24dp"/>
+        android:layout_height="24dp" />
 
     <Switch
         android:id="@+id/settings_dark_theme"
@@ -47,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
         android:text="@string/settings_shareapp"
-        app:icon="@drawable/action_share"/>
+        app:icon="@drawable/action_share" />
 
     <Button
         android:id="@+id/action_support"
