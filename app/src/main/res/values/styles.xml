@@ -29,12 +29,12 @@
     </style>
     <style name="ActionBackStyle">
         <item name="srcCompat">@drawable/action_back</item>
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">17dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
     <style name="ActivityTitleStyle">
         <item name="android:paddingHorizontal">26dp</item>
-        <item name="android:paddingVertical">5dp</item>
+        <item name="android:paddingVertical">10dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">22sp</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
