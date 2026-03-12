@@ -37,7 +37,6 @@
         android:paddingVertical="13dp">
 
         <FrameLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:background="@drawable/search_background">
@@ -50,15 +49,17 @@
                 android:layout_gravity="center_vertical|left"
                 android:paddingLeft="8dp"/>
 
-            <TextView
+            <ImageView
                 android:id="@+id/clear_search"
                 style="@style/SearchClearStyle"
                 android:layout_width="40dp"
                 android:layout_height="36dp"
                 android:layout_gravity="right|center_vertical"
                 android:gravity="center"
-                android:text="@string/clearButtonText"
-                android:visibility="gone"/>
+                android:padding="14dp"
+                android:scaleType="center"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </FrameLayout>
     </LinearLayout>
