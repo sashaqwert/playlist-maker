@@ -36,7 +36,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         search = findViewById<EditText>(R.id.search)
-        val clear_search = findViewById<TextView>(R.id.clear_search)
+        val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
