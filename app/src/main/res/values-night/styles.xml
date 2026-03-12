@@ -25,7 +25,7 @@
     <style name="SearchStyle">
         <item name="android:layout_gravity">center</item>
         <item name="android:drawableStart">@drawable/icon_search</item>
-        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawablePadding">18dp</item>
         <item name="android:ems">10</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:hint">@string/search</item>
