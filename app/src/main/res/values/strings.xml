@@ -13,5 +13,4 @@
     <string name="support_email_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="support_email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="course_url" translatable="false">https://practicum.yandex.ru/android-developer/</string>
-    <string name="clearButtonText" translatable="false">X</string>
 </resources>
