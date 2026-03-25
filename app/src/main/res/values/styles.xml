@@ -28,8 +28,7 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
     <style name="ActionBackStyle">
-        <item name="srcCompat">@drawable/action_back</item>
-        <item name="android:padding">17dp</item>
+a        <item name="android:padding">17dp</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
     <style name="ActivityTitleStyle">
@@ -54,5 +53,19 @@
     <style name="SearchClearStyle">
         <item name="srcCompat">@drawable/clear_search</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+    <style name="OpenInNextActivityIconStyle">
+        <item name="srcCompat">@drawable/action_on_next_activity</item>
+    </style>
+    <style name="TrackNameSearchStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="TrackDetailsSearchStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">#AEAFB4</item>
+        <item name="srcCompat">@drawable/separator_round</item>
     </style>
 </resources>

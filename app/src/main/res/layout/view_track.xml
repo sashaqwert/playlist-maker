@@ -26,10 +26,8 @@
             android:id="@+id/track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/ys_display_regular"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            tools:text="The best track" />
+            style="@style/TrackNameSearchStyle"
+            tools:text="@string/track_name_tools" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,31 +38,29 @@
                 android:id="@+id/artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_display_regular"
-                android:textColor="#AEAFB4"
-                tools:text="Ivan Ivanov" />
+                style="@style/TrackDetailsSearchStyle"
+                tools:text="@string/artist_name_tools" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TrackDetailsSearchStyle"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/separator_round"
                 android:padding="5dp"/>
 
             <TextView
                 android:id="@+id/track_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_display_regular"
-                android:textColor="#AEAFB4"
-                tools:text="0:00" />
+                style="@style/TrackDetailsSearchStyle"
+                tools:text="@string/track_time_tools" />
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/OpenInNextActivityIconStyle"
         android:layout_gravity="center"
-        android:paddingHorizontal="8dp"
-        app:srcCompat="@drawable/action_on_next_activity" />
+        android:paddingHorizontal="8dp" />
 </LinearLayout>

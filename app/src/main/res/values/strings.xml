@@ -33,4 +33,7 @@
     <string name="t5_artist_name">Guns N\' Roses</string>
     <string name="t5_duration">5:03</string>
     <string name="t5_artwork">https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg</string>
+    <string name="track_name_tools">The best track</string>
+    <string name="artist_name_tools">Ivan Ivanov</string>
+    <string name="track_time_tools">0:00</string>
 </resources>
