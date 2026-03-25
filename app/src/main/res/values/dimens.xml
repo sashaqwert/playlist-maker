@@ -4,4 +4,5 @@
     <dimen name="padding_horizontal_button_main">16dp</dimen>
     <dimen name="settings_font_size">16sp</dimen>
     <dimen name="settings_item_height">61dp</dimen>
+    <dimen name="search_padding_horizontal">16dp</dimen>
 </resources>

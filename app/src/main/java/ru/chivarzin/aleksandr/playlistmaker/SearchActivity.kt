@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
 
@@ -36,6 +37,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         search = findViewById<EditText>(R.id.search)
+        val search_result = findViewById<RecyclerView>(R.id.search_result)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
@@ -50,8 +52,10 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
+                    search_result.visibility = View.INVISIBLE
                 } else {
                     clear_search.visibility = View.VISIBLE
+                    search_result.visibility = View.VISIBLE
                 }
             }
 
@@ -61,6 +65,22 @@ class SearchActivity : AppCompatActivity() {
 0            }
         }
         search.addTextChangedListener(simpleTextWatcher)
+
+        //Фейк-результат поиска
+        val t1 = Track(getString(R.string.t1_name), getString(R.string.t1_artist_name), getString(R.string.t1_duration), getString(R.string.t1_artwork))
+        val t2 = Track(getString(R.string.t2_name), getString(R.string.t2_artist_name), getString(R.string.t2_duration), getString(R.string.t2_artwork))
+        val t3 = Track(getString(R.string.t3_name), getString(R.string.t3_artist_name), getString(R.string.t3_duration), getString(R.string.t3_artwork))
+        val t4 = Track(getString(R.string.t4_name), getString(R.string.t4_artist_name), getString(R.string.t4_duration), getString(R.string.t4_artwork))
+        val t5 = Track(getString(R.string.t5_name), getString(R.string.t5_artist_name), getString(R.string.t5_duration), getString(R.string.t5_artwork))
+        val searchResult = ArrayList<Track>()
+        searchResult.add(t1)
+        searchResult.add(t2)
+        searchResult.add(t3)
+        searchResult.add(t4)
+        searchResult.add(t5)
+        val trackAdapter = TrackAdapter(searchResult)
+        search_result.adapter = trackAdapter
+
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
