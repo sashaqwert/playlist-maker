@@ -20,7 +20,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:paddingStart="5dp">
+        android:paddingStart="8dp">
 
         <TextView
             android:id="@+id/track_name"
