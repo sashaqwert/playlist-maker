@@ -29,6 +29,7 @@
     </style>
     <style name="ActionBackStyle">
         <item name="android:padding">17dp</item>
+        <item name="srcCompat">@drawable/action_back</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
     <style name="ActivityTitleStyle">
