@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -65,6 +66,13 @@ class SearchActivity : AppCompatActivity() {
 0            }
         }
         search.addTextChangedListener(simpleTextWatcher)
+        search.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
+                true
+            }
+            false
+        }
 
         //Фейк-результат поиска
         val t1 = Track(getString(R.string.t1_name), getString(R.string.t1_artist_name), getString(R.string.t1_duration), getString(R.string.t1_artwork))
