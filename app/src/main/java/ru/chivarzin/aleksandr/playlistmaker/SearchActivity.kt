@@ -95,7 +95,7 @@ class SearchActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun onFailure(p0: Call<SearchResult?>, p1: Throwable) {
+                        override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
 
                         }
                     })
