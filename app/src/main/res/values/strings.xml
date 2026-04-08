@@ -36,4 +36,7 @@
     <string name="track_name_tools">The best track</string>
     <string name="artist_name_tools">Ivan Ivanov</string>
     <string name="track_time_tools">0:00</string>
+    <string name="search_not_found">Ничего не нашлось</string>
+    <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="refresh">Обновить</string>
 </resources>

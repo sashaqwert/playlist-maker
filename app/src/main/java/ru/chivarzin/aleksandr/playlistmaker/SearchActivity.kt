@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,6 +27,9 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var search : EditText
     private var search_text = ""
+    private lateinit var search_result: RecyclerView
+    private lateinit var error_text: TextView
+    private lateinit var refresh_search: Button
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseURL)
@@ -49,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         search = findViewById<EditText>(R.id.search)
-        val search_result = findViewById<RecyclerView>(R.id.search_result)
+        search_result = findViewById<RecyclerView>(R.id.search_result)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
@@ -77,28 +81,13 @@ class SearchActivity : AppCompatActivity() {
 0            }
         }
         search.addTextChangedListener(simpleTextWatcher)
+        error_text = findViewById<TextView>(R.id.error_text)
+        refresh_search = findViewById<Button>(R.id.refresh_search)
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 if (search_text.isNotEmpty()) {
-                    iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
-                        override fun onResponse(
-                            call: Call<SearchResult?>,
-                            response: Response<SearchResult?>
-                        ) {
-                            if (response.code() == 200) {
-                                if (response.body()?.results!!.isNotEmpty()) {
-                                    val searchResult = ArrayList<Track>(response.body()!!.results)
-                                    val trackAdapter = TrackAdapter(searchResult)
-                                    search_result.adapter = trackAdapter
-                                }
-                            }
-                        }
-
-                        override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
-
-                        }
-                    })
+                    do_search()
                 }
                 true
             }
@@ -120,6 +109,31 @@ class SearchActivity : AppCompatActivity() {
         val trackAdapter = TrackAdapter(searchResult)
         search_result.adapter = trackAdapter
 
+    }
+
+    fun do_search() {
+        iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
+            override fun onResponse(
+                call: Call<SearchResult?>,
+                response: Response<SearchResult?>
+            ) {
+                if (response.code() == 200) {
+                    if (response.body()?.results!!.isNotEmpty()) {
+                        val searchResult = ArrayList<Track>(response.body()!!.results)
+                        val trackAdapter = TrackAdapter(searchResult)
+                        search_result.adapter = trackAdapter
+                    } else {
+                        search_result.visibility = View.GONE
+                        error_text.setText(R.string.search_not_found)
+                        refresh_search.visibility = View.GONE
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
+
+            }
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {

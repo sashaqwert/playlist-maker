@@ -69,4 +69,9 @@
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="srcCompat">@drawable/separator_round</item>
     </style>
+    <style name="RefreshButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
 </resources>
