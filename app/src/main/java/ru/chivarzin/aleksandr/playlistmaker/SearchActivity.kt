@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -77,6 +80,26 @@ class SearchActivity : AppCompatActivity() {
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
+                if (search_text.isNotEmpty()) {
+                    iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
+                        override fun onResponse(
+                            call: Call<SearchResult?>,
+                            response: Response<SearchResult?>
+                        ) {
+                            if (response.code() == 200) {
+                                if (response.body()?.results!!.isNotEmpty()) {
+                                    val searchResult = ArrayList<Track>(response.body()!!.results)
+                                    val trackAdapter = TrackAdapter(searchResult)
+                                    search_result.adapter = trackAdapter
+                                }
+                            }
+                        }
+
+                        override fun onFailure(p0: Call<SearchResult?>, p1: Throwable) {
+
+                        }
+                    })
+                }
                 true
             }
             false
