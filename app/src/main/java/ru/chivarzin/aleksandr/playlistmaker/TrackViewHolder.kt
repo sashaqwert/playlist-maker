@@ -22,12 +22,21 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         artist_name.setText(model.artistName)
         track_time.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis))
 
-        Glide.with(itemView)
-            .load(model.artworkUrl100)
-            .fitCenter()
-            .placeholder(R.drawable.artwork_default)
-            .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
-            .into(artwork)
+        if (model.artworkUrl100 != null) {
+            Glide.with(itemView)
+                .load(model.artworkUrl100)
+                .fitCenter()
+                .placeholder(R.drawable.artwork_default)
+                .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
+                .into(artwork)
+        }
+        else {
+            Glide.with(itemView)
+                .load(R.drawable.artwork_default)
+                .fitCenter()
+                .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
+                .into(artwork)
+        }
     }
 
     fun dpToPx(dp: Float, context: Context): Int {
