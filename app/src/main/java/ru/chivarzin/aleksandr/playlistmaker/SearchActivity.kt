@@ -83,6 +83,9 @@ class SearchActivity : AppCompatActivity() {
         search.addTextChangedListener(simpleTextWatcher)
         error_text = findViewById<TextView>(R.id.error_text)
         refresh_search = findViewById<Button>(R.id.refresh_search)
+        refresh_search.setOnClickListener {
+            do_search()
+        }
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
@@ -121,19 +124,30 @@ class SearchActivity : AppCompatActivity() {
                     if (response.body()?.results!!.isNotEmpty()) {
                         val searchResult = ArrayList<Track>(response.body()!!.results)
                         val trackAdapter = TrackAdapter(searchResult)
+                        search_result.visibility = View.VISIBLE
                         search_result.adapter = trackAdapter
                     } else {
                         search_result.visibility = View.GONE
                         error_text.setText(R.string.search_not_found)
+                        error_text.visibility = View.VISIBLE
                         refresh_search.visibility = View.GONE
                     }
+                } else {
+                    show_error()
                 }
             }
 
             override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
-
+                show_error()
             }
         })
+    }
+
+    fun show_error() {
+        search_result.visibility = View.GONE
+        error_text.setText(R.string.no_internet)
+        error_text.visibility = View.VISIBLE
+        refresh_search.visibility = View.VISIBLE
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
