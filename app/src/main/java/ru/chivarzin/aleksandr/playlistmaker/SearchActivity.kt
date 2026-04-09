@@ -29,6 +29,7 @@ class SearchActivity : AppCompatActivity() {
     private var search_text = ""
     private lateinit var search_result: RecyclerView
     private lateinit var error_text: TextView
+    private lateinit var icon_error: ImageView
     private lateinit var refresh_search: Button
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -54,6 +55,7 @@ class SearchActivity : AppCompatActivity() {
 
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
+        icon_error = findViewById<ImageView>(R.id.icon_error)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
@@ -71,7 +73,7 @@ class SearchActivity : AppCompatActivity() {
                     search_result.visibility = View.INVISIBLE
                 } else {
                     clear_search.visibility = View.VISIBLE
-                    search_result.visibility = View.VISIBLE
+                    //search_result.visibility = View.VISIBLE
                 }
             }
 
@@ -98,19 +100,19 @@ class SearchActivity : AppCompatActivity() {
         }
 
         //Фейк-результат поиска
-        val t1 = Track(getString(R.string.t1_name), getString(R.string.t1_artist_name), 293000, getString(R.string.t1_artwork))
-        val t2 = Track(getString(R.string.t2_name), getString(R.string.t2_artist_name), 293000, getString(R.string.t2_artwork))
-        val t3 = Track(getString(R.string.t3_name), getString(R.string.t3_artist_name), 293000, getString(R.string.t3_artwork))
-        val t4 = Track(getString(R.string.t4_name), getString(R.string.t4_artist_name), 293000, getString(R.string.t4_artwork))
-        val t5 = Track(getString(R.string.t5_name), getString(R.string.t5_artist_name), 293000, getString(R.string.t5_artwork))
-        val searchResult = ArrayList<Track>()
-        searchResult.add(t1)
-        searchResult.add(t2)
-        searchResult.add(t3)
-        searchResult.add(t4)
-        searchResult.add(t5)
-        val trackAdapter = TrackAdapter(searchResult)
-        search_result.adapter = trackAdapter
+//        val t1 = Track(getString(R.string.t1_name), getString(R.string.t1_artist_name), 293000, getString(R.string.t1_artwork))
+//        val t2 = Track(getString(R.string.t2_name), getString(R.string.t2_artist_name), 293000, getString(R.string.t2_artwork))
+//        val t3 = Track(getString(R.string.t3_name), getString(R.string.t3_artist_name), 293000, getString(R.string.t3_artwork))
+//        val t4 = Track(getString(R.string.t4_name), getString(R.string.t4_artist_name), 293000, getString(R.string.t4_artwork))
+//        val t5 = Track(getString(R.string.t5_name), getString(R.string.t5_artist_name), 293000, getString(R.string.t5_artwork))
+//        val searchResult = ArrayList<Track>()
+//        searchResult.add(t1)
+//        searchResult.add(t2)
+//        searchResult.add(t3)
+//        searchResult.add(t4)
+//        searchResult.add(t5)
+//        val trackAdapter = TrackAdapter(searchResult)
+//        search_result.adapter = trackAdapter
 
     }
 
@@ -129,6 +131,7 @@ class SearchActivity : AppCompatActivity() {
                     } else {
                         search_result.visibility = View.GONE
                         error_text.setText(R.string.search_not_found)
+                        icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
                         refresh_search.visibility = View.GONE
                     }
@@ -146,6 +149,7 @@ class SearchActivity : AppCompatActivity() {
     fun show_error() {
         search_result.visibility = View.GONE
         error_text.setText(R.string.no_internet)
+        icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
         refresh_search.visibility = View.VISIBLE
     }
