@@ -1,6 +1,8 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
+import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.text.Editable
@@ -136,10 +138,17 @@ class SearchActivity : AppCompatActivity() {
                         icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
                         refresh_search.visibility = View.GONE
-                        Glide.with(this@SearchActivity)
-                            .load(R.drawable.not_found)
-                            .fitCenter()
-                            .into(icon_error)
+                        if (isDarkTheme(this@SearchActivity)) {
+                            Glide.with(this@SearchActivity)
+                                .load(R.drawable.not_found_dark)
+                                .fitCenter()
+                                .into(icon_error)
+                        } else {
+                            Glide.with(this@SearchActivity)
+                                .load(R.drawable.not_found)
+                                .fitCenter()
+                                .into(icon_error)
+                        }
                     }
                 } else {
                     show_error()
@@ -158,11 +167,28 @@ class SearchActivity : AppCompatActivity() {
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
         refresh_search.visibility = View.VISIBLE
-        Glide.with(this)
-            .load(R.drawable.no_internet)
-            .fitCenter()
-            .into(icon_error)
+        if (isDarkTheme(this)) {
+            Glide.with(this)
+                .load(R.drawable.no_internet_dark)
+                .fitCenter()
+                .into(icon_error)
+        }
+        else {
+            Glide.with(this)
+                .load(R.drawable.no_internet)
+                .fitCenter()
+                .into(icon_error)
+        }
     }
+
+    // Source - https://stackoverflow.com/a/57686965
+    // Posted by Izadi Egizabal
+    // Retrieved 2026-04-09, License - CC BY-SA 4.0
+    fun isDarkTheme(activity: Activity): Boolean {
+        return activity.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
