@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -134,6 +136,10 @@ class SearchActivity : AppCompatActivity() {
                         icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
                         refresh_search.visibility = View.GONE
+                        Glide.with(this@SearchActivity)
+                            .load(R.drawable.not_found)
+                            .fitCenter()
+                            .into(icon_error)
                     }
                 } else {
                     show_error()
@@ -152,6 +158,10 @@ class SearchActivity : AppCompatActivity() {
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
         refresh_search.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(R.drawable.no_internet)
+            .fitCenter()
+            .into(icon_error)
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
