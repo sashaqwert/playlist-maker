@@ -19,7 +19,11 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Track) {
         track_name.setText(model.trackName)
-        artist_name.setText(model.artistName)
+        if (model.artistName != null) {
+            artist_name.setText(model.artistName)
+        } else {
+            artist_name.setText(R.string.artist_name_error)
+        }
         if (model.trackTimeMillis != null) {
             track_time.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTimeMillis))
         } else {
