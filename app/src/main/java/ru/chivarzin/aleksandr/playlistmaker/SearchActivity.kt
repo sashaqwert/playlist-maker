@@ -109,12 +109,14 @@ class SearchActivity : AppCompatActivity() {
 //        val t3 = Track(getString(R.string.t3_name), getString(R.string.t3_artist_name), 293000, getString(R.string.t3_artwork))
 //        val t4 = Track(getString(R.string.t4_name), getString(R.string.t4_artist_name), 293000, getString(R.string.t4_artwork))
 //        val t5 = Track(getString(R.string.t5_name), getString(R.string.t5_artist_name), 293000, getString(R.string.t5_artwork))
+//        val t6 = Track(null, null, null, null)
 //        val searchResult = ArrayList<Track>()
 //        searchResult.add(t1)
 //        searchResult.add(t2)
 //        searchResult.add(t3)
 //        searchResult.add(t4)
 //        searchResult.add(t5)
+//        searchResult.add(t6)
 //        val trackAdapter = TrackAdapter(searchResult)
 //        search_result.adapter = trackAdapter
 
