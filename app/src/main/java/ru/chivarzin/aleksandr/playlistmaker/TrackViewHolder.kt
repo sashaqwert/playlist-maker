@@ -18,7 +18,11 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
     fun bind(model: Track) {
-        track_name.setText(model.trackName)
+        if (model.trackName != null) {
+            track_name.setText(model.trackName)
+        } else {
+            track_name.setText(R.string.track_name_error)
+        }
         if (model.artistName != null) {
             artist_name.setText(model.artistName)
         } else {
