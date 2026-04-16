@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.net.toUri
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,11 @@ class SettingsActivity : AppCompatActivity() {
         val action_back = findViewById<ImageView>(R.id.settings_action_back)
         action_back.setOnClickListener {
             finish()
+        }
+
+        val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
+        settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
 
         val action_share = findViewById<Button>(R.id.action_share)
