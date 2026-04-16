@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="24dp" />
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/settings_dark_theme"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
