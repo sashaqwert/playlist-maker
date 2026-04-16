@@ -23,13 +23,17 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
+        val sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+
         val action_back = findViewById<ImageView>(R.id.settings_action_back)
         action_back.setOnClickListener {
             finish()
         }
 
         val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
+        settings_dark_theme.isChecked = sharedPrefs.getBoolean(DARK_THEME_ENABLED, false)
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
+            sharedPrefs.edit().putBoolean(DARK_THEME_ENABLED, checked).apply()
             (applicationContext as App).switchTheme(checked)
         }
 
