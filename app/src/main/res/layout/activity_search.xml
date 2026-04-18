@@ -78,7 +78,7 @@
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/view_track"
-        tools:visibility="gone" />
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/icon_error"
@@ -88,7 +88,7 @@
         android:scaleType="fitCenter"
         android:visibility="gone"
         app:srcCompat="@drawable/not_found"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/error_text"
@@ -98,7 +98,7 @@
         android:layout_marginTop="16dp"
         android:visibility="gone"
         tools:text="@string/search_not_found"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <Button
         android:id="@+id/refresh_search"
@@ -110,6 +110,6 @@
         android:text="@string/refresh"
         android:textSize="14sp"
         android:visibility="gone"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
 </LinearLayout>
