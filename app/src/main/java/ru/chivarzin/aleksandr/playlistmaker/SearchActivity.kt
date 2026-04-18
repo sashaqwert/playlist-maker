@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var search : EditText
     private var search_text = ""
     private lateinit var search_result: RecyclerView
+    private lateinit var search_result_sw: ScrollView
     private lateinit var error_text: TextView
     private lateinit var icon_error: ImageView
     private lateinit var refresh_search: Button
@@ -59,6 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
+        search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
         icon_error = findViewById<ImageView>(R.id.icon_error)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
@@ -83,7 +86,7 @@ class SearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 // empty
                 search_text = s.toString()
-0            }
+            }
         }
         search.addTextChangedListener(simpleTextWatcher)
         error_text = findViewById<TextView>(R.id.error_text)
@@ -114,9 +117,10 @@ class SearchActivity : AppCompatActivity() {
                         val searchResult = ArrayList<Track>(response.body()!!.results)
                         val trackAdapter = TrackAdapter(searchResult)
                         search_result.visibility = View.VISIBLE
+                        search_result_sw.visibility = View.VISIBLE
                         search_result.adapter = trackAdapter
                     } else {
-                        search_result.visibility = View.GONE
+                        search_result_sw.visibility = View.GONE
                         error_text.setText(R.string.search_not_found)
                         icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
@@ -145,7 +149,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun show_error() {
-        search_result.visibility = View.GONE
+        search_result_sw.visibility = View.GONE
         error_text.setText(R.string.no_internet)
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
