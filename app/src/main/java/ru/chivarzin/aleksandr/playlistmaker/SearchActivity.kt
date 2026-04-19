@@ -2,6 +2,7 @@ package ru.chivarzin.aleksandr.playlistmaker
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -22,6 +23,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +42,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refresh_search: Button
     private lateinit var clear_history: Button
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
+    private lateinit var sharedPrefs: SharedPreferences
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseURL)
@@ -56,6 +60,9 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
+        sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+        SearchHistory.history = Gson().fromJson(sharedPrefs.getString(SEARCH_HISTORY, "[]"),
+            object : TypeToken<List<Track>>() {}.type) // https://stackoverflow.com/a/51377183/7529334
         val action_back = findViewById<ImageView>(R.id.search_action_back)
         action_back.setOnClickListener {
             finish()
@@ -195,6 +202,12 @@ class SearchActivity : AppCompatActivity() {
                 Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        val history = Gson().toJson(SearchHistory.history)
+        sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -205,5 +218,9 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState, persistentState)
         search_text = savedInstanceState?.getString("search_text", "") ?: ""
         search.setText(search_text)
+    }
+
+    companion object {
+        const val SEARCH_HISTORY = "search_history"
     }
 }
