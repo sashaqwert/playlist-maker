@@ -37,6 +37,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var error_text: TextView
     private lateinit var icon_error: ImageView
     private lateinit var refresh_search: Button
+    private lateinit var clear_history: Button
+    private lateinit var you_searched: TextView //Заголовок "Вы искали"
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseURL)
@@ -58,6 +60,12 @@ class SearchActivity : AppCompatActivity() {
         action_back.setOnClickListener {
             finish()
         }
+
+        clear_history = findViewById<Button>(R.id.clear_history)
+        clear_history.setOnClickListener {
+            SearchHistory.clear()
+        }
+        you_searched = findViewById<TextView>(R.id.you_searched)
 
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
@@ -103,6 +111,9 @@ class SearchActivity : AppCompatActivity() {
                 true
             }
             false
+        }
+        if (!SearchHistory.isEmpty()) {
+            showSearchHistory()
         }
     }
 
@@ -166,6 +177,14 @@ class SearchActivity : AppCompatActivity() {
                 .fitCenter()
                 .into(icon_error)
         }
+    }
+
+    fun showSearchHistory() {
+        val adapter = TrackAdapter(SearchHistory.history)
+        clear_history.visibility = View.VISIBLE
+        you_searched.visibility = View.VISIBLE
+        search_result.visibility = View.VISIBLE
+        search_result.adapter = adapter
     }
 
     // Source - https://stackoverflow.com/a/57686965

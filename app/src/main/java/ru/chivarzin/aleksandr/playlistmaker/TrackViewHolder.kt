@@ -49,6 +49,9 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
                 .into(artwork)
         }
+        itemView.setOnClickListener {
+            SearchHistory.add(model)
+        }
     }
 
     fun dpToPx(dp: Float, context: Context): Int {

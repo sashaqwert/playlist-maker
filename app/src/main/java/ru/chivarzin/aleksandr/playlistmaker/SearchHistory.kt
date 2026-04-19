@@ -1,6 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
-class SearchHistory {
+object SearchHistory {
+    const val MAX_COUNT = 10
     var history: ArrayList<Track> = ArrayList()
 
     fun add(track: Track) {
@@ -17,7 +18,5 @@ class SearchHistory {
 
     fun clear() = history.clear()
 
-    companion object {
-        const val MAX_COUNT = 10
-    }
+    fun isEmpty() = history.isEmpty()
 }
