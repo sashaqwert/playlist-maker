@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/ys_display_medium"
         android:paddingTop="18dp"
-        android:paddingEnd="12dp"
+        android:paddingBottom="20dp"
         android:text="@string/you_searched"
         android:textAlignment="center"
         android:textColor="@color/black"
