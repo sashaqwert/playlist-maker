@@ -8,6 +8,7 @@ object SearchHistory {
         for (i in history.indices) {
             if (history.get(i).trackId == track.trackId) {
                 history.removeAt(i)
+                break
             }
         }
         history.add(0, track)
