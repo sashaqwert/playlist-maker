@@ -42,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refresh_search: Button
     private lateinit var clear_history: Button
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
-    private lateinit var sharedPrefs: SharedPreferences
+    lateinit var sharedPrefs: SharedPreferences
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseURL)
@@ -194,7 +194,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun showSearchHistory() {
-        val adapter = TrackAdapter(SearchHistory.history)
+        val adapter = TrackAdapter(SearchHistory.history, this)
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE
