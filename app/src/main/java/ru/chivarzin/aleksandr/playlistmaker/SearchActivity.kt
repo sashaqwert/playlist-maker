@@ -68,15 +68,17 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
-        clear_history = findViewById<Button>(R.id.clear_history)
-        clear_history.setOnClickListener {
-            SearchHistory.clear()
-        }
         you_searched = findViewById<TextView>(R.id.you_searched)
-
+        clear_history = findViewById<Button>(R.id.clear_history)
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
+        clear_history.setOnClickListener {
+            SearchHistory.clear()
+            you_searched.visibility = View.GONE
+            search_result_sw.visibility = View.GONE
+        }
+
         icon_error = findViewById<ImageView>(R.id.icon_error)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
