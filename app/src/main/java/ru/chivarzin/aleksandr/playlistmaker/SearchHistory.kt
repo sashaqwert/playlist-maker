@@ -12,7 +12,7 @@ object SearchHistory {
         }
         history.add(0, track)
         if (history.size > MAX_COUNT) {
-            history.removeAt(MAX_COUNT - 1)
+            history.removeAt(MAX_COUNT)
         }
     }
 
