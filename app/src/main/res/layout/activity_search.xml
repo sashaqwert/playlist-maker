@@ -81,7 +81,9 @@
         android:text="@string/you_searched"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="19sp" />
+        android:textSize="19sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <ScrollView
         android:id="@+id/search_result_sw"
@@ -96,7 +98,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_result"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/search_padding_horizontal"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -110,7 +112,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
-                android:text="@string/clear_history" />
+                android:text="@string/clear_history"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>

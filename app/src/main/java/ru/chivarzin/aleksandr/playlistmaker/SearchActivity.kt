@@ -93,8 +93,13 @@ class SearchActivity : AppCompatActivity() {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
                     search_result.visibility = View.INVISIBLE
+                    if (!SearchHistory.isEmpty()) {
+                        showSearchHistory()
+                    }
                 } else {
                     clear_search.visibility = View.VISIBLE
+                    you_searched.visibility = View.GONE
+                    clear_history.visibility = View.GONE
                 }
             }
 
