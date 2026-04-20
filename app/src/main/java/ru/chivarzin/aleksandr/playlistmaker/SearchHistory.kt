@@ -1,6 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
 object SearchHistory {
+    //История поиска хранится в SharedPreferences (см. SearchActivity.onDestroy())
     const val MAX_COUNT = 10
     var history: ArrayList<Track> = ArrayList()
 
