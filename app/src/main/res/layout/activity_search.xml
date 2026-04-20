@@ -47,9 +47,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|left"
-                android:paddingLeft="14dp"
+                android:focusedByDefault="true"
                 android:imeOptions="actionDone"
-                android:singleLine="true"/>
+                android:paddingLeft="14dp"
+                android:singleLine="true" />
 
             <ImageView
                 android:id="@+id/clear_search"
