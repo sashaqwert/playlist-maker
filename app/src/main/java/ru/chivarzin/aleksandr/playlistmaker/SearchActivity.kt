@@ -79,6 +79,17 @@ class SearchActivity : AppCompatActivity() {
             search_result_sw.visibility = View.GONE
         }
 
+        search.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && search_text == "") {
+                if (!SearchHistory.isEmpty()) {
+                    showSearchHistory()
+                }
+            } else {
+                you_searched.visibility = View.GONE
+                search_result_sw.visibility = View.GONE
+            }
+        }
+
         icon_error = findViewById<ImageView>(R.id.icon_error)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
