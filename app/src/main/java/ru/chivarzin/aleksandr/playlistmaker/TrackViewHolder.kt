@@ -58,9 +58,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             if (activity != null) {
                 val history = Gson().toJson(SearchHistory.history)
                 activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
-                val intent = Intent(activity, SearchActivity::class.java)
-                itemView.context.startActivity(intent)
-                activity.finish()
+                activity.showSearchHistory()
             }
         }
     }
