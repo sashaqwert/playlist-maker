@@ -211,6 +211,7 @@ class SearchActivity : AppCompatActivity() {
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE
+        search_result_sw.visibility = View.VISIBLE
         search_result.adapter = adapter
     }
 
