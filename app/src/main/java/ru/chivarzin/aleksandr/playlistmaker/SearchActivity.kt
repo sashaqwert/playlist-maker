@@ -85,8 +85,10 @@ class SearchActivity : AppCompatActivity() {
                     showSearchHistory()
                 }
             } else {
-                you_searched.visibility = View.GONE
-                search_result_sw.visibility = View.GONE
+                if (search_text == "") {
+                    you_searched.visibility = View.GONE
+                    search_result_sw.visibility = View.GONE
+                }
             }
         }
 
