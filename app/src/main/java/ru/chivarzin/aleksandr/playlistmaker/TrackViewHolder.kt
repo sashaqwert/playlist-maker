@@ -1,6 +1,8 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.util.TypedValue
 import android.view.View
@@ -9,6 +11,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
+import ru.chivarzin.aleksandr.playlistmaker.SearchActivity.Companion.SEARCH_HISTORY
 import java.util.Locale
 
 class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -17,7 +21,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: Track) {
+    fun bind(model: Track, activity: SearchActivity?) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {
@@ -48,6 +52,14 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 .fitCenter()
                 .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
                 .into(artwork)
+        }
+        itemView.setOnClickListener {
+            SearchHistory.add(model)
+            if (activity != null) {
+                val history = Gson().toJson(SearchHistory.history)
+                activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
+                activity.showSearchHistory()
+            }
         }
     }
 

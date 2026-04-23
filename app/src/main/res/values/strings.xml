@@ -41,4 +41,6 @@
     <string name="refresh">Обновить</string>
     <string name="artist_name_error">Неизвестный артист</string>
     <string name="track_name_error">Неизвестный трек</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="you_searched">Вы искали</string>
 </resources>

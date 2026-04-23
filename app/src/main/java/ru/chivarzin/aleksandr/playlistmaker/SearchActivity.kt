@@ -2,6 +2,7 @@ package ru.chivarzin.aleksandr.playlistmaker
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,9 +36,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var search : EditText
     private var search_text = ""
     private lateinit var search_result: RecyclerView
+    private lateinit var search_result_sw: ScrollView
     private lateinit var error_text: TextView
     private lateinit var icon_error: ImageView
     private lateinit var refresh_search: Button
+    private lateinit var clear_history: Button
+    private lateinit var you_searched: TextView //Заголовок "Вы искали"
+    lateinit var sharedPrefs: SharedPreferences
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseURL)
@@ -52,13 +60,38 @@ class SearchActivity : AppCompatActivity() {
             insets
         }
 
+        sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
+        SearchHistory.history = Gson().fromJson(sharedPrefs.getString(SEARCH_HISTORY, "[]"),
+            object : TypeToken<List<Track>>() {}.type) // https://stackoverflow.com/a/51377183/7529334
         val action_back = findViewById<ImageView>(R.id.search_action_back)
         action_back.setOnClickListener {
             finish()
         }
 
+        you_searched = findViewById<TextView>(R.id.you_searched)
+        clear_history = findViewById<Button>(R.id.clear_history)
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
+        search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
+        clear_history.setOnClickListener {
+            SearchHistory.clear()
+            you_searched.visibility = View.GONE
+            search_result_sw.visibility = View.GONE
+        }
+
+        search.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus && search_text == "") {
+                if (!SearchHistory.isEmpty()) {
+                    showSearchHistory()
+                }
+            } else {
+                if (search_text == "") {
+                    you_searched.visibility = View.GONE
+                    search_result_sw.visibility = View.GONE
+                }
+            }
+        }
+
         icon_error = findViewById<ImageView>(R.id.icon_error)
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
@@ -75,16 +108,20 @@ class SearchActivity : AppCompatActivity() {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
                     search_result.visibility = View.INVISIBLE
+                    if (!SearchHistory.isEmpty()) {
+                        showSearchHistory()
+                    }
                 } else {
                     clear_search.visibility = View.VISIBLE
-                    //search_result.visibility = View.VISIBLE
+                    you_searched.visibility = View.GONE
+                    clear_history.visibility = View.GONE
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
                 // empty
                 search_text = s.toString()
-0            }
+            }
         }
         search.addTextChangedListener(simpleTextWatcher)
         error_text = findViewById<TextView>(R.id.error_text)
@@ -102,24 +139,9 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-
-        //Фейк-результат поиска
-//        val t1 = Track(getString(R.string.t1_name), getString(R.string.t1_artist_name), 293000, getString(R.string.t1_artwork))
-//        val t2 = Track(getString(R.string.t2_name), getString(R.string.t2_artist_name), 293000, getString(R.string.t2_artwork))
-//        val t3 = Track(getString(R.string.t3_name), getString(R.string.t3_artist_name), 293000, getString(R.string.t3_artwork))
-//        val t4 = Track(getString(R.string.t4_name), getString(R.string.t4_artist_name), 293000, getString(R.string.t4_artwork))
-//        val t5 = Track(getString(R.string.t5_name), getString(R.string.t5_artist_name), 293000, getString(R.string.t5_artwork))
-//        val t6 = Track(null, null, null, null)
-//        val searchResult = ArrayList<Track>()
-//        searchResult.add(t1)
-//        searchResult.add(t2)
-//        searchResult.add(t3)
-//        searchResult.add(t4)
-//        searchResult.add(t5)
-//        searchResult.add(t6)
-//        val trackAdapter = TrackAdapter(searchResult)
-//        search_result.adapter = trackAdapter
-
+        if (!SearchHistory.isEmpty()) {
+            showSearchHistory()
+        }
     }
 
     fun do_search() {
@@ -133,9 +155,10 @@ class SearchActivity : AppCompatActivity() {
                         val searchResult = ArrayList<Track>(response.body()!!.results)
                         val trackAdapter = TrackAdapter(searchResult)
                         search_result.visibility = View.VISIBLE
+                        search_result_sw.visibility = View.VISIBLE
                         search_result.adapter = trackAdapter
                     } else {
-                        search_result.visibility = View.GONE
+                        search_result_sw.visibility = View.GONE
                         error_text.setText(R.string.search_not_found)
                         icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
@@ -164,7 +187,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun show_error() {
-        search_result.visibility = View.GONE
+        search_result_sw.visibility = View.GONE
         error_text.setText(R.string.no_internet)
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
@@ -183,12 +206,27 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    fun showSearchHistory() {
+        val adapter = TrackAdapter(SearchHistory.history, this)
+        clear_history.visibility = View.VISIBLE
+        you_searched.visibility = View.VISIBLE
+        search_result.visibility = View.VISIBLE
+        search_result_sw.visibility = View.VISIBLE
+        search_result.adapter = adapter
+    }
+
     // Source - https://stackoverflow.com/a/57686965
     // Posted by Izadi Egizabal
     // Retrieved 2026-04-09, License - CC BY-SA 4.0
     fun isDarkTheme(activity: Activity): Boolean {
         return activity.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val history = Gson().toJson(SearchHistory.history)
+        sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
     }
 
 
@@ -201,5 +239,9 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState, persistentState)
         search_text = savedInstanceState?.getString("search_text", "") ?: ""
         search.setText(search_text)
+    }
+
+    companion object {
+        const val SEARCH_HISTORY = "search_history"
     }
 }
