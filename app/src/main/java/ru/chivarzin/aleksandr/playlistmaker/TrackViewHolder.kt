@@ -61,6 +61,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 activity.showSearchHistory()
             }
             val intent = Intent(itemView.context, PlayerActivity::class.java)
+            intent.putExtra("track", Gson().toJson(model))
             itemView.context.startActivity(intent)
         }
     }
