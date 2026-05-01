@@ -60,6 +60,8 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
                 activity.showSearchHistory()
             }
+            val intent = Intent(itemView.context, PlayerActivity::class.java)
+            itemView.context.startActivity(intent)
         }
     }
 
