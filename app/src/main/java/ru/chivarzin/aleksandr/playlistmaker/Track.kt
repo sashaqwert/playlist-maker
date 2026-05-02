@@ -7,3 +7,13 @@ data class Track (
     val trackTimeMillis: Long?, // Продолжительность трека в милисекундах
     val artworkUrl100: String? // Ссылка на изображение обложки
 )
+{
+
+    fun getCoverArtwork() : String? {
+        if (artworkUrl100 != null) {
+            return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+        }
+        return null
+    }
+
+}

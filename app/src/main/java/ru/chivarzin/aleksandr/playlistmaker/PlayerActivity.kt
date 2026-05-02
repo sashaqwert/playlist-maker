@@ -6,6 +6,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 
 class PlayerActivity : AppCompatActivity() {
@@ -26,5 +28,12 @@ class PlayerActivity : AppCompatActivity() {
         player_action_back.setOnClickListener {
             finish()
         }
+
+        val player_artwork = findViewById<ImageView>(R.id.player_artwork)
+        Glide.with(this)
+            .load(track.getCoverArtwork())
+            .fitCenter()
+            .placeholder(R.drawable.artwork_default)
+            .into(player_artwork)
     }
 }
