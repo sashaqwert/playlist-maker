@@ -2,6 +2,7 @@ package ru.chivarzin.aleksandr.playlistmaker
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -52,6 +53,14 @@ class PlayerActivity : AppCompatActivity() {
         val player_duration = findViewById<TextView>(R.id.player_duration)
         if (track.trackTimeMillis != null) {
             player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+        }
+        val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
+        val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
+        if (track.collectionName == null) {
+            player_collection_hint.visibility = View.GONE
+            player_collection_name.visibility = View.GONE
+        } else {
+            player_collection_name.setText(track.collectionName)
         }
     }
 }

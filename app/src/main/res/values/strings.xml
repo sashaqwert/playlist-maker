@@ -44,4 +44,6 @@
     <string name="clear_history">Очистить историю</string>
     <string name="you_searched">Вы искали</string>
     <string name="duration">Длительность</string>
+    <string name="albom">Альбом</string>
+    <string name="collection_name_error">Неизвестный альбом</string>
 </resources>
