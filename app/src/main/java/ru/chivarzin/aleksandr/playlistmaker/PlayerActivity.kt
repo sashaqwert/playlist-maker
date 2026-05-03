@@ -1,7 +1,9 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -9,6 +11,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import org.w3c.dom.Text
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -30,10 +34,24 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         val player_artwork = findViewById<ImageView>(R.id.player_artwork)
-        Glide.with(this)
-            .load(track.getCoverArtwork())
-            .fitCenter()
-            .placeholder(R.drawable.artwork_default)
-            .into(player_artwork)
+        if (track.artworkUrl100 != null) {
+            Glide.with(this)
+                .load(track.getCoverArtwork())
+                .fitCenter()
+                .placeholder(R.drawable.artwork_default)
+                .into(player_artwork)
+        }
+        val player_track_name = findViewById<TextView>(R.id.player_track_name)
+        if (track.trackName != null) {
+            player_track_name.setText(track.trackName)
+        }
+        val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
+        if (track.artistName != null) {
+            player_artist_name.setText(track.artistName)
+        }
+        val player_duration = findViewById<TextView>(R.id.player_duration)
+        if (track.trackTimeMillis != null) {
+            player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+        }
     }
 }
