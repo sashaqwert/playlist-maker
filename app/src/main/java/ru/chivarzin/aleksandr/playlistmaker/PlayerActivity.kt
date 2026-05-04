@@ -74,5 +74,9 @@ class PlayerActivity : AppCompatActivity() {
         if (track.primaryGenreName != null) {
             player_janr.setText(track.primaryGenreName)
         }
+        val player_country = findViewById<TextView>(R.id.player_country)
+        if (track.country != null) {
+            player_country.setText(track.country)
+        }
     }
 }

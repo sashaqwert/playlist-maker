@@ -50,4 +50,6 @@
     <string name="release_date_error">1970</string>
     <string name="janr">Жанр</string>
     <string name="janr_error">Unknown</string>
+    <string name="country">Страна</string>
+    <string name="country_error">Неизвестно</string>
 </resources>
