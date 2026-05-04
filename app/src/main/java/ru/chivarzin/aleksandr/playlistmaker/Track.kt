@@ -7,7 +7,8 @@ data class Track (
     val trackTimeMillis: Long?, // Продолжительность трека в милисекундах
     val artworkUrl100: String?, // Ссылка на изображение обложки
     val collectionName: String?, // Название альбома
-    val releaseDate: String? // Год трека
+    val releaseDate: String?, // Год трека
+    val primaryGenreName: String? // Жанр
 )
 {
 

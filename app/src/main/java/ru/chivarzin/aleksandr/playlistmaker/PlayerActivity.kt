@@ -70,5 +70,9 @@ class PlayerActivity : AppCompatActivity() {
         } else {
             player_release_date.setText(track.releaseDate)
         }
+        val player_janr = findViewById<TextView>(R.id.player_janr)
+        if (track.primaryGenreName != null) {
+            player_janr.setText(track.primaryGenreName)
+        }
     }
 }

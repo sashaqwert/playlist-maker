@@ -48,4 +48,6 @@
     <string name="collection_name_error">Неизвестный альбом</string>
     <string name="year">Год</string>
     <string name="release_date_error">1970</string>
+    <string name="janr">Жанр</string>
+    <string name="janr_error">Unknown</string>
 </resources>
