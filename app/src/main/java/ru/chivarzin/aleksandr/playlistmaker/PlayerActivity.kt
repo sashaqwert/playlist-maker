@@ -62,5 +62,13 @@ class PlayerActivity : AppCompatActivity() {
         } else {
             player_collection_name.setText(track.collectionName)
         }
+        val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
+        val player_release_date = findViewById<TextView>(R.id.player_release_date)
+        if (track.releaseDate == null) {
+            player_release_date_hint.visibility = View.GONE
+            player_release_date.visibility = View.GONE
+        } else {
+            player_release_date.setText(track.releaseDate)
+        }
     }
 }

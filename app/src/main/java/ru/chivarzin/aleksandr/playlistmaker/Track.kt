@@ -6,7 +6,8 @@ data class Track (
     val artistName: String?, // Имя исполнителя
     val trackTimeMillis: Long?, // Продолжительность трека в милисекундах
     val artworkUrl100: String?, // Ссылка на изображение обложки
-    val collectionName: String? // Название альбома
+    val collectionName: String?, // Название альбома
+    val releaseDate: String? // Год трека
 )
 {
 
