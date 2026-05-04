@@ -68,7 +68,7 @@ class PlayerActivity : AppCompatActivity() {
             player_release_date_hint.visibility = View.GONE
             player_release_date.visibility = View.GONE
         } else {
-            player_release_date.setText(track.releaseDate)
+            player_release_date.setText(track.getYear()!!.toString())
         }
         val player_janr = findViewById<TextView>(R.id.player_janr)
         if (track.primaryGenreName != null) {

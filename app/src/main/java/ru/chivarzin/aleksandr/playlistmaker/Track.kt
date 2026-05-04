@@ -20,4 +20,11 @@ data class Track (
         return null
     }
 
+    fun getYear() : Int? {
+        if (releaseDate == null) {
+            return null
+        }
+        return releaseDate.replaceAfter('-', "").replace("-", "").toInt()
+    }
+
 }
