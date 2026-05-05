@@ -32,14 +32,14 @@
 
             <ImageView
                 android:id="@+id/player_playpause"
+                style="@style/PlayerPlayStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="38dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/player_artist_name"
-                app:srcCompat="@drawable/play" />
+                app:layout_constraintTop_toBottomOf="@+id/player_artist_name" />
 
             <TextView
                 android:id="@+id/player_artist_name"
@@ -84,6 +84,7 @@
 
             <ImageView
                 android:id="@+id/player_addto"
+                style="@style/PlayerAddToStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -92,11 +93,11 @@
                 app:layout_constraintEnd_toStartOf="@+id/player_playpause"
                 app:layout_constraintHorizontal_bias="0.562"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/player_artist_name"
-                app:srcCompat="@drawable/add_to" />
+                app:layout_constraintTop_toBottomOf="@+id/player_artist_name" />
 
             <ImageView
                 android:id="@+id/player_favorite"
+                style="@style/PlayerFavoriteStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="55dp"
@@ -104,17 +105,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.322"
                 app:layout_constraintStart_toEndOf="@+id/player_playpause"
-                app:layout_constraintTop_toBottomOf="@+id/player_artist_name"
-                app:srcCompat="@drawable/favorite" />
+                app:layout_constraintTop_toBottomOf="@+id/player_artist_name" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/player_progress"
+                style="@style/PlayerRightStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/ys_display_medium"
                 android:text="@string/track_time_default"
-                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +129,7 @@
                 android:layout_marginTop="39dp"
                 android:text="@string/duration"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/player_progress" />
 
             <TextView
                 android:id="@+id/player_duration"
@@ -144,7 +144,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.448"
                 app:layout_constraintStart_toEndOf="@+id/player_duration_hint"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/player_progress" />
 
             <TextView
                 android:id="@+id/player_collection_hint"

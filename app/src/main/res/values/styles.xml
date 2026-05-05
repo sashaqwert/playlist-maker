@@ -109,4 +109,16 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">13sp</item>
     </style>
+    <style name="PlayerPlayStyle">
+        <item name="srcCompat">@drawable/play</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+    <style name="PlayerAddToStyle">
+        <item name="srcCompat">@drawable/add_to</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+    <style name="PlayerFavoriteStyle">
+        <item name="srcCompat">@drawable/favorite</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
 </resources>
