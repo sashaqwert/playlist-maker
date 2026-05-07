@@ -1,6 +1,8 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
 import android.app.Application
+import android.content.Context
+import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
 
 const val APP_PREFERENCES = "app_preferences"
@@ -26,4 +28,13 @@ class App : Application() {
             }
         )
     }
+}
+
+// GLOBAL FUNCTIONS
+
+fun dpToPx(dp: Float, context: Context): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp,
+        context.resources.displayMetrics).toInt()
 }
