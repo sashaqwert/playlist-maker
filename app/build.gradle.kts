@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.glide)
