@@ -39,7 +39,7 @@ class PlayerActivity : AppCompatActivity() {
             Glide.with(this)
                 .load(track.getCoverArtwork())
                 .fitCenter()
-                .transform(RoundedCorners(dpToPx(2.0f, this)))
+                .transform(RoundedCorners(dpToPx(8.0f, this)))
                 .placeholder(R.drawable.artwork_default)
                 .into(player_artwork)
         }
