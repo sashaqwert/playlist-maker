@@ -60,13 +60,9 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
                 activity.showSearchHistory()
             }
+            val intent = Intent(itemView.context, PlayerActivity::class.java)
+            intent.putExtra("track", Gson().toJson(model))
+            itemView.context.startActivity(intent)
         }
-    }
-
-    fun dpToPx(dp: Float, context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            context.resources.displayMetrics).toInt()
     }
 }
