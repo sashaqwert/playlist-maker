@@ -215,14 +215,6 @@ class SearchActivity : AppCompatActivity() {
         search_result.adapter = adapter
     }
 
-    // Source - https://stackoverflow.com/a/57686965
-    // Posted by Izadi Egizabal
-    // Retrieved 2026-04-09, License - CC BY-SA 4.0
-    fun isDarkTheme(activity: Activity): Boolean {
-        return activity.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         val history = Gson().toJson(SearchHistory.history)
