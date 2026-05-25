@@ -1,6 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
 import android.icu.text.SimpleDateFormat
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -18,6 +19,9 @@ import java.util.Locale
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var track: Track
+    private var mediaPlayer = MediaPlayer()
+    private lateinit var player_playpause: ImageView
+    private var playerState = STATE_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,5 +83,64 @@ class PlayerActivity : AppCompatActivity() {
         if (track.country != null) {
             player_country.setText(track.country)
         }
+
+        preparePlayer()
+        player_playpause = findViewById<ImageView>(R.id.player_playpause)
+        player_playpause.setOnClickListener {
+            playbackControl()
+        }
+    }
+
+    private fun preparePlayer() {
+        if (track.previewUrl == null) {
+            return
+        }
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            player_playpause.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playerState = STATE_PAUSED
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
 }
