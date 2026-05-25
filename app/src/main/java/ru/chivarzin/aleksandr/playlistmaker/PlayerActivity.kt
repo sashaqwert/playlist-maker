@@ -103,17 +103,50 @@ class PlayerActivity : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
+            if (isDarkTheme(this)) {
+                Glide.with(this)
+                    .load(R.drawable.play_dark)
+                    .fitCenter()
+                    .into(player_playpause)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.play)
+                    .fitCenter()
+                    .into(player_playpause)
+            }
         }
     }
 
     private fun startPlayer() {
         mediaPlayer.start()
         playerState = STATE_PLAYING
+        if (isDarkTheme(this)) {
+            Glide.with(this)
+                .load(R.drawable.pause_dark)
+                .fitCenter()
+                .into(player_playpause)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.pause)
+                .fitCenter()
+                .into(player_playpause)
+        }
     }
 
     private fun pausePlayer() {
         mediaPlayer.pause()
         playerState = STATE_PAUSED
+        if (isDarkTheme(this)) {
+            Glide.with(this)
+                .load(R.drawable.play_dark)
+                .fitCenter()
+                .into(player_playpause)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.play)
+                .fitCenter()
+                .into(player_playpause)
+        }
     }
 
     private fun playbackControl() {
