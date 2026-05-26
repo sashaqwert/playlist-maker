@@ -3,6 +3,8 @@ package ru.chivarzin.aleksandr.playlistmaker
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import org.w3c.dom.Text
+import java.lang.Thread.sleep
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
@@ -21,6 +24,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var track: Track
     private var mediaPlayer = MediaPlayer()
     private lateinit var player_playpause: ImageView
+    private lateinit var player_progress: TextView
     private var playerState = STATE_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +93,7 @@ class PlayerActivity : AppCompatActivity() {
         player_playpause.setOnClickListener {
             playbackControl()
         }
+        player_progress = findViewById<TextView>(R.id.player_progress)
     }
 
     private fun preparePlayer() {
@@ -131,6 +136,20 @@ class PlayerActivity : AppCompatActivity() {
                 .fitCenter()
                 .into(player_playpause)
         }
+
+        val handler = Handler(Looper.getMainLooper())
+        val thread = Thread({
+            do {
+                sleep(250L)
+                handler.post {
+                    player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+                }
+            } while (playerState == STATE_PLAYING)
+            handler.post {
+                player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+            }
+        })
+        thread.start()
     }
 
     private fun pausePlayer() {
