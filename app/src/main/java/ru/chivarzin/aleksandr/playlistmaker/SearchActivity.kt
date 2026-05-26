@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -42,6 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refresh_search: Button
     private lateinit var clear_history: Button
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
+    private lateinit var search_pb: ProgressBar
     lateinit var sharedPrefs: SharedPreferences
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -73,6 +75,7 @@ class SearchActivity : AppCompatActivity() {
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
+        search_pb = findViewById<ProgressBar>(R.id.search_pb)
         clear_history.setOnClickListener {
             SearchHistory.clear()
             you_searched.visibility = View.GONE
@@ -145,6 +148,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun do_search() {
+        search_result_sw.visibility = View.GONE
+        you_searched.visibility = View.GONE
+        icon_error.visibility = View.GONE
+        error_text.visibility = View.GONE
+        refresh_search.visibility = View.GONE
+        search_pb.visibility = View.VISIBLE
         iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
             override fun onResponse(
                 call: Call<SearchResult?>,
