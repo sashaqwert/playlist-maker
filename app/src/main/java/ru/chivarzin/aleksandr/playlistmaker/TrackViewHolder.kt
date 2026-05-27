@@ -21,7 +21,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: Track, activity: SearchActivity?) {
+    fun bind(model: Track, clickdebunce: () -> Boolean, activity: SearchActivity?) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {
@@ -54,15 +54,17 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 .into(artwork)
         }
         itemView.setOnClickListener {
-            SearchHistory.add(model)
-            if (activity != null) {
-                val history = Gson().toJson(SearchHistory.history)
-                activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
-                activity.showSearchHistory()
+            if (clickdebunce()) {
+                SearchHistory.add(model)
+                if (activity != null) {
+                    val history = Gson().toJson(SearchHistory.history)
+                    activity.sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
+                    activity.showSearchHistory()
+                }
+                val intent = Intent(itemView.context, PlayerActivity::class.java)
+                intent.putExtra("track", Gson().toJson(model))
+                itemView.context.startActivity(intent)
             }
-            val intent = Intent(itemView.context, PlayerActivity::class.java)
-            intent.putExtra("track", Gson().toJson(model))
-            itemView.context.startActivity(intent)
         }
     }
 }
