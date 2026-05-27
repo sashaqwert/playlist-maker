@@ -146,7 +146,12 @@ class PlayerActivity : AppCompatActivity() {
                 }
             } while (playerState == STATE_PLAYING)
             handler.post {
-                player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+                if (playerState == STATE_PAUSED) {
+                    player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+                }
+                else {
+                    player_progress.setText(R.string.track_time_default)
+                }
             }
         })
         thread.start()
