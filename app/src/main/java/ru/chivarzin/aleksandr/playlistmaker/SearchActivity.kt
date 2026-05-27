@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -51,6 +53,8 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
+
+    val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,8 +126,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // empty
                 search_text = s.toString()
+                searchDebounce()
             }
         }
         search.addTextChangedListener(simpleTextWatcher)
@@ -226,6 +230,13 @@ class SearchActivity : AppCompatActivity() {
         search_result.adapter = adapter
     }
 
+    private val searchRunnable = Runnable { do_search() }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         val history = Gson().toJson(SearchHistory.history)
@@ -246,5 +257,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val SEARCH_HISTORY = "search_history"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
