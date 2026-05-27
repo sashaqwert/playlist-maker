@@ -122,6 +122,7 @@
         android:id="@+id/search_pb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/progressbar"
         android:visibility="gone" />
 
     <ImageView

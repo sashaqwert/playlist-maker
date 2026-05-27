@@ -160,6 +160,7 @@ class SearchActivity : AppCompatActivity() {
                 response: Response<SearchResult?>
             ) {
                 if (response.code() == 200) {
+                    search_pb.visibility = View.GONE
                     if (response.body()?.results!!.isNotEmpty()) {
                         val searchResult = ArrayList<Track>(response.body()!!.results)
                         val trackAdapter = TrackAdapter(searchResult)
@@ -196,6 +197,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun show_error() {
+        search_pb.visibility = View.GONE
         search_result_sw.visibility = View.GONE
         error_text.setText(R.string.no_internet)
         icon_error.visibility = View.VISIBLE
