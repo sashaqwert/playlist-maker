@@ -8,6 +8,7 @@ import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -175,6 +176,9 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun playbackControl() {
         when(playerState) {
+            STATE_DEFAULT -> {
+                Toast.makeText(applicationContext, R.string.player_not_prepared, Toast.LENGTH_SHORT).show()
+            }
             STATE_PLAYING -> {
                 pausePlayer()
             }

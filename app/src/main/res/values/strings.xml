@@ -52,4 +52,5 @@
     <string name="janr_error">Unknown</string>
     <string name="country">Страна</string>
     <string name="country_error">Неизвестно</string>
+    <string name="player_not_prepared">Плеер не подготовлен. Пожалуйста, попробуйте позже.</string>
 </resources>
