@@ -1,7 +1,9 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
 
@@ -37,4 +39,12 @@ fun dpToPx(dp: Float, context: Context): Int {
         TypedValue.COMPLEX_UNIT_DIP,
         dp,
         context.resources.displayMetrics).toInt()
+}
+
+// Source - https://stackoverflow.com/a/57686965
+// Posted by Izadi Egizabal
+// Retrieved 2026-04-09, License - CC BY-SA 4.0
+fun isDarkTheme(activity: Activity): Boolean {
+    return activity.resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }

@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -42,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refresh_search: Button
     private lateinit var clear_history: Button
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
+    private lateinit var search_pb: ProgressBar
     lateinit var sharedPrefs: SharedPreferences
     private val iTunesBaseURL = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -49,6 +53,8 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
+
+    val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +79,7 @@ class SearchActivity : AppCompatActivity() {
         search = findViewById<EditText>(R.id.search)
         search_result = findViewById<RecyclerView>(R.id.search_result)
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
+        search_pb = findViewById<ProgressBar>(R.id.search_pb)
         clear_history.setOnClickListener {
             SearchHistory.clear()
             you_searched.visibility = View.GONE
@@ -119,8 +126,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // empty
                 search_text = s.toString()
+                searchDebounce()
             }
         }
         search.addTextChangedListener(simpleTextWatcher)
@@ -145,12 +152,19 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun do_search() {
+        search_result_sw.visibility = View.GONE
+        you_searched.visibility = View.GONE
+        icon_error.visibility = View.GONE
+        error_text.visibility = View.GONE
+        refresh_search.visibility = View.GONE
+        search_pb.visibility = View.VISIBLE
         iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
             override fun onResponse(
                 call: Call<SearchResult?>,
                 response: Response<SearchResult?>
             ) {
                 if (response.code() == 200) {
+                    search_pb.visibility = View.GONE
                     if (response.body()?.results!!.isNotEmpty()) {
                         val searchResult = ArrayList<Track>(response.body()!!.results)
                         val trackAdapter = TrackAdapter(searchResult)
@@ -187,6 +201,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun show_error() {
+        search_pb.visibility = View.GONE
         search_result_sw.visibility = View.GONE
         error_text.setText(R.string.no_internet)
         icon_error.visibility = View.VISIBLE
@@ -215,12 +230,11 @@ class SearchActivity : AppCompatActivity() {
         search_result.adapter = adapter
     }
 
-    // Source - https://stackoverflow.com/a/57686965
-    // Posted by Izadi Egizabal
-    // Retrieved 2026-04-09, License - CC BY-SA 4.0
-    fun isDarkTheme(activity: Activity): Boolean {
-        return activity.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+    private val searchRunnable = Runnable { do_search() }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     override fun onDestroy() {
@@ -243,5 +257,6 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val SEARCH_HISTORY = "search_history"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
