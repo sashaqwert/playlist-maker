@@ -1,9 +1,6 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
-import android.app.Activity
-import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -25,7 +22,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -33,6 +29,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
+import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.SearchHistory
+import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchResult
+import ru.chivarzin.aleksandr.playlistmaker.data.network.ITunesApi
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 
 class SearchActivity : AppCompatActivity() {
 
@@ -103,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
         val clear_search = findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
         val simpleTextWatcher = object : TextWatcher {

@@ -1,16 +1,19 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.net.toUri
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
+import ru.chivarzin.aleksandr.playlistmaker.App
+import ru.chivarzin.aleksandr.playlistmaker.DARK_THEME_ENABLED
+import ru.chivarzin.aleksandr.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

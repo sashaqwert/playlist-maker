@@ -1,5 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker
 
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+
 object SearchHistory {
     //История поиска хранится в SharedPreferences (см. SearchActivity.onDestroy())
     const val MAX_COUNT = 10

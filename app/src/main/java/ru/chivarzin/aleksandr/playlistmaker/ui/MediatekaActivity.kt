@@ -1,10 +1,11 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import ru.chivarzin.aleksandr.playlistmaker.R
 
 class MediatekaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
