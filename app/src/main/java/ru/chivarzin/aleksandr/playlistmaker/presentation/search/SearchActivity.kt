@@ -193,6 +193,12 @@ class SearchActivity : AppCompatActivity() {
 //    }
 
     fun do_search() {
+        search_result_sw.visibility = View.GONE
+        you_searched.visibility = View.GONE
+        icon_error.visibility = View.GONE
+        error_text.visibility = View.GONE
+        refresh_search.visibility = View.GONE
+        search_pb.visibility = View.VISIBLE
         val consumer = object : TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>) {
                 runOnUiThread {
