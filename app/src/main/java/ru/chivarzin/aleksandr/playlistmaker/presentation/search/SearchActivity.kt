@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.presentation.search
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -24,16 +24,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
+import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.SearchHistory
-import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchResult
-import ru.chivarzin.aleksandr.playlistmaker.data.network.ITunesApi
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 
@@ -50,12 +45,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
     private lateinit var search_pb: ProgressBar
     lateinit var sharedPrefs: SharedPreferences
-    private val iTunesBaseURL = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(iTunesBaseURL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
 
     val handler = Handler(Looper.getMainLooper())
 
@@ -154,32 +143,73 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+//    fun do_search() {
+//        search_result_sw.visibility = View.GONE
+//        you_searched.visibility = View.GONE
+//        icon_error.visibility = View.GONE
+//        error_text.visibility = View.GONE
+//        refresh_search.visibility = View.GONE
+//        search_pb.visibility = View.VISIBLE
+//        iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
+//            override fun onResponse(
+//                call: Call<SearchResult?>,
+//                response: Response<SearchResult?>
+//            ) {
+//                if (response.code() == 200) {
+//                    search_pb.visibility = View.GONE
+//                    if (response.body()?.results!!.isNotEmpty()) {
+//                        val searchResult = ArrayList<Track>(response.body()!!.results)
+//                        val trackAdapter = TrackAdapter(searchResult)
+//                        search_result.visibility = View.VISIBLE
+//                        search_result_sw.visibility = View.VISIBLE
+//                        search_result.adapter = trackAdapter
+//                    } else {
+//                        search_result_sw.visibility = View.GONE
+//                        error_text.setText(R.string.search_not_found)
+//                        icon_error.visibility = View.VISIBLE
+//                        error_text.visibility = View.VISIBLE
+//                        refresh_search.visibility = View.GONE
+//                        if (isDarkTheme(this@SearchActivity)) {
+//                            Glide.with(this@SearchActivity)
+//                                .load(R.drawable.not_found_dark)
+//                                .fitCenter()
+//                                .into(icon_error)
+//                        } else {
+//                            Glide.with(this@SearchActivity)
+//                                .load(R.drawable.not_found)
+//                                .fitCenter()
+//                                .into(icon_error)
+//                        }
+//                    }
+//                } else {
+//                    show_error()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
+//                show_error()
+//            }
+//        })
+//    }
+
     fun do_search() {
-        search_result_sw.visibility = View.GONE
-        you_searched.visibility = View.GONE
-        icon_error.visibility = View.GONE
-        error_text.visibility = View.GONE
-        refresh_search.visibility = View.GONE
-        search_pb.visibility = View.VISIBLE
-        iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
-            override fun onResponse(
-                call: Call<SearchResult?>,
-                response: Response<SearchResult?>
-            ) {
-                if (response.code() == 200) {
+        val consumer = object : TracksInteractor.TracksConsumer {
+            override fun consume(foundTracks: List<Track>) {
+                runOnUiThread {
                     search_pb.visibility = View.GONE
-                    if (response.body()?.results!!.isNotEmpty()) {
-                        val searchResult = ArrayList<Track>(response.body()!!.results)
-                        val trackAdapter = TrackAdapter(searchResult)
+                    if (foundTracks.isNotEmpty()) {
+                        val adapter = TrackAdapter(ArrayList(foundTracks))
+                        search_result.adapter = adapter
+
                         search_result.visibility = View.VISIBLE
                         search_result_sw.visibility = View.VISIBLE
-                        search_result.adapter = trackAdapter
                     } else {
+                        // Логика "ничего не найдено"
                         search_result_sw.visibility = View.GONE
                         error_text.setText(R.string.search_not_found)
                         icon_error.visibility = View.VISIBLE
                         error_text.visibility = View.VISIBLE
-                        refresh_search.visibility = View.GONE
+
                         if (isDarkTheme(this@SearchActivity)) {
                             Glide.with(this@SearchActivity)
                                 .load(R.drawable.not_found_dark)
@@ -192,15 +222,12 @@ class SearchActivity : AppCompatActivity() {
                                 .into(icon_error)
                         }
                     }
-                } else {
-                    show_error()
                 }
             }
 
-            override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
-                show_error()
-            }
-        })
+        }
+
+        Creator.provideTracksInteractor().findMusic(search_text, consumer)
     }
 
     fun show_error() {

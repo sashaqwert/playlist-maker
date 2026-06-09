@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.presentation.search
 
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
@@ -13,7 +13,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.SearchHistory
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
-import ru.chivarzin.aleksandr.playlistmaker.ui.PlayerActivity
+import ru.chivarzin.aleksandr.playlistmaker.presentation.PlayerActivity
 import java.util.Locale
 
 class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {

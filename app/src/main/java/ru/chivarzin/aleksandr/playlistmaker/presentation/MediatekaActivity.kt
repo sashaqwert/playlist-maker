@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui
+package ru.chivarzin.aleksandr.playlistmaker.presentation
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

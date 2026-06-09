@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui
+package ru.chivarzin.aleksandr.playlistmaker.presentation
 
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
