@@ -1,6 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker
-
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+package ru.chivarzin.aleksandr.playlistmaker.domain.models
 
 object SearchHistory {
     //История поиска хранится в SharedPreferences (см. SearchActivity.onDestroy())

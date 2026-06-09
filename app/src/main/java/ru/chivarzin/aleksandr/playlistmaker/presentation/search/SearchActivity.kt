@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken
 import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.SearchHistory
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.SearchHistory
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme

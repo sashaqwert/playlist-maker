@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.SearchHistory
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.SearchHistory
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.PlayerActivity
