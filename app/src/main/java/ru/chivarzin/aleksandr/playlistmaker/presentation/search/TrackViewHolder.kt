@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.SearchHistory
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
@@ -22,7 +23,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: Track, clickdebunce: () -> Boolean, activity: SearchActivity?) {
+    fun bind(model: Track, clickdebunce: () -> Boolean, activity: SearchActivity?, showHistory: Boolean) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {
@@ -56,11 +57,10 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         }
         itemView.setOnClickListener {
             if (clickdebunce()) {
-                SearchHistory.add(model)
                 if (activity != null) {
-                    val history = Gson().toJson(SearchHistory.history)
-                    activity.sharedPrefs.edit().putString(SearchActivity.SEARCH_HISTORY, history).apply()
-                    activity.showSearchHistory()
+                    Creator.provideSearchHistoryInteractor(activity).addToHistory(model)
+                    if (showHistory)
+                        activity.showSearchHistory()
                 }
                 val intent = Intent(itemView.context, PlayerActivity::class.java)
                 intent.putExtra("track", Gson().toJson(model))

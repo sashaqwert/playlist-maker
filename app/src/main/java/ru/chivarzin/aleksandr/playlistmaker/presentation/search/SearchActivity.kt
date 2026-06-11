@@ -193,6 +193,9 @@ class SearchActivity : AppCompatActivity() {
 //    }
 
     fun do_search() {
+        if (search_text.isEmpty()) {
+            return
+        }
         search_result_sw.visibility = View.GONE
         you_searched.visibility = View.GONE
         icon_error.visibility = View.GONE
@@ -204,7 +207,7 @@ class SearchActivity : AppCompatActivity() {
                 runOnUiThread {
                     search_pb.visibility = View.GONE
                     if (foundTracks.isNotEmpty()) {
-                        val adapter = TrackAdapter(ArrayList(foundTracks))
+                        val adapter = TrackAdapter(ArrayList(foundTracks), this@SearchActivity)
                         search_result.adapter = adapter
 
                         search_result.visibility = View.VISIBLE
@@ -258,7 +261,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun showSearchHistory() {
-        val adapter = TrackAdapter(SearchHistory.history, this)
+        val adapter = TrackAdapter(ArrayList<Track>(Creator.provideSearchHistoryInteractor(this).getHistory()), this, true)
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE
@@ -275,8 +278,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        val history = Gson().toJson(SearchHistory.history)
-        sharedPrefs.edit().putString(SEARCH_HISTORY, history).apply()
     }
 
 
