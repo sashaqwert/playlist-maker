@@ -21,4 +21,8 @@ class SearchHistoryRepositoryImpl (val context: Context) : SearchHistoryReposito
     override fun clearHistory() {
         dataSource.clearHistory()
     }
+
+    override fun isEmpty(): Boolean {
+        return dataSource.isEmpty()
+    }
 }

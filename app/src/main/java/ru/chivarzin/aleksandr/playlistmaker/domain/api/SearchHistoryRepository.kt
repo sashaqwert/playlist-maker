@@ -6,4 +6,5 @@ interface SearchHistoryRepository {
     fun getHistory(): List<Track>
     fun addToHistory(track: Track)
     fun clearHistory()
+    fun isEmpty() : Boolean
 }

@@ -49,18 +49,21 @@ class SearchHistoryDataSource(
                 history.removeAt(i)
                 break
             }
-
+        }
         // Обрезаем список до максимального размера
         if (history.size > MAX_COUNT) {
             history.subList(MAX_COUNT, history.size).clear()
         }
-
         saveHistoryInternal(history)
-        }
+
     }
 
     override fun clearHistory() {
         saveHistoryInternal(emptyList())
+    }
+
+    override fun isEmpty(): Boolean {
+        return getHistoryInternal().isEmpty()
     }
 }
 

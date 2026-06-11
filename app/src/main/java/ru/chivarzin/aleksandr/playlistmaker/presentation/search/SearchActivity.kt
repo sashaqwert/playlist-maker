@@ -1,6 +1,5 @@
 package ru.chivarzin.aleksandr.playlistmaker.presentation.search
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,12 +21,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.SearchHistory
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
@@ -44,7 +39,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clear_history: Button
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
     private lateinit var search_pb: ProgressBar
-    lateinit var sharedPrefs: SharedPreferences
 
     val handler = Handler(Looper.getMainLooper())
 
@@ -57,10 +51,6 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-        SearchHistory.history = Gson().fromJson(sharedPrefs.getString(SEARCH_HISTORY, "[]"),
-            object : TypeToken<List<Track>>() {}.type) // https://stackoverflow.com/a/51377183/7529334
         val action_back = findViewById<ImageView>(R.id.search_action_back)
         action_back.setOnClickListener {
             finish()
@@ -73,14 +63,14 @@ class SearchActivity : AppCompatActivity() {
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
         search_pb = findViewById<ProgressBar>(R.id.search_pb)
         clear_history.setOnClickListener {
-            SearchHistory.clear()
+            Creator.provideSearchHistoryInteractor(this).clearHistory()
             you_searched.visibility = View.GONE
             search_result_sw.visibility = View.GONE
         }
 
         search.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && search_text == "") {
-                if (!SearchHistory.isEmpty()) {
+                if (!Creator.provideSearchHistoryInteractor(this).isEmpty()) {
                     showSearchHistory()
                 }
             } else {
@@ -107,7 +97,7 @@ class SearchActivity : AppCompatActivity() {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
                     search_result.visibility = View.INVISIBLE
-                    if (!SearchHistory.isEmpty()) {
+                    if (!Creator.provideSearchHistoryInteractor(this@SearchActivity).isEmpty()) {
                         showSearchHistory()
                     }
                 } else {
@@ -138,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        if (!SearchHistory.isEmpty()) {
+        if (!Creator.provideSearchHistoryInteractor(this).isEmpty()) {
             showSearchHistory()
         }
     }
@@ -293,7 +283,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SEARCH_HISTORY = "search_history"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
