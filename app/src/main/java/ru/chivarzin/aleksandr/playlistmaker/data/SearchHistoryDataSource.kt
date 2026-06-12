@@ -21,7 +21,7 @@ class SearchHistoryDataSource(
         val json = sharedPrefs.getString(PREF_KEY, "[]")
         return Gson().fromJson(
             json,
-            object : TypeToken<ArrayList<Track>>() {}.type
+            object : TypeToken<ArrayList<TrackDto>>() {}.type
         ) ?: ArrayList()
     }
 
