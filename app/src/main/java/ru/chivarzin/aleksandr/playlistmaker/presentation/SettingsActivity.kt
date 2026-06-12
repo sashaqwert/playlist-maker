@@ -13,7 +13,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.App
 import ru.chivarzin.aleksandr.playlistmaker.Creator
-import ru.chivarzin.aleksandr.playlistmaker.DARK_THEME_ENABLED
 import ru.chivarzin.aleksandr.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
