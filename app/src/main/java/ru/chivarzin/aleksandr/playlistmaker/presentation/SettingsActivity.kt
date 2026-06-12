@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.App
+import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.DARK_THEME_ENABLED
 import ru.chivarzin.aleksandr.playlistmaker.R
 
@@ -34,9 +35,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
-        settings_dark_theme.isChecked = sharedPrefs.getBoolean(DARK_THEME_ENABLED, false)
+        settings_dark_theme.isChecked = Creator.provideThemeInteractor(this).getTheme()
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
-            sharedPrefs.edit().putBoolean(DARK_THEME_ENABLED, checked).apply()
+            Creator.provideThemeInteractor(this).saveTheme(checked)
             (applicationContext as App).switchTheme(checked)
         }
 
