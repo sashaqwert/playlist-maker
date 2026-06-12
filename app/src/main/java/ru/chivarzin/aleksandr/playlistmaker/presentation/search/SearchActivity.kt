@@ -197,7 +197,11 @@ class SearchActivity : AppCompatActivity() {
                 runOnUiThread {
                     search_pb.visibility = View.GONE
                     if (foundTracks.isNotEmpty()) {
-                        val adapter = TrackAdapter(ArrayList(foundTracks), this@SearchActivity)
+                        val adapter = TrackAdapter(ArrayList(foundTracks), object : OnItemClickCallback {
+                            override fun callback(track: Track) {
+                                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
+                            }
+                        })
                         search_result.adapter = adapter
 
                         search_result.visibility = View.VISIBLE
@@ -251,7 +255,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun showSearchHistory() {
-        val adapter = TrackAdapter(ArrayList<Track>(Creator.provideSearchHistoryInteractor(this).getHistory()), this, true)
+        val adapter = TrackAdapter(ArrayList<Track>(Creator.provideSearchHistoryInteractor(this).getHistory()), object : OnItemClickCallback {
+            override fun callback(track: Track) {
+                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
+                showSearchHistory()
+            }
+        })
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE
