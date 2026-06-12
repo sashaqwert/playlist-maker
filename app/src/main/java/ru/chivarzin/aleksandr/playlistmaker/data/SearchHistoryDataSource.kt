@@ -3,12 +3,13 @@ package ru.chivarzin.aleksandr.playlistmaker.data
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import ru.chivarzin.aleksandr.playlistmaker.data.dto.TrackDto
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 class SearchHistoryDataSource(
     private val sharedPrefs: SharedPreferences,
-) : SearchHistoryRepository {
+) {
 
     companion object {
         private const val PREF_KEY = "search_history"
@@ -16,7 +17,7 @@ class SearchHistoryDataSource(
     }
 
     // Вспомогательный метод для получения и десериализации истории
-    private fun getHistoryInternal(): ArrayList<Track> {
+    private fun getHistoryInternal(): ArrayList<TrackDto> {
         val json = sharedPrefs.getString(PREF_KEY, "[]")
         return Gson().fromJson(
             json,
@@ -25,16 +26,16 @@ class SearchHistoryDataSource(
     }
 
     // Вспомогательный метод для сериализации и сохранения истории
-    private fun saveHistoryInternal(history: List<Track>) {
+    private fun saveHistoryInternal(history: List<TrackDto>) {
         val json = Gson().toJson(history)
         sharedPrefs.edit().putString(PREF_KEY, json).apply()
     }
 
-    override fun getHistory(): List<Track> {
+    fun getHistory(): List<TrackDto> {
         return getHistoryInternal()
     }
 
-    override fun addToHistory(track: Track) {
+    fun addToHistory(track: TrackDto) {
         val history = getHistoryInternal()
 
         // Добавляем новый элемент в начало списка
@@ -58,11 +59,11 @@ class SearchHistoryDataSource(
 
     }
 
-    override fun clearHistory() {
+    fun clearHistory() {
         saveHistoryInternal(emptyList())
     }
 
-    override fun isEmpty(): Boolean {
+    fun isEmpty(): Boolean {
         return getHistoryInternal().isEmpty()
     }
 }
