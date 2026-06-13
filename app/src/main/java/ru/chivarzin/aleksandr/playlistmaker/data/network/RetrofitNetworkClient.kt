@@ -19,11 +19,15 @@ class RetrofitNetworkClient : NetworkClient {
 
     override fun doRequest(dto: Any): Response {
         if (dto is SearchRequest) {
-            val resp = iTunesService.findMusic(dto.expression).execute()
+            try {
+                val resp = iTunesService.findMusic(dto.expression).execute()
 
-            val body = resp.body() ?: Response()
+                val body = resp.body() ?: Response()
 
-            return body.apply { resultCode = resp.code() }
+                return body.apply { resultCode = resp.code() }
+            } catch (_: Exception) {
+                return Response().apply { resultCode = 400 }
+            }
         } else {
             return Response().apply { resultCode = 400 }
         }
