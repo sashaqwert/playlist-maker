@@ -193,37 +193,41 @@ class SearchActivity : AppCompatActivity() {
         refresh_search.visibility = View.GONE
         search_pb.visibility = View.VISIBLE
         val consumer = object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>) {
+            override fun consume(foundTracks: List<Track>?) {
                 runOnUiThread {
                     search_pb.visibility = View.GONE
-                    if (foundTracks.isNotEmpty()) {
-                        val adapter = TrackAdapter(ArrayList(foundTracks), object : OnItemClickCallback {
-                            override fun callback(track: Track) {
-                                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
-                            }
-                        })
-                        search_result.adapter = adapter
+                    if (foundTracks != null) {
+                        if (foundTracks.isNotEmpty()) {
+                            val adapter = TrackAdapter(ArrayList(foundTracks), object : OnItemClickCallback {
+                                override fun callback(track: Track) {
+                                    Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
+                                }
+                            })
+                            search_result.adapter = adapter
 
-                        search_result.visibility = View.VISIBLE
-                        search_result_sw.visibility = View.VISIBLE
-                    } else {
-                        // Логика "ничего не найдено"
-                        search_result_sw.visibility = View.GONE
-                        error_text.setText(R.string.search_not_found)
-                        icon_error.visibility = View.VISIBLE
-                        error_text.visibility = View.VISIBLE
-
-                        if (isDarkTheme(this@SearchActivity)) {
-                            Glide.with(this@SearchActivity)
-                                .load(R.drawable.not_found_dark)
-                                .fitCenter()
-                                .into(icon_error)
+                            search_result.visibility = View.VISIBLE
+                            search_result_sw.visibility = View.VISIBLE
                         } else {
-                            Glide.with(this@SearchActivity)
-                                .load(R.drawable.not_found)
-                                .fitCenter()
-                                .into(icon_error)
+                            // Логика "ничего не найдено"
+                            search_result_sw.visibility = View.GONE
+                            error_text.setText(R.string.search_not_found)
+                            icon_error.visibility = View.VISIBLE
+                            error_text.visibility = View.VISIBLE
+
+                            if (isDarkTheme(this@SearchActivity)) {
+                                Glide.with(this@SearchActivity)
+                                    .load(R.drawable.not_found_dark)
+                                    .fitCenter()
+                                    .into(icon_error)
+                            } else {
+                                Glide.with(this@SearchActivity)
+                                    .load(R.drawable.not_found)
+                                    .fitCenter()
+                                    .into(icon_error)
+                            }
                         }
+                    } else {
+                        show_error()
                     }
                 }
             }

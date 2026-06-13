@@ -7,7 +7,7 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 class TracksRepositoryImpl (private val networkClient: NetworkClient) : TracksRepository {
-    override fun findMusic(expression: String): List<Track> {
+    override fun findMusic(expression: String): List<Track>? {
         val response = networkClient.doRequest(SearchRequest(expression))
         if (response.resultCode == 200) {
             return (response as SearchResult).results.map {
@@ -15,7 +15,7 @@ class TracksRepositoryImpl (private val networkClient: NetworkClient) : TracksRe
                     it.collectionName, it.releaseDate, it.primaryGenreName, it.country, it.previewUrl)
             }
         } else {
-            return emptyList()
+            return null
         }
     }
 }
