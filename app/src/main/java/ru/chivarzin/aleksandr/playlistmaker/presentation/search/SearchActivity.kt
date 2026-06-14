@@ -133,55 +133,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-//    fun do_search() {
-//        search_result_sw.visibility = View.GONE
-//        you_searched.visibility = View.GONE
-//        icon_error.visibility = View.GONE
-//        error_text.visibility = View.GONE
-//        refresh_search.visibility = View.GONE
-//        search_pb.visibility = View.VISIBLE
-//        iTunesService.findMusic(search_text).enqueue(object : Callback<SearchResult> {
-//            override fun onResponse(
-//                call: Call<SearchResult?>,
-//                response: Response<SearchResult?>
-//            ) {
-//                if (response.code() == 200) {
-//                    search_pb.visibility = View.GONE
-//                    if (response.body()?.results!!.isNotEmpty()) {
-//                        val searchResult = ArrayList<Track>(response.body()!!.results)
-//                        val trackAdapter = TrackAdapter(searchResult)
-//                        search_result.visibility = View.VISIBLE
-//                        search_result_sw.visibility = View.VISIBLE
-//                        search_result.adapter = trackAdapter
-//                    } else {
-//                        search_result_sw.visibility = View.GONE
-//                        error_text.setText(R.string.search_not_found)
-//                        icon_error.visibility = View.VISIBLE
-//                        error_text.visibility = View.VISIBLE
-//                        refresh_search.visibility = View.GONE
-//                        if (isDarkTheme(this@SearchActivity)) {
-//                            Glide.with(this@SearchActivity)
-//                                .load(R.drawable.not_found_dark)
-//                                .fitCenter()
-//                                .into(icon_error)
-//                        } else {
-//                            Glide.with(this@SearchActivity)
-//                                .load(R.drawable.not_found)
-//                                .fitCenter()
-//                                .into(icon_error)
-//                        }
-//                    }
-//                } else {
-//                    show_error()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<SearchResult?>, t: Throwable) {
-//                show_error()
-//            }
-//        })
-//    }
-
     fun do_search() {
         if (search_text.isEmpty()) {
             return
