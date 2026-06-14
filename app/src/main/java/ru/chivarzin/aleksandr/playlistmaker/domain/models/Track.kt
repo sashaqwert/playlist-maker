@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.domain.models
 
 data class Track (
     val trackId: Long,

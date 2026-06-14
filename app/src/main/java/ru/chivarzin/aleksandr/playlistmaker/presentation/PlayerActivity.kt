@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.presentation
 
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
@@ -16,8 +16,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
-import org.w3c.dom.Text
-import java.lang.Thread.sleep
+import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+import ru.chivarzin.aleksandr.playlistmaker.dpToPx
+import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
@@ -141,7 +143,7 @@ class PlayerActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
         val thread = Thread({
             do {
-                sleep(250L)
+                Thread.sleep(250L)
                 handler.post {
                     player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
                 }

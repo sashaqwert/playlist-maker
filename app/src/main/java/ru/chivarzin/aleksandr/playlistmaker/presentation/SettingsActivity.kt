@@ -1,16 +1,19 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.presentation
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.net.toUri
 import com.google.android.material.switchmaterial.SwitchMaterial
+import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
+import ru.chivarzin.aleksandr.playlistmaker.App
+import ru.chivarzin.aleksandr.playlistmaker.Creator
+import ru.chivarzin.aleksandr.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +34,9 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
-        settings_dark_theme.isChecked = sharedPrefs.getBoolean(DARK_THEME_ENABLED, false)
+        settings_dark_theme.isChecked = Creator.provideThemeInteractor(this).getTheme()
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
-            sharedPrefs.edit().putBoolean(DARK_THEME_ENABLED, checked).apply()
+            Creator.provideThemeInteractor(this).saveTheme(checked)
             (applicationContext as App).switchTheme(checked)
         }
 
