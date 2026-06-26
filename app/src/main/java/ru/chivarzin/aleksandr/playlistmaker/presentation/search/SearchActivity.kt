@@ -137,45 +137,16 @@ class SearchActivity : AppCompatActivity() {
         if (search_text.isEmpty()) {
             return
         }
-        search_result_sw.visibility = View.GONE
-        you_searched.visibility = View.GONE
-        icon_error.visibility = View.GONE
-        error_text.visibility = View.GONE
-        refresh_search.visibility = View.GONE
-        search_pb.visibility = View.VISIBLE
+        show_loading()
         val consumer = object : TracksInteractor.TracksConsumer {
             override fun consume(foundTracks: List<Track>?) {
                 runOnUiThread {
                     search_pb.visibility = View.GONE
                     if (foundTracks != null) {
                         if (foundTracks.isNotEmpty()) {
-                            val adapter = TrackAdapter(ArrayList(foundTracks), object : OnItemClickCallback {
-                                override fun callback(track: Track) {
-                                    Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
-                                }
-                            })
-                            search_result.adapter = adapter
-
-                            search_result.visibility = View.VISIBLE
-                            search_result_sw.visibility = View.VISIBLE
+                            show_content(foundTracks)
                         } else {
-                            // Логика "ничего не найдено"
-                            search_result_sw.visibility = View.GONE
-                            error_text.setText(R.string.search_not_found)
-                            icon_error.visibility = View.VISIBLE
-                            error_text.visibility = View.VISIBLE
-
-                            if (isDarkTheme(this@SearchActivity)) {
-                                Glide.with(this@SearchActivity)
-                                    .load(R.drawable.not_found_dark)
-                                    .fitCenter()
-                                    .into(icon_error)
-                            } else {
-                                Glide.with(this@SearchActivity)
-                                    .load(R.drawable.not_found)
-                                    .fitCenter()
-                                    .into(icon_error)
-                            }
+                            show_empty()
                         }
                     } else {
                         show_error()
@@ -186,6 +157,45 @@ class SearchActivity : AppCompatActivity() {
         }
 
         Creator.provideTracksInteractor().findMusic(search_text, consumer)
+    }
+
+    fun show_content(tracks: List<Track>) {
+        val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
+            override fun callback(track: Track) {
+                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
+            }
+        })
+        search_result.adapter = adapter
+        search_result.visibility = View.VISIBLE
+        search_result_sw.visibility = View.VISIBLE
+    }
+
+    fun show_loading() {
+        search_result_sw.visibility = View.GONE
+        you_searched.visibility = View.GONE
+        icon_error.visibility = View.GONE
+        error_text.visibility = View.GONE
+        refresh_search.visibility = View.GONE
+        search_pb.visibility = View.VISIBLE
+    }
+
+    fun show_empty() {
+        search_result_sw.visibility = View.GONE
+        error_text.setText(R.string.search_not_found)
+        icon_error.visibility = View.VISIBLE
+        error_text.visibility = View.VISIBLE
+
+        if (isDarkTheme(this@SearchActivity)) {
+            Glide.with(this@SearchActivity)
+                .load(R.drawable.not_found_dark)
+                .fitCenter()
+                .into(icon_error)
+        } else {
+            Glide.with(this@SearchActivity)
+                .load(R.drawable.not_found)
+                .fitCenter()
+                .into(icon_error)
+        }
     }
 
     fun show_error() {
