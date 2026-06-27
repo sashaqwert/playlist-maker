@@ -64,8 +64,7 @@ class SearchActivity : AppCompatActivity() {
         search_pb = findViewById<ProgressBar>(R.id.search_pb)
         clear_history.setOnClickListener {
             Creator.provideSearchHistoryInteractor(this).clearHistory()
-            you_searched.visibility = View.GONE
-            search_result_sw.visibility = View.GONE
+            hideSearchHistory()
         }
 
         search.setOnFocusChangeListener { view, hasFocus ->
@@ -75,8 +74,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             } else {
                 if (search_text == "") {
-                    you_searched.visibility = View.GONE
-                    search_result_sw.visibility = View.GONE
+                    hideSearchHistory()
                 }
             }
         }
@@ -131,6 +129,11 @@ class SearchActivity : AppCompatActivity() {
         if (!Creator.provideSearchHistoryInteractor(this).isEmpty()) {
             showSearchHistory()
         }
+    }
+
+    fun hideSearchHistory() {
+        you_searched.visibility = View.GONE
+        search_result_sw.visibility = View.GONE
     }
 
     fun do_search() {
