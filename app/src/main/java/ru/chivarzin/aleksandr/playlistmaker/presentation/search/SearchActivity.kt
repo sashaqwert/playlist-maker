@@ -19,6 +19,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.chivarzin.aleksandr.playlistmaker.Creator
@@ -42,6 +43,9 @@ class SearchActivity : AppCompatActivity() {
 
     val handler = Handler(Looper.getMainLooper())
 
+    private var viewModel : SearchViewModel? = null
+    private var textWatcher: TextWatcher? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -62,16 +66,20 @@ class SearchActivity : AppCompatActivity() {
         search_result = findViewById<RecyclerView>(R.id.search_result)
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
         search_pb = findViewById<ProgressBar>(R.id.search_pb)
+
+        viewModel = ViewModelProvider(this, SearchViewModel.getFactory())
+            .get(SearchViewModel::class.java)
+        viewModel?.observeState()?.observe(this) {
+            render(it)
+        }
+
         clear_history.setOnClickListener {
-            Creator.provideSearchHistoryInteractor(this).clearHistory()
-            hideSearchHistory()
+            viewModel?.clearSearchHistory()
         }
 
         search.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && search_text == "") {
-                if (!Creator.provideSearchHistoryInteractor(this).isEmpty()) {
-                    showSearchHistory()
-                }
+                viewModel?.showSearchHistoryIfNotEmpty()
             } else {
                 if (search_text == "") {
                     hideSearchHistory()
@@ -86,7 +94,7 @@ class SearchActivity : AppCompatActivity() {
             val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
-        val simpleTextWatcher = object : TextWatcher {
+        textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
             }
@@ -95,9 +103,7 @@ class SearchActivity : AppCompatActivity() {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
                     search_result.visibility = View.INVISIBLE
-                    if (!Creator.provideSearchHistoryInteractor(this@SearchActivity).isEmpty()) {
-                        showSearchHistory()
-                    }
+                    viewModel?.showSearchHistoryIfNotEmpty()
                 } else {
                     clear_search.visibility = View.VISIBLE
                     you_searched.visibility = View.GONE
@@ -107,28 +113,32 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 search_text = s.toString()
-                searchDebounce()
+                viewModel?.searchDebounce(
+                    changedText = s?.toString() ?: ""
+                )
             }
         }
-        search.addTextChangedListener(simpleTextWatcher)
+        search.addTextChangedListener(textWatcher)
         error_text = findViewById<TextView>(R.id.error_text)
         refresh_search = findViewById<Button>(R.id.refresh_search)
         refresh_search.setOnClickListener {
-            do_search()
+            viewModel?.searchDebounce(
+                changedText = search_text
+            )
         }
         search.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 if (search_text.isNotEmpty()) {
-                    do_search()
+                    viewModel?.searchDebounce(
+                        changedText = search_text
+                    )
                 }
                 true
             }
             false
         }
-        if (!Creator.provideSearchHistoryInteractor(this).isEmpty()) {
-            showSearchHistory()
-        }
+        viewModel?.showSearchHistoryIfNotEmpty()
     }
 
     fun hideSearchHistory() {
@@ -136,36 +146,10 @@ class SearchActivity : AppCompatActivity() {
         search_result_sw.visibility = View.GONE
     }
 
-    fun do_search() {
-        if (search_text.isEmpty()) {
-            return
-        }
-        show_loading()
-        val consumer = object : TracksInteractor.TracksConsumer {
-            override fun consume(foundTracks: List<Track>?) {
-                runOnUiThread {
-                    search_pb.visibility = View.GONE
-                    if (foundTracks != null) {
-                        if (foundTracks.isNotEmpty()) {
-                            show_content(foundTracks)
-                        } else {
-                            show_empty()
-                        }
-                    } else {
-                        show_error()
-                    }
-                }
-            }
-
-        }
-
-        Creator.provideTracksInteractor().findMusic(search_text, consumer)
-    }
-
     fun show_content(tracks: List<Track>) {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
             override fun callback(track: Track) {
-                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
+                viewModel?.addToHistory(track)
             }
         })
         search_result.adapter = adapter
@@ -222,11 +206,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun showSearchHistory() {
+    fun showSearchHistory(tracks: List<Track>) {
         val adapter = TrackAdapter(ArrayList<Track>(Creator.provideSearchHistoryInteractor(this).getHistory()), object : OnItemClickCallback {
             override fun callback(track: Track) {
-                Creator.provideSearchHistoryInteractor(this@SearchActivity).addToHistory(track)
-                showSearchHistory()
+                viewModel?.addToHistory(track)
+                viewModel?.showSearchHistoryIfNotEmpty()
             }
         })
         clear_history.visibility = View.VISIBLE
@@ -236,15 +220,9 @@ class SearchActivity : AppCompatActivity() {
         search_result.adapter = adapter
     }
 
-    private val searchRunnable = Runnable { do_search() }
-
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
+        textWatcher?.let { search.removeTextChangedListener(it) }
     }
 
 
@@ -257,6 +235,17 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState, persistentState)
         search_text = savedInstanceState?.getString("search_text", "") ?: ""
         search.setText(search_text)
+    }
+
+    fun render(state: SearchState) {
+        when (state) {
+            is SearchState.Loading -> show_loading()
+            is SearchState.Content -> show_content(state.tracks)
+            is SearchState.Empty -> show_empty()
+            is SearchState.Error -> show_error()
+            is SearchState.History -> showSearchHistory(state.tracks)
+            is SearchState.emptyHistory -> hideSearchHistory()
+        }
     }
 
     companion object {
