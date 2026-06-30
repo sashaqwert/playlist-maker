@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.presentation
+package ru.chivarzin.aleksandr.playlistmaker.ui.player
 
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
@@ -13,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -20,15 +21,15 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
+import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: PlayerViewModel
     private lateinit var track: Track
-    private var mediaPlayer = MediaPlayer()
     private lateinit var player_playpause: ImageView
     private lateinit var player_progress: TextView
-    private var playerState = STATE_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,10 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         val player_artwork = findViewById<ImageView>(R.id.player_artwork)
+
+        viewModel = ViewModelProvider(this, PlayerViewModel.getFactory(track))
+            .get(PlayerViewModel::class.java)
+
         if (track.artworkUrl100 != null) {
             Glide.with(this)
                 .load(track.getCoverArtwork())
@@ -91,119 +96,80 @@ class PlayerActivity : AppCompatActivity() {
             player_country.setText(track.country)
         }
 
-        preparePlayer()
         player_playpause = findViewById<ImageView>(R.id.player_playpause)
-        player_playpause.setOnClickListener {
-            playbackControl()
-        }
         player_progress = findViewById<TextView>(R.id.player_progress)
-    }
 
-    private fun preparePlayer() {
-        if (track.previewUrl == null) {
-            return
-        }
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            player_playpause.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            if (isDarkTheme(this)) {
-                Glide.with(this)
-                    .load(R.drawable.play_dark)
-                    .fitCenter()
-                    .into(player_playpause)
-            } else {
-                Glide.with(this)
-                    .load(R.drawable.play)
-                    .fitCenter()
-                    .into(player_playpause)
-            }
-        }
-    }
+        viewModel.observePlayerState().observe(this) {
+            when (it) {
+                // Оставлено для понимания.
+                // Если раскомментировать, будет сломка макета
+                //PlayerViewModel.STATE_DEFAULT -> if (isDarkTheme(this)) {
+//                    Glide.with(this)
+//                        .load(R.drawable.play_dark)
+//                        .fitCenter()
+//                        .into(player_playpause)
+//                } else {
+//                    Glide.with(this)
+//                        .load(R.drawable.play)
+//                       // .fitCenter()
+//                        .into(player_playpause)
+//                }
 
-    private fun startPlayer() {
-        mediaPlayer.start()
-        playerState = STATE_PLAYING
-        if (isDarkTheme(this)) {
-            Glide.with(this)
-                .load(R.drawable.pause_dark)
-                .fitCenter()
-                .into(player_playpause)
-        } else {
-            Glide.with(this)
-                .load(R.drawable.pause)
-                .fitCenter()
-                .into(player_playpause)
-        }
-
-        val handler = Handler(Looper.getMainLooper())
-        val thread = Thread({
-            do {
-                Thread.sleep(250L)
-                handler.post {
-                    player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+                PlayerViewModel.STATE_PREPARED -> if (isDarkTheme(this)) {
+                    Glide.with(this)
+                        .load(R.drawable.play_dark)
+                       // .fitCenter()
+                        .into(player_playpause)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.play)
+                        .fitCenter()
+                        .into(player_playpause)
                 }
-            } while (playerState == STATE_PLAYING)
-            handler.post {
-                if (playerState == STATE_PAUSED) {
-                    player_progress.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+
+                PlayerViewModel.STATE_PLAYING -> if (isDarkTheme(this)) {
+                    Glide.with(this)
+                        .load(R.drawable.pause_dark)
+                        .fitCenter()
+                        .into(player_playpause)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.pause)
+                       // .fitCenter()
+                        .into(player_playpause)
                 }
-                else {
-                    player_progress.setText(R.string.track_time_default)
+
+                PlayerViewModel.STATE_PAUSED -> if (isDarkTheme(this)) {
+                    Glide.with(this)
+                        .load(R.drawable.play_dark)
+                      //  .fitCenter()
+                        .into(player_playpause)
+                } else {
+                    Glide.with(this)
+                        .load(R.drawable.play)
+                     //   .fitCenter()
+                        .into(player_playpause)
                 }
             }
-        })
-        thread.start()
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        playerState = STATE_PAUSED
-        if (isDarkTheme(this)) {
-            Glide.with(this)
-                .load(R.drawable.play_dark)
-                .fitCenter()
-                .into(player_playpause)
-        } else {
-            Glide.with(this)
-                .load(R.drawable.play)
-                .fitCenter()
-                .into(player_playpause)
+        }
+        viewModel.observeProgressTime().observe(this) {
+            player_progress.text = it
+        }
+        player_playpause.setOnClickListener {
+            viewModel.onPlayButtonClicked()
         }
     }
 
-    private fun playbackControl() {
-        when(playerState) {
-            STATE_DEFAULT -> {
-                Toast.makeText(applicationContext, R.string.player_not_prepared, Toast.LENGTH_SHORT).show()
-            }
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
+    fun notPreparedToast() {
+        Toast.makeText(applicationContext, R.string.player_not_prepared, Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        viewModel.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
-    }
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
     }
 }

@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.presentation
+package ru.chivarzin.aleksandr.playlistmaker.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.App
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

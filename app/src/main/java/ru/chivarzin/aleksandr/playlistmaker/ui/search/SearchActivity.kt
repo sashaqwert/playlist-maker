@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.presentation.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
 import android.os.Bundle
 import android.os.Handler
@@ -22,10 +22,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
+import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
+import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -206,12 +208,16 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun showSearchHistory(tracks: List<Track>) {
-        val adapter = TrackAdapter(ArrayList<Track>(Creator.provideSearchHistoryInteractor(this).getHistory()), object : OnItemClickCallback {
-            override fun callback(track: Track) {
-                viewModel?.addToHistory(track)
-                viewModel?.showSearchHistoryIfNotEmpty()
-            }
-        })
+        val adapter = TrackAdapter(
+            ArrayList<Track>(
+                Creator.provideSearchHistoryInteractor(this).getHistory()
+            ), object :
+                OnItemClickCallback {
+                override fun callback(track: Track) {
+                    viewModel?.addToHistory(track)
+                    viewModel?.showSearchHistoryIfNotEmpty()
+                }
+            })
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE

@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.presentation.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
