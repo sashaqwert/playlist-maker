@@ -145,6 +145,10 @@ class SearchActivity : AppCompatActivity() {
     fun hideSearchHistory() {
         you_searched.visibility = View.GONE
         search_result_sw.visibility = View.GONE
+        search_pb.visibility = View.GONE
+        icon_error.visibility = View.GONE
+        error_text.visibility = View.GONE
+        refresh_search.visibility = View.GONE
     }
 
     fun show_content(tracks: List<Track>) {
