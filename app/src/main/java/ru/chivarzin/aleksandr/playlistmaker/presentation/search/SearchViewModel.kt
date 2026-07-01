@@ -18,17 +18,6 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 class SearchViewModel (val context: Context) : ViewModel() {
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val app = (this[APPLICATION_KEY] as App)
-                SearchViewModel(app)
-            }
-        }
-    }
 
     private val tracksInteractor = Creator.provideTracksInteractor()
     private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(context)
@@ -130,4 +119,15 @@ class SearchViewModel (val context: Context) : ViewModel() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
+
+        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val app = (this[APPLICATION_KEY] as App)
+                SearchViewModel(app)
+            }
+        }
+    }
 }

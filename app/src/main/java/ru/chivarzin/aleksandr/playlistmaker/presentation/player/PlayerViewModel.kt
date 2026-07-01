@@ -15,19 +15,6 @@ import java.util.Locale
 
 class PlayerViewModel(private val track: Track) : ViewModel() {
 
-    companion object {
-        const val STATE_DEFAULT = 0
-        const val STATE_PREPARED = 1
-        const val STATE_PLAYING = 2
-        const val STATE_PAUSED = 3
-
-        fun getFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                PlayerViewModel(track)
-            }
-        }
-    }
-
     private val playerStateLiveData = MutableLiveData(STATE_DEFAULT)
     fun observePlayerState(): LiveData<Int> = playerStateLiveData
 
@@ -107,5 +94,18 @@ class PlayerViewModel(private val track: Track) : ViewModel() {
 
     fun onPause() {
         pausePlayer()
+    }
+
+    companion object {
+        const val STATE_DEFAULT = 0
+        const val STATE_PREPARED = 1
+        const val STATE_PLAYING = 2
+        const val STATE_PAUSED = 3
+
+        fun getFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                PlayerViewModel(track)
+            }
+        }
     }
 }
