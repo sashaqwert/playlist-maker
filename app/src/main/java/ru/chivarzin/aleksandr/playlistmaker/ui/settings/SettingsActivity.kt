@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.presentation
+package ru.chivarzin.aleksandr.playlistmaker.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,13 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
-import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.App
-import ru.chivarzin.aleksandr.playlistmaker.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
+import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: SettingsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -25,19 +29,20 @@ class SettingsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        val sharedPrefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
-
         val action_back = findViewById<ImageView>(R.id.settings_action_back)
         action_back.setOnClickListener {
             finish()
         }
 
+        viewModel = ViewModelProvider(this, SettingsViewModel.getFactory())
+            .get(SettingsViewModel::class.java)
+
         val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
-        settings_dark_theme.isChecked = Creator.provideThemeInteractor(this).getTheme()
+        viewModel.observeIsDarkTheme().observe(this) {
+            settings_dark_theme.isChecked = it
+        }
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
-            Creator.provideThemeInteractor(this).saveTheme(checked)
-            (applicationContext as App).switchTheme(checked)
+            viewModel.setThame(checked)
         }
 
         val action_share = findViewById<Button>(R.id.action_share)

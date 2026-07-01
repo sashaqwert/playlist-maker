@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker
+package ru.chivarzin.aleksandr.playlistmaker.creator
 
 import android.content.Context
 import ru.chivarzin.aleksandr.playlistmaker.data.network.RetrofitNetworkClient
