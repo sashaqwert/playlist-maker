@@ -51,49 +51,51 @@ class PlayerActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, PlayerViewModel.getFactory(track))
             .get(PlayerViewModel::class.java)
 
-        if (track.artworkUrl100 != null) {
-            Glide.with(this)
-                .load(track.getCoverArtwork())
-                .fitCenter()
-                .transform(RoundedCorners(dpToPx(8.0f, this)))
-                .placeholder(R.drawable.artwork_default)
-                .into(player_artwork)
-        }
-        val player_track_name = findViewById<TextView>(R.id.player_track_name)
-        if (track.trackName != null) {
-            player_track_name.setText(track.trackName)
-        }
-        val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
-        if (track.artistName != null) {
-            player_artist_name.setText(track.artistName)
-        }
-        val player_duration = findViewById<TextView>(R.id.player_duration)
-        if (track.trackTimeMillis != null) {
-            player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
-        }
-        val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
-        val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
-        if (track.collectionName == null) {
-            player_collection_hint.visibility = View.GONE
-            player_collection_name.visibility = View.GONE
-        } else {
-            player_collection_name.setText(track.collectionName)
-        }
-        val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
-        val player_release_date = findViewById<TextView>(R.id.player_release_date)
-        if (track.releaseDate == null) {
-            player_release_date_hint.visibility = View.GONE
-            player_release_date.visibility = View.GONE
-        } else {
-            player_release_date.setText(track.getYear()!!.toString())
-        }
-        val player_janr = findViewById<TextView>(R.id.player_janr)
-        if (track.primaryGenreName != null) {
-            player_janr.setText(track.primaryGenreName)
-        }
-        val player_country = findViewById<TextView>(R.id.player_country)
-        if (track.country != null) {
-            player_country.setText(track.country)
+        viewModel.observeTrack().observe(this) {track ->
+            if (track.artworkUrl100 != null) {
+                Glide.with(this)
+                    .load(track.getCoverArtwork())
+                    .fitCenter()
+                    .transform(RoundedCorners(dpToPx(8.0f, this)))
+                    .placeholder(R.drawable.artwork_default)
+                    .into(player_artwork)
+            }
+            val player_track_name = findViewById<TextView>(R.id.player_track_name)
+            if (track.trackName != null) {
+                player_track_name.setText(track.trackName)
+            }
+            val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
+            if (track.artistName != null) {
+                player_artist_name.setText(track.artistName)
+            }
+            val player_duration = findViewById<TextView>(R.id.player_duration)
+            if (track.trackTimeMillis != null) {
+                player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+            }
+            val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
+            val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
+            if (track.collectionName == null) {
+                player_collection_hint.visibility = View.GONE
+                player_collection_name.visibility = View.GONE
+            } else {
+                player_collection_name.setText(track.collectionName)
+            }
+            val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
+            val player_release_date = findViewById<TextView>(R.id.player_release_date)
+            if (track.releaseDate == null) {
+                player_release_date_hint.visibility = View.GONE
+                player_release_date.visibility = View.GONE
+            } else {
+                player_release_date.setText(track.getYear()!!.toString())
+            }
+            val player_janr = findViewById<TextView>(R.id.player_janr)
+            if (track.primaryGenreName != null) {
+                player_janr.setText(track.primaryGenreName)
+            }
+            val player_country = findViewById<TextView>(R.id.player_country)
+            if (track.country != null) {
+                player_country.setText(track.country)
+            }
         }
 
         player_playpause = findViewById<ImageView>(R.id.player_playpause)

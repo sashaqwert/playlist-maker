@@ -31,6 +31,9 @@ class PlayerViewModel(private val track: Track) : ViewModel() {
     private val playerStateLiveData = MutableLiveData(STATE_DEFAULT)
     fun observePlayerState(): LiveData<Int> = playerStateLiveData
 
+    private val trackLiveData = MutableLiveData(track)
+    fun observeTrack(): LiveData<Track> = trackLiveData
+
     private val progressTimeLiveData = MutableLiveData("00:00")
     fun observeProgressTime(): LiveData<String> = progressTimeLiveData
 
