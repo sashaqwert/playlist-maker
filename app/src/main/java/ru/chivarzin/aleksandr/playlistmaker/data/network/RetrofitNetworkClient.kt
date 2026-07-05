@@ -11,8 +11,6 @@ import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchRequest
 
 class RetrofitNetworkClient(private val iTunesService: ITunesApi, private val context: Context) : NetworkClient {
 
-    //private val iTunesService = retrofit.create(ITunesApi::class.java)
-
     override fun doRequest(dto: Any): Response {
         if (dto is SearchRequest) {
             if (isConnected()) {
