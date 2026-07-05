@@ -9,9 +9,9 @@ import ru.chivarzin.aleksandr.playlistmaker.data.NetworkClient
 import ru.chivarzin.aleksandr.playlistmaker.data.dto.Response
 import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchRequest
 
-class RetrofitNetworkClient(private val retrofit: Retrofit, private val context: Context) : NetworkClient {
+class RetrofitNetworkClient(private val iTunesService: ITunesApi, private val context: Context) : NetworkClient {
 
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
+    //private val iTunesService = retrofit.create(ITunesApi::class.java)
 
     override fun doRequest(dto: Any): Response {
         if (dto is SearchRequest) {
