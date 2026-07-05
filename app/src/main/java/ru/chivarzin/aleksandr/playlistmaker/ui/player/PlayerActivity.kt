@@ -1,10 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.player
 
 import android.icu.text.SimpleDateFormat
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.Qualifier
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
@@ -26,7 +26,9 @@ import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: PlayerViewModel
+    private val playerViewModel: PlayerViewModel by viewModel {
+        parametersOf(track)
+    }
     private lateinit var track: Track
     private lateinit var player_playpause: ImageView
     private lateinit var player_progress: TextView
@@ -48,10 +50,7 @@ class PlayerActivity : AppCompatActivity() {
 
         val player_artwork = findViewById<ImageView>(R.id.player_artwork)
 
-        viewModel = ViewModelProvider(this, PlayerViewModel.getFactory(track))
-            .get(PlayerViewModel::class.java)
-
-        viewModel.observeTrack().observe(this) {track ->
+        playerViewModel.observeTrack().observe(this) { track ->
             if (track.artworkUrl100 != null) {
                 Glide.with(this)
                     .load(track.getCoverArtwork())
@@ -101,7 +100,7 @@ class PlayerActivity : AppCompatActivity() {
         player_playpause = findViewById<ImageView>(R.id.player_playpause)
         player_progress = findViewById<TextView>(R.id.player_progress)
 
-        viewModel.observePlayerState().observe(this) {
+        playerViewModel.observePlayerState().observe(this) {
             when (it) {
                 // Оставлено для понимания.
                 // Если раскомментировать, будет сломка макета
@@ -154,11 +153,11 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.observeProgressTime().observe(this) {
+        playerViewModel.observeProgressTime().observe(this) {
             player_progress.text = it
         }
         player_playpause.setOnClickListener {
-            viewModel.onPlayButtonClicked()
+            playerViewModel.onPlayButtonClicked()
         }
     }
 
@@ -168,7 +167,7 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.onPause()
+        playerViewModel.onPause()
     }
 
     override fun onDestroy() {
