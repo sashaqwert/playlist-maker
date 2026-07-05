@@ -11,14 +11,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
-import ru.chivarzin.aleksandr.playlistmaker.App
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: SettingsViewModel
+    private val settingsViewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +33,12 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.getFactory())
-            .get(SettingsViewModel::class.java)
-
         val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
-        viewModel.observeIsDarkTheme().observe(this) {
+        settingsViewModel.observeIsDarkTheme().observe(this) {
             settings_dark_theme.isChecked = it
         }
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
-            viewModel.setThame(checked)
+            settingsViewModel.setThame(checked)
         }
 
         val action_share = findViewById<Button>(R.id.action_share)

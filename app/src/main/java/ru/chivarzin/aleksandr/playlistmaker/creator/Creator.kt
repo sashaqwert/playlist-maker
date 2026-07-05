@@ -16,27 +16,27 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.impl.ThemeInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.TracksInteractorImpl
 
 object Creator {
-    private fun getTracksRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient())
-    }
-
-    private fun getSearchHistoryRepository(context: Context) : SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl(context)
-    }
-
-    private fun getThemeRepository(context: Context) : ThemeRepository {
-        return ThemeRepositoryImpl(context)
-    }
-
-    fun provideTracksInteractor(): TracksInteractor {
-        return TracksInteractorImpl(getTracksRepository())
-    }
-
-    fun provideSearchHistoryInteractor(context: Context) : SearchHistoryInteractor {
-        return SearchHistoryInteractorImpl(getSearchHistoryRepository(context))
-    }
-
-    fun provideThemeInteractor(context: Context) : ThemeInteractor {
-        return ThemeInteractorImpl(getThemeRepository(context))
-    }
+//    private fun getTracksRepository(): TracksRepository {
+//        return TracksRepositoryImpl(RetrofitNetworkClient())
+//    }
+//
+//    private fun getSearchHistoryRepository(context: Context) : SearchHistoryRepository {
+//        return SearchHistoryRepositoryImpl(context)
+//    }
+//
+//    private fun getThemeRepository(context: Context) : ThemeRepository {
+//        return ThemeRepositoryImpl(context)
+//    }
+//
+//    fun provideTracksInteractor(): TracksInteractor {
+//        return TracksInteractorImpl(getTracksRepository())
+//    }
+//
+//    fun provideSearchHistoryInteractor(context: Context) : SearchHistoryInteractor {
+//        return SearchHistoryInteractorImpl(getSearchHistoryRepository(context))
+//    }
+//
+//    fun provideThemeInteractor(context: Context) : ThemeInteractor {
+//        return ThemeInteractorImpl(getThemeRepository(context))
+//    }
 }

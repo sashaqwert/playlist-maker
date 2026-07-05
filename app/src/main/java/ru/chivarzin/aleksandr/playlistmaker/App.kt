@@ -6,7 +6,14 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
+import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.di.dataModule
+import ru.chivarzin.aleksandr.playlistmaker.di.interactorModule
+import ru.chivarzin.aleksandr.playlistmaker.di.viewModelModule
+import ru.chivarzin.aleksandr.playlistmaker.domain.impl.ThemeInteractorImpl
 
 const val APP_PREFERENCES = "app_preferences"
 const val DARK_THEME_ENABLED = "dark_theme_enabled"
@@ -17,7 +24,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        switchTheme(Creator.provideThemeInteractor(this).getTheme())
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, interactorModule, viewModelModule)
+        }
+        switchTheme(ThemeInteractorImpl(ThemeRepositoryImpl(this)).getTheme())
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
