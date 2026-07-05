@@ -12,6 +12,7 @@ import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.di.dataModule
 import ru.chivarzin.aleksandr.playlistmaker.di.interactorModule
+import ru.chivarzin.aleksandr.playlistmaker.di.repositoryModule
 import ru.chivarzin.aleksandr.playlistmaker.di.viewModelModule
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.ThemeInteractorImpl
 
@@ -26,7 +27,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
-            modules(dataModule, interactorModule, viewModelModule)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
         }
         switchTheme(ThemeInteractorImpl(ThemeRepositoryImpl(this)).getTheme())
     }

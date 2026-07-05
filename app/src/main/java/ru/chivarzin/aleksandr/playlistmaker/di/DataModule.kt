@@ -42,14 +42,6 @@ val dataModule = module {
         ThemeDataSource(get())
     }
 
-    single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get())
-    }
-
-    single<ThemeRepository>{
-        ThemeRepositoryImpl(get())
-    }
-
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
     }
