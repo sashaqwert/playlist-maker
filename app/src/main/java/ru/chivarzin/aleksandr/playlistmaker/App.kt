@@ -8,7 +8,6 @@ import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.di.dataModule
 import ru.chivarzin.aleksandr.playlistmaker.di.interactorModule
