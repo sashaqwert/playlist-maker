@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerActivity
 import java.util.Locale
 
@@ -56,7 +57,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             if (clickdebunce()) {
                 callback.callback(model)
                 val intent = Intent(itemView.context, PlayerActivity::class.java)
-                intent.putExtra("track", model)
+                intent.putExtra("track", TrackPresentation(model))
                 //intent.putExtra("track", Gson().toJson(model))
                 itemView.context.startActivity(intent)
             }

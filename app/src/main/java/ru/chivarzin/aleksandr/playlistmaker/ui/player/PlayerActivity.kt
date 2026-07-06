@@ -15,9 +15,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
 import java.util.Locale
 
@@ -26,7 +26,7 @@ class PlayerActivity : AppCompatActivity() {
     private val playerViewModel: PlayerViewModel by viewModel {
         parametersOf(track)
     }
-    private lateinit var track: Track
+    private lateinit var track: TrackPresentation
     private lateinit var player_playpause: ImageView
     private lateinit var player_progress: TextView
 
@@ -39,7 +39,7 @@ class PlayerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        track = intent.getParcelableExtra("track", Track::class.java)!! //min API 33
+        track = intent.getParcelableExtra("track", TrackPresentation::class.java)!! //min API 33
         //track = intent.getParcelableExtra("track")
         //track = Gson().fromJson<Track>(intent.getStringExtra("track"), Track::class.java)
         val player_action_back = findViewById<ImageView>(R.id.player_action_back)

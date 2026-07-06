@@ -10,16 +10,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val track: Track) : ViewModel() {
+class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
 
     private val playerStateLiveData = MutableLiveData(STATE_DEFAULT)
     fun observePlayerState(): LiveData<Int> = playerStateLiveData
 
     private val trackLiveData = MutableLiveData(track)
-    fun observeTrack(): LiveData<Track> = trackLiveData
+    fun observeTrack(): LiveData<TrackPresentation> = trackLiveData
 
     private val progressTimeLiveData = MutableLiveData("00:00")
     fun observeProgressTime(): LiveData<String> = progressTimeLiveData
