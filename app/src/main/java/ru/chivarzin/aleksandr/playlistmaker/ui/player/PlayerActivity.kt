@@ -42,7 +42,9 @@ class PlayerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        track = Gson().fromJson<Track>(intent.getStringExtra("track"), Track::class.java)
+        track = intent.getParcelableExtra("track", Track::class.java)!! //min API 33
+        //track = intent.getParcelableExtra("track")
+        //track = Gson().fromJson<Track>(intent.getStringExtra("track"), Track::class.java)
         val player_action_back = findViewById<ImageView>(R.id.player_action_back)
         player_action_back.setOnClickListener {
             finish()

@@ -57,7 +57,8 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             if (clickdebunce()) {
                 callback.callback(model)
                 val intent = Intent(itemView.context, PlayerActivity::class.java)
-                intent.putExtra("track", Gson().toJson(model))
+                intent.putExtra("track", model)
+                //intent.putExtra("track", Gson().toJson(model))
                 itemView.context.startActivity(intent)
             }
         }
