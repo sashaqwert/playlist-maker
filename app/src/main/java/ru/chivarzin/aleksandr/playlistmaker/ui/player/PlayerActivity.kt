@@ -31,6 +31,17 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var player_playpause: ImageView
     private lateinit var player_progress: TextView
 
+    private lateinit var player_artwork: ImageView
+    private lateinit var player_track_name: TextView
+    private lateinit var player_artist_name: TextView
+    private lateinit var player_duration: TextView
+    private lateinit var player_collection_hint: TextView
+    private lateinit var player_collection_name: TextView
+    private lateinit var player_release_date_hint: TextView
+    private lateinit var player_release_date: TextView
+    private lateinit var player_janr: TextView
+    private lateinit var player_country: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -48,16 +59,16 @@ class PlayerActivity : AppCompatActivity() {
             finish()
         }
 
-        val player_artwork = findViewById<ImageView>(R.id.player_artwork)
-        val player_track_name = findViewById<TextView>(R.id.player_track_name)
-        val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
-        val player_duration = findViewById<TextView>(R.id.player_duration)
-        val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
-        val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
-        val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
-        val player_release_date = findViewById<TextView>(R.id.player_release_date)
-        val player_janr = findViewById<TextView>(R.id.player_janr)
-        val player_country = findViewById<TextView>(R.id.player_country)
+        player_artwork = findViewById<ImageView>(R.id.player_artwork)
+        player_track_name = findViewById<TextView>(R.id.player_track_name)
+        player_artist_name = findViewById<TextView>(R.id.player_artist_name)
+        player_duration = findViewById<TextView>(R.id.player_duration)
+        player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
+        player_collection_name = findViewById<TextView>(R.id.player_collection_name)
+        player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
+        player_release_date = findViewById<TextView>(R.id.player_release_date)
+        player_janr = findViewById<TextView>(R.id.player_janr)
+        player_country = findViewById<TextView>(R.id.player_country)
         player_playpause = findViewById<ImageView>(R.id.player_playpause)
         player_progress = findViewById<TextView>(R.id.player_progress)
 
