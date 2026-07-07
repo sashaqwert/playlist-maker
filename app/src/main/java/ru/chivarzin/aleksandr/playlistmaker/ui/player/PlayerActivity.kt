@@ -73,98 +73,14 @@ class PlayerActivity : AppCompatActivity() {
         player_progress = findViewById<TextView>(R.id.player_progress)
 
         playerViewModel.observeTrack().observe(this) { track ->
-            if (track.artworkUrl100 != null) {
-                Glide.with(this)
-                    .load(track.getCoverArtwork())
-                    .fitCenter()
-                    .transform(RoundedCorners(dpToPx(8.0f, this)))
-                    .placeholder(R.drawable.artwork_default)
-                    .into(player_artwork)
-            }
-            if (track.trackName != null) {
-                player_track_name.setText(track.trackName)
-            }
-            if (track.artistName != null) {
-                player_artist_name.setText(track.artistName)
-            }
-            if (track.trackTimeMillis != null) {
-                player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
-            }
-            if (track.collectionName == null) {
-                player_collection_hint.visibility = View.GONE
-                player_collection_name.visibility = View.GONE
-            } else {
-                player_collection_name.setText(track.collectionName)
-            }
-            if (track.releaseDate == null) {
-                player_release_date_hint.visibility = View.GONE
-                player_release_date.visibility = View.GONE
-            } else {
-                player_release_date.setText(track.getYear()!!.toString())
-            }
-            if (track.primaryGenreName != null) {
-                player_janr.setText(track.primaryGenreName)
-            }
-            if (track.country != null) {
-                player_country.setText(track.country)
-            }
+            initialize()
         }
 
         playerViewModel.observePlayerState().observe(this) {
-            when (it) {
-                // Оставлено для понимания.
-                // Если раскомментировать, будет сломка макета
-                //PlayerViewModel.STATE_DEFAULT -> if (isDarkTheme(this)) {
-//                    Glide.with(this)
-//                        .load(R.drawable.play_dark)
-//                        .fitCenter()
-//                        .into(player_playpause)
-//                } else {
-//                    Glide.with(this)
-//                        .load(R.drawable.play)
-//                       // .fitCenter()
-//                        .into(player_playpause)
-//                }
-
-                PlayerViewModel.STATE_PREPARED -> if (isDarkTheme(this)) {
-                    Glide.with(this)
-                        .load(R.drawable.play_dark)
-                       // .fitCenter()
-                        .into(player_playpause)
-                } else {
-                    Glide.with(this)
-                        .load(R.drawable.play)
-                        .fitCenter()
-                        .into(player_playpause)
-                }
-
-                PlayerViewModel.STATE_PLAYING -> if (isDarkTheme(this)) {
-                    Glide.with(this)
-                        .load(R.drawable.pause_dark)
-                        .fitCenter()
-                        .into(player_playpause)
-                } else {
-                    Glide.with(this)
-                        .load(R.drawable.pause)
-                        .fitCenter()
-                        .into(player_playpause)
-                }
-
-                PlayerViewModel.STATE_PAUSED -> if (isDarkTheme(this)) {
-                    Glide.with(this)
-                        .load(R.drawable.play_dark)
-                      //  .fitCenter()
-                        .into(player_playpause)
-                } else {
-                    Glide.with(this)
-                        .load(R.drawable.play)
-                        .fitCenter()
-                        .into(player_playpause)
-                }
-            }
+            player_state_changed(it)
         }
         playerViewModel.observeProgressTime().observe(this) {
-            player_progress.text = it
+            update_progress(it)
         }
         player_playpause.setOnClickListener {
             playerViewModel.onPlayButtonClicked()
@@ -175,12 +91,113 @@ class PlayerActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, R.string.player_not_prepared, Toast.LENGTH_SHORT).show()
     }
 
+    private fun initialize() {
+        if (track.artworkUrl100 != null) {
+            Glide.with(this)
+                .load(track.getCoverArtwork())
+                .fitCenter()
+                .transform(RoundedCorners(dpToPx(8.0f, this)))
+                .placeholder(R.drawable.artwork_default)
+                .into(player_artwork)
+        }
+        if (track.trackName != null) {
+            player_track_name.setText(track.trackName)
+        }
+        if (track.artistName != null) {
+            player_artist_name.setText(track.artistName)
+        }
+        if (track.trackTimeMillis != null) {
+            player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+        }
+        if (track.collectionName == null) {
+            player_collection_hint.visibility = View.GONE
+            player_collection_name.visibility = View.GONE
+        } else {
+            player_collection_name.setText(track.collectionName)
+        }
+        if (track.releaseDate == null) {
+            player_release_date_hint.visibility = View.GONE
+            player_release_date.visibility = View.GONE
+        } else {
+            player_release_date.setText(track.getYear()!!.toString())
+        }
+        if (track.primaryGenreName != null) {
+            player_janr.setText(track.primaryGenreName)
+        }
+        if (track.country != null) {
+            player_country.setText(track.country)
+        }
+    }
+
+    private fun player_state_changed(state: Int) {
+        when (state) {
+            // Оставлено для понимания.
+            // Если раскомментировать, будет сломка макета
+//            PlayerViewModel.STATE_DEFAULT -> if (isDarkTheme(this)) {
+//                Glide.with(this)
+//                    .load(R.drawable.play_dark)
+//                    .fitCenter()
+//                    .into(player_playpause)
+//            } else {
+//                Glide.with(this)
+//                    .load(R.drawable.play)
+//                    // .fitCenter()
+//                    .into(player_playpause)
+//            }
+
+            PlayerViewModel.STATE_PREPARED -> if (isDarkTheme(this)) {
+                Glide.with(this)
+                    .load(R.drawable.play_dark)
+                    // .fitCenter()
+                    .into(player_playpause)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.play)
+                    .fitCenter()
+                    .into(player_playpause)
+            }
+
+            PlayerViewModel.STATE_PLAYING -> if (isDarkTheme(this)) {
+                Glide.with(this)
+                    .load(R.drawable.pause_dark)
+                    .fitCenter()
+                    .into(player_playpause)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.pause)
+                    .fitCenter()
+                    .into(player_playpause)
+            }
+
+            PlayerViewModel.STATE_PAUSED -> if (isDarkTheme(this)) {
+                Glide.with(this)
+                    .load(R.drawable.play_dark)
+                    //  .fitCenter()
+                    .into(player_playpause)
+            } else {
+                Glide.with(this)
+                    .load(R.drawable.play)
+                    .fitCenter()
+                    .into(player_playpause)
+            }
+        }
+    }
+
+    private fun update_progress(progress: String) {
+        player_progress.text = progress
+    }
+
     override fun onPause() {
         super.onPause()
         playerViewModel.onPause()
     }
 
     fun render (state: PlayerState) {
+        when(state) {
+            is PlayerState.Initial -> initialize()
+            is PlayerState.State -> player_state_changed(state.player_state)
+            is PlayerState.Progress -> update_progress(state.progress)
+        }
     }
 
     override fun onDestroy() {

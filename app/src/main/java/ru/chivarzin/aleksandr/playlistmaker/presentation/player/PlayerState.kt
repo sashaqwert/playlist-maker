@@ -4,8 +4,6 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentatio
 
 sealed interface PlayerState {
     data class Initial(val track: TrackPresentation) : PlayerState
-    object StatePrepared: PlayerState
-    object StatePlaying: PlayerState
-    object StatePaused: PlayerState
+    data class State(val player_state: Int)
     data class Progress(val progress: String) : PlayerState
 }
