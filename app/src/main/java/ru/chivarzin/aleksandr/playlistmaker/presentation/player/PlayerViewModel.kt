@@ -16,6 +16,9 @@ import java.util.Locale
 
 class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
 
+    private val uiStateLiveData = MutableLiveData<PlayerState>(PlayerState.Initial(track))
+    fun obsorveUiState(): LiveData<PlayerState> = uiStateLiveData
+
     private val playerStateLiveData = MutableLiveData(STATE_DEFAULT)
     fun observePlayerState(): LiveData<Int> = playerStateLiveData
 
@@ -63,6 +66,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
         }
         mediaPlayer.setOnCompletionListener {
             playerStateLiveData.postValue(STATE_PREPARED)
+            uiStateLiveData.value = PlayerState.State(STATE_PREPARED)
             resetTimer()
         }
     }
@@ -70,6 +74,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
     private fun startPlayer() {
         mediaPlayer.start()
         playerStateLiveData.postValue(STATE_PLAYING)
+        uiStateLiveData.value = PlayerState.State(STATE_PLAYING)
         startTimerUpdate()
     }
 
@@ -77,10 +82,12 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
         pauseTimer()
         mediaPlayer.pause()
         playerStateLiveData.postValue(STATE_PAUSED)
+        uiStateLiveData.value = PlayerState.State(STATE_PAUSED)
     }
 
     private fun startTimerUpdate() {
         progressTimeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
+        uiStateLiveData.value = PlayerState.Progress(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
         handler.postDelayed(timerRunnable, 200)
     }
 
@@ -91,6 +98,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
     private fun resetTimer() {
         handler.removeCallbacks(timerRunnable)
         progressTimeLiveData.postValue("00:00")
+        uiStateLiveData.value = PlayerState.Progress("00:00")
     }
 
     fun onPause() {

@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
@@ -72,15 +73,15 @@ class PlayerActivity : AppCompatActivity() {
         player_playpause = findViewById<ImageView>(R.id.player_playpause)
         player_progress = findViewById<TextView>(R.id.player_progress)
 
-        playerViewModel.observeTrack().observe(this) { track ->
-            initialize()
+        playerViewModel.obsorveUiState().observe(this) {
+            render(it)
         }
 
         playerViewModel.observePlayerState().observe(this) {
-            player_state_changed(it)
+            //player_state_changed(it)
         }
         playerViewModel.observeProgressTime().observe(this) {
-            update_progress(it)
+            //update_progress(it)
         }
         player_playpause.setOnClickListener {
             playerViewModel.onPlayButtonClicked()
@@ -91,7 +92,7 @@ class PlayerActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, R.string.player_not_prepared, Toast.LENGTH_SHORT).show()
     }
 
-    private fun initialize() {
+    private fun initialize(track: TrackPresentation) {
         if (track.artworkUrl100 != null) {
             Glide.with(this)
                 .load(track.getCoverArtwork())
@@ -194,7 +195,7 @@ class PlayerActivity : AppCompatActivity() {
 
     fun render (state: PlayerState) {
         when(state) {
-            is PlayerState.Initial -> initialize()
+            is PlayerState.Initial -> initialize(state.track)
             is PlayerState.State -> player_state_changed(state.player_state)
             is PlayerState.Progress -> update_progress(state.progress)
         }
