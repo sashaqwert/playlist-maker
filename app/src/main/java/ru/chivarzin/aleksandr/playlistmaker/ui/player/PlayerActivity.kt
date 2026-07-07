@@ -135,7 +135,7 @@ class PlayerActivity : AppCompatActivity() {
                 } else {
                     Glide.with(this)
                         .load(R.drawable.pause)
-                       // .fitCenter()
+                        .fitCenter()
                         .into(player_playpause)
                 }
 
@@ -147,7 +147,7 @@ class PlayerActivity : AppCompatActivity() {
                 } else {
                     Glide.with(this)
                         .load(R.drawable.play)
-                     //   .fitCenter()
+                        .fitCenter()
                         .into(player_playpause)
                 }
             }
