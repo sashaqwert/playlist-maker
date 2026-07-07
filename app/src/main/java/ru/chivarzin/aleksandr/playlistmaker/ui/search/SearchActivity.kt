@@ -23,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 
@@ -144,9 +145,9 @@ class SearchActivity : AppCompatActivity() {
         refresh_search.visibility = View.GONE
     }
 
-    fun show_content(tracks: List<Track>) {
+    fun show_content(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
-            override fun callback(track: Track) {
+            override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
             }
         })
@@ -204,10 +205,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun showSearchHistory(tracks: List<Track>) {
-        val adapter = TrackAdapter(ArrayList<Track>(tracks), object :
+    fun showSearchHistory(tracks: List<TrackPresentation>) {
+        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
                 OnItemClickCallback {
-                override fun callback(track: Track) {
+                override fun callback(track: TrackPresentation) {
                     searchViewModel.addToHistory(track)
                     searchViewModel.showSearchHistoryIfNotEmpty()
                 }

@@ -11,6 +11,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
 class SearchViewModel (private val tracksInteractor: TracksInteractor, private val searchHistoryInteractor: SearchHistoryInteractor, val context: Context) : ViewModel() {
 
@@ -33,7 +34,9 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
             if (searchHistoryInteractor.isEmpty()) {
                 renderState(SearchState.emptyHistory)
             } else {
-                renderState(SearchState.History(searchHistoryInteractor.getHistory()))
+                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                    TrackPresentation(it)
+                }))
             }
         }
 
@@ -54,9 +57,11 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
             tracksInteractor.findMusic(newSearchText, object : TracksInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?) {
                     handler.post {
-                        val tracks = mutableListOf<Track>()
+                        val tracks = mutableListOf<TrackPresentation>()
                         if (foundTracks != null) {
-                            tracks.addAll(foundTracks)
+                            tracks.addAll(foundTracks.map {
+                                TrackPresentation(it)
+                            })
                         }
 
                         when {
@@ -94,15 +99,20 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
         renderState(SearchState.emptyHistory)
     }
 
-    fun addToHistory(track: Track) {
-        searchHistoryInteractor.addToHistory(track)
+    fun addToHistory(track: TrackPresentation) {
+        val trackDomain = Track(track.trackId, track.trackName, track.artistName, track.trackTimeMillis,
+            track.artworkUrl100, track.collectionName, track.releaseDate, track.primaryGenreName, track.country,
+            track.previewUrl)
+        searchHistoryInteractor.addToHistory(trackDomain)
     }
 
     fun showSearchHistoryIfNotEmpty() {
         if (searchHistoryInteractor.isEmpty()) {
             renderState(SearchState.emptyHistory)
         } else {
-            renderState(SearchState.History(searchHistoryInteractor.getHistory()))
+            renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                TrackPresentation(it)
+            }))
         }
     }
 
