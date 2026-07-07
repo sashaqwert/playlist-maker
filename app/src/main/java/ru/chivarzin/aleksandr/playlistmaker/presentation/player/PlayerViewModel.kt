@@ -6,10 +6,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -17,16 +13,9 @@ import java.util.Locale
 class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
 
     private val uiStateLiveData = MutableLiveData<PlayerState>(PlayerState.Initial(track))
-    fun obsorveUiState(): LiveData<PlayerState> = uiStateLiveData
+    fun observeUiState(): LiveData<PlayerState> = uiStateLiveData
 
-    private val playerStateLiveData = MutableLiveData(STATE_DEFAULT)
-    fun observePlayerState(): LiveData<Int> = playerStateLiveData
-
-    private val trackLiveData = MutableLiveData(track)
-    fun observeTrack(): LiveData<TrackPresentation> = trackLiveData
-
-    private val progressTimeLiveData = MutableLiveData("00:00")
-    fun observeProgressTime(): LiveData<String> = progressTimeLiveData
+    private val playerStateLiveData = MutableLiveData(STATE_DEFAULT) //Используется как local var внутри ViewModel
 
     private val mediaPlayer = MediaPlayer()
 
@@ -86,7 +75,6 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
     }
 
     private fun startTimerUpdate() {
-        progressTimeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
         uiStateLiveData.value = PlayerState.Progress(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition))
         handler.postDelayed(timerRunnable, 200)
     }
@@ -97,7 +85,6 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
 
     private fun resetTimer() {
         handler.removeCallbacks(timerRunnable)
-        progressTimeLiveData.postValue("00:00")
         uiStateLiveData.value = PlayerState.Progress("00:00")
     }
 
