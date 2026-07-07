@@ -18,6 +18,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
 import java.util.Locale
 
@@ -48,6 +49,17 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         val player_artwork = findViewById<ImageView>(R.id.player_artwork)
+        val player_track_name = findViewById<TextView>(R.id.player_track_name)
+        val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
+        val player_duration = findViewById<TextView>(R.id.player_duration)
+        val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
+        val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
+        val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
+        val player_release_date = findViewById<TextView>(R.id.player_release_date)
+        val player_janr = findViewById<TextView>(R.id.player_janr)
+        val player_country = findViewById<TextView>(R.id.player_country)
+        player_playpause = findViewById<ImageView>(R.id.player_playpause)
+        player_progress = findViewById<TextView>(R.id.player_progress)
 
         playerViewModel.observeTrack().observe(this) { track ->
             if (track.artworkUrl100 != null) {
@@ -58,46 +70,34 @@ class PlayerActivity : AppCompatActivity() {
                     .placeholder(R.drawable.artwork_default)
                     .into(player_artwork)
             }
-            val player_track_name = findViewById<TextView>(R.id.player_track_name)
             if (track.trackName != null) {
                 player_track_name.setText(track.trackName)
             }
-            val player_artist_name = findViewById<TextView>(R.id.player_artist_name)
             if (track.artistName != null) {
                 player_artist_name.setText(track.artistName)
             }
-            val player_duration = findViewById<TextView>(R.id.player_duration)
             if (track.trackTimeMillis != null) {
                 player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
             }
-            val player_collection_hint = findViewById<TextView>(R.id.player_collection_hint)
-            val player_collection_name = findViewById<TextView>(R.id.player_collection_name)
             if (track.collectionName == null) {
                 player_collection_hint.visibility = View.GONE
                 player_collection_name.visibility = View.GONE
             } else {
                 player_collection_name.setText(track.collectionName)
             }
-            val player_release_date_hint = findViewById<TextView>(R.id.player_release_date_hint)
-            val player_release_date = findViewById<TextView>(R.id.player_release_date)
             if (track.releaseDate == null) {
                 player_release_date_hint.visibility = View.GONE
                 player_release_date.visibility = View.GONE
             } else {
                 player_release_date.setText(track.getYear()!!.toString())
             }
-            val player_janr = findViewById<TextView>(R.id.player_janr)
             if (track.primaryGenreName != null) {
                 player_janr.setText(track.primaryGenreName)
             }
-            val player_country = findViewById<TextView>(R.id.player_country)
             if (track.country != null) {
                 player_country.setText(track.country)
             }
         }
-
-        player_playpause = findViewById<ImageView>(R.id.player_playpause)
-        player_progress = findViewById<TextView>(R.id.player_progress)
 
         playerViewModel.observePlayerState().observe(this) {
             when (it) {
@@ -167,6 +167,9 @@ class PlayerActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         playerViewModel.onPause()
+    }
+
+    fun render (state: PlayerState) {
     }
 
     override fun onDestroy() {
