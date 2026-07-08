@@ -1,5 +1,6 @@
 package ru.chivarzin.aleksandr.playlistmaker.di
 
+import android.media.MediaPlayer
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
@@ -10,6 +11,10 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewMo
 
 val viewModelModule = module {
 
+    factory {
+        MediaPlayer()
+    }
+
     viewModel {
         SearchViewModel(get(), get(), get())
     }
@@ -19,6 +24,6 @@ val viewModelModule = module {
     }
 
     viewModel { (track: TrackPresentation) ->
-        PlayerViewModel(track)
+        PlayerViewModel(track, get())
     }
 }

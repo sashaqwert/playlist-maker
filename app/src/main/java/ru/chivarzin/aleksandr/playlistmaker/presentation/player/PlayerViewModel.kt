@@ -10,19 +10,17 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentatio
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
+class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: MediaPlayer) : ViewModel() {
 
     private val uiStateLiveData = MutableLiveData<PlayerState>(PlayerState.Initial(track))
     fun observeUiState(): LiveData<PlayerState> = uiStateLiveData
 
-    private var playerStateLiveData = STATE_DEFAULT
-
-    private val mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
 
     private val handler = Handler(Looper.getMainLooper())
 
     private val timerRunnable = Runnable {
-        if (playerStateLiveData == STATE_PLAYING) {
+        if (playerState == STATE_PLAYING) {
             startTimerUpdate()
         }
     }
@@ -38,7 +36,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
     }
 
     fun onPlayButtonClicked() {
-        when(playerStateLiveData) {
+        when(playerState) {
             STATE_PLAYING -> pausePlayer()
             STATE_PREPARED, STATE_PAUSED -> startPlayer()
         }
@@ -51,10 +49,10 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerStateLiveData = STATE_PREPARED
+            playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            playerStateLiveData = STATE_PREPARED
+            playerState = STATE_PREPARED
             uiStateLiveData.value = PlayerState.State(STATE_PREPARED)
             resetTimer()
         }
@@ -62,7 +60,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
 
     private fun startPlayer() {
         mediaPlayer.start()
-        playerStateLiveData = STATE_PLAYING
+        playerState = STATE_PLAYING
         uiStateLiveData.value = PlayerState.State(STATE_PLAYING)
         startTimerUpdate()
     }
@@ -70,7 +68,7 @@ class PlayerViewModel(private val track: TrackPresentation) : ViewModel() {
     private fun pausePlayer() {
         pauseTimer()
         mediaPlayer.pause()
-        playerStateLiveData = STATE_PAUSED
+        playerState = STATE_PAUSED
         uiStateLiveData.value = PlayerState.State(STATE_PAUSED)
     }
 
