@@ -7,20 +7,13 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import ru.chivarzin.aleksandr.playlistmaker.App
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class SearchViewModel (val context: Context) : ViewModel() {
-
-    private val tracksInteractor = Creator.provideTracksInteractor()
-    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor(context)
+class SearchViewModel (private val tracksInteractor: TracksInteractor, private val searchHistoryInteractor: SearchHistoryInteractor, val context: Context) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -41,7 +34,9 @@ class SearchViewModel (val context: Context) : ViewModel() {
             if (searchHistoryInteractor.isEmpty()) {
                 renderState(SearchState.emptyHistory)
             } else {
-                renderState(SearchState.History(searchHistoryInteractor.getHistory()))
+                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                    TrackPresentation(it)
+                }))
             }
         }
 
@@ -62,9 +57,11 @@ class SearchViewModel (val context: Context) : ViewModel() {
             tracksInteractor.findMusic(newSearchText, object : TracksInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?) {
                     handler.post {
-                        val tracks = mutableListOf<Track>()
+                        val tracks = mutableListOf<TrackPresentation>()
                         if (foundTracks != null) {
-                            tracks.addAll(foundTracks)
+                            tracks.addAll(foundTracks.map {
+                                TrackPresentation(it)
+                            })
                         }
 
                         when {
@@ -102,15 +99,20 @@ class SearchViewModel (val context: Context) : ViewModel() {
         renderState(SearchState.emptyHistory)
     }
 
-    fun addToHistory(track: Track) {
-        searchHistoryInteractor.addToHistory(track)
+    fun addToHistory(track: TrackPresentation) {
+        val trackDomain = Track(track.trackId, track.trackName, track.artistName, track.trackTimeMillis,
+            track.artworkUrl100, track.collectionName, track.releaseDate, track.primaryGenreName, track.country,
+            track.previewUrl)
+        searchHistoryInteractor.addToHistory(trackDomain)
     }
 
     fun showSearchHistoryIfNotEmpty() {
         if (searchHistoryInteractor.isEmpty()) {
             renderState(SearchState.emptyHistory)
         } else {
-            renderState(SearchState.History(searchHistoryInteractor.getHistory()))
+            renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                TrackPresentation(it)
+            }))
         }
     }
 
@@ -122,12 +124,5 @@ class SearchViewModel (val context: Context) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val app = (this[APPLICATION_KEY] as App)
-                SearchViewModel(app)
-            }
-        }
     }
 }

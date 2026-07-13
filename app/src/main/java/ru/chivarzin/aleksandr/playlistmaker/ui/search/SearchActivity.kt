@@ -1,8 +1,6 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,13 +17,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.creator.Creator
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 
@@ -42,9 +40,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var you_searched: TextView //Заголовок "Вы искали"
     private lateinit var search_pb: ProgressBar
 
-    val handler = Handler(Looper.getMainLooper())
-
-    private var viewModel : SearchViewModel? = null
+    private val searchViewModel by viewModel<SearchViewModel>()
     private var textWatcher: TextWatcher? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,19 +64,17 @@ class SearchActivity : AppCompatActivity() {
         search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
         search_pb = findViewById<ProgressBar>(R.id.search_pb)
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getFactory())
-            .get(SearchViewModel::class.java)
-        viewModel?.observeState()?.observe(this) {
+        searchViewModel.observeState().observe(this) {
             render(it)
         }
 
         clear_history.setOnClickListener {
-            viewModel?.clearSearchHistory()
+            searchViewModel.clearSearchHistory()
         }
 
         search.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && search_text == "") {
-                viewModel?.showSearchHistoryIfNotEmpty()
+                searchViewModel.showSearchHistoryIfNotEmpty()
             } else {
                 if (search_text == "") {
                     hideSearchHistory()
@@ -104,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
                 if (s.isNullOrEmpty()) {
                     clear_search.visibility = View.GONE
                     search_result.visibility = View.INVISIBLE
-                    viewModel?.showSearchHistoryIfNotEmpty()
+                    searchViewModel.showSearchHistoryIfNotEmpty()
                 } else {
                     clear_search.visibility = View.VISIBLE
                     you_searched.visibility = View.GONE
@@ -114,7 +108,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {
                 search_text = s.toString()
-                viewModel?.searchDebounce(
+                searchViewModel.searchDebounce(
                     changedText = s?.toString() ?: ""
                 )
             }
@@ -123,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
         error_text = findViewById<TextView>(R.id.error_text)
         refresh_search = findViewById<Button>(R.id.refresh_search)
         refresh_search.setOnClickListener {
-            viewModel?.searchDebounce(
+            searchViewModel.searchDebounce(
                 changedText = search_text
             )
         }
@@ -131,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 if (search_text.isNotEmpty()) {
-                    viewModel?.searchDebounce(
+                    searchViewModel.searchDebounce(
                         changedText = search_text
                     )
                 }
@@ -139,7 +133,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        viewModel?.showSearchHistoryIfNotEmpty()
+        searchViewModel.showSearchHistoryIfNotEmpty()
     }
 
     fun hideSearchHistory() {
@@ -151,10 +145,10 @@ class SearchActivity : AppCompatActivity() {
         refresh_search.visibility = View.GONE
     }
 
-    fun show_content(tracks: List<Track>) {
+    fun show_content(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
-            override fun callback(track: Track) {
-                viewModel?.addToHistory(track)
+            override fun callback(track: TrackPresentation) {
+                searchViewModel.addToHistory(track)
             }
         })
         search_result.adapter = adapter
@@ -211,15 +205,12 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun showSearchHistory(tracks: List<Track>) {
-        val adapter = TrackAdapter(
-            ArrayList<Track>(
-                Creator.provideSearchHistoryInteractor(this).getHistory()
-            ), object :
+    fun showSearchHistory(tracks: List<TrackPresentation>) {
+        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
                 OnItemClickCallback {
-                override fun callback(track: Track) {
-                    viewModel?.addToHistory(track)
-                    viewModel?.showSearchHistoryIfNotEmpty()
+                override fun callback(track: TrackPresentation) {
+                    searchViewModel.addToHistory(track)
+                    searchViewModel.showSearchHistoryIfNotEmpty()
                 }
             })
         clear_history.visibility = View.VISIBLE

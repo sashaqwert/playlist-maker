@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerActivity
 import java.util.Locale
 
@@ -21,7 +20,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: Track, clickdebunce: () -> Boolean, callback: OnItemClickCallback) {
+    fun bind(model: TrackPresentation, clickdebunce: () -> Boolean, callback: OnItemClickCallback) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {
@@ -57,7 +56,8 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
             if (clickdebunce()) {
                 callback.callback(model)
                 val intent = Intent(itemView.context, PlayerActivity::class.java)
-                intent.putExtra("track", Gson().toJson(model))
+                intent.putExtra("track", model)
+                //intent.putExtra("track", Gson().toJson(model))
                 itemView.context.startActivity(intent)
             }
         }

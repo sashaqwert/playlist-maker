@@ -1,5 +1,6 @@
 package ru.chivarzin.aleksandr.playlistmaker.domain.models
 
+
 data class Track (
     val trackId: Long,
     val trackName: String?, // Название композиции

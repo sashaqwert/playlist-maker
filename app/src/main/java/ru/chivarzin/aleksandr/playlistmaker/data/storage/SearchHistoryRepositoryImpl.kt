@@ -8,9 +8,8 @@ import ru.chivarzin.aleksandr.playlistmaker.data.dto.TrackDto
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
-class SearchHistoryRepositoryImpl (val context: Context) : SearchHistoryRepository {
+class SearchHistoryRepositoryImpl (val dataSource: SearchHistoryDataSource) : SearchHistoryRepository {
 
-    val dataSource: SearchHistoryDataSource = SearchHistoryDataSource(context.getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE))
     override fun getHistory(): List<Track> {
         val result: List<Track> = dataSource.getHistory().map {
             Track(it.trackId, it.trackName, it.artistName, it.trackTimeMillis, it.artworkUrl100,
