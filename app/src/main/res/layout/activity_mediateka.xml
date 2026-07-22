@@ -30,9 +30,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout_mediateka"
+        style="@style/TabLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabTextColor="@color/black" />
+        android:layout_height="wrap_content" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager_mediateka"
