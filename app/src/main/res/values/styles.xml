@@ -121,4 +121,7 @@
         <item name="srcCompat">@drawable/favorite</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
+    <style name="NotFoundStyle">
+        <item name="srcCompat">@drawable/not_found</item>
+    </style>
 </resources>
