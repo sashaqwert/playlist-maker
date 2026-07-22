@@ -53,4 +53,11 @@
     <string name="country">Страна</string>
     <string name="country_error">Неизвестно</string>
     <string name="player_not_prepared">Плеер не подготовлен. Пожалуйста, попробуйте позже.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="no_favorites">Ваша медиатека пуста</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="you_not_created_not_one_playlist">Вы не создали  ни одного плейлиста</string>
 </resources>
