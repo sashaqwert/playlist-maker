@@ -106,5 +106,6 @@
     <style name="TabLayoutStyle">
         <item name="tabTextColor">@color/white</item>
         <item name="tabIndicatorColor">@color/white</item>
+        <item name="android:background">@color/background</item>
     </style>
 </resources>
