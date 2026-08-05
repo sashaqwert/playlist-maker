@@ -1,10 +1,13 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -13,21 +16,16 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     private lateinit var search : EditText
     private var search_text = ""
@@ -45,26 +43,27 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_search)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        val action_back = findViewById<ImageView>(R.id.search_action_back)
-        action_back.setOnClickListener {
-            finish()
-        }
+    }
 
-        you_searched = findViewById<TextView>(R.id.you_searched)
-        clear_history = findViewById<Button>(R.id.clear_history)
-        search = findViewById<EditText>(R.id.search)
-        search_result = findViewById<RecyclerView>(R.id.search_result)
-        search_result_sw = findViewById<ScrollView>(R.id.search_result_sw)
-        search_pb = findViewById<ProgressBar>(R.id.search_pb)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search, container, false)
+    }
 
-        searchViewModel.observeState().observe(this) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        you_searched = view.findViewById<TextView>(R.id.you_searched)
+        clear_history = view.findViewById<Button>(R.id.clear_history)
+        search = view.findViewById<EditText>(R.id.search)
+        search_result = view.findViewById<RecyclerView>(R.id.search_result)
+        search_result_sw = view.findViewById<ScrollView>(R.id.search_result_sw)
+        search_pb = view.findViewById<ProgressBar>(R.id.search_pb)
+
+        searchViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
@@ -82,12 +81,12 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        icon_error = findViewById<ImageView>(R.id.icon_error)
-        val clear_search = findViewById<ImageView>(R.id.clear_search)
+        icon_error = view.findViewById<ImageView>(R.id.icon_error)
+        val clear_search = view.findViewById<ImageView>(R.id.clear_search)
         clear_search.setOnClickListener {
             search.setText("")
-            val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+            val inputMethodManager = activity?.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, 0)
         }
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -114,8 +113,8 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         search.addTextChangedListener(textWatcher)
-        error_text = findViewById<TextView>(R.id.error_text)
-        refresh_search = findViewById<Button>(R.id.refresh_search)
+        error_text = view.findViewById<TextView>(R.id.error_text)
+        refresh_search = view.findViewById<Button>(R.id.refresh_search)
         refresh_search.setOnClickListener {
             searchViewModel.searchDebounce(
                 changedText = search_text
@@ -134,11 +133,6 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         searchViewModel.showSearchHistoryIfNotEmpty()
-
-        if (savedInstanceState != null) {
-            search_text = savedInstanceState?.getString("search_text", "") ?: ""
-            search.setText(search_text)
-        }
     }
 
     fun hideSearchHistory() {
@@ -176,13 +170,13 @@ class SearchActivity : AppCompatActivity() {
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
 
-        if (isDarkTheme(this@SearchActivity)) {
-            Glide.with(this@SearchActivity)
+        if (isDarkTheme(requireActivity())) {
+            Glide.with(this)
                 .load(R.drawable.not_found_dark)
                 .fitCenter()
                 .into(icon_error)
         } else {
-            Glide.with(this@SearchActivity)
+            Glide.with(this)
                 .load(R.drawable.not_found)
                 .fitCenter()
                 .into(icon_error)
@@ -196,7 +190,7 @@ class SearchActivity : AppCompatActivity() {
         icon_error.visibility = View.VISIBLE
         error_text.visibility = View.VISIBLE
         refresh_search.visibility = View.VISIBLE
-        if (isDarkTheme(this)) {
+        if (isDarkTheme(requireActivity())) {
             Glide.with(this)
                 .load(R.drawable.no_internet_dark)
                 .fitCenter()
@@ -212,12 +206,12 @@ class SearchActivity : AppCompatActivity() {
 
     fun showSearchHistory(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
-                OnItemClickCallback {
-                override fun callback(track: TrackPresentation) {
-                    searchViewModel.addToHistory(track)
-                    searchViewModel.showSearchHistoryIfNotEmpty()
-                }
-            })
+            OnItemClickCallback {
+            override fun callback(track: TrackPresentation) {
+                searchViewModel.addToHistory(track)
+                searchViewModel.showSearchHistoryIfNotEmpty()
+            }
+        })
         clear_history.visibility = View.VISIBLE
         you_searched.visibility = View.VISIBLE
         search_result.visibility = View.VISIBLE
@@ -225,21 +219,14 @@ class SearchActivity : AppCompatActivity() {
         search_result.adapter = adapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { search.removeTextChangedListener(it) }
     }
 
-
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
         outState.putString("search_text", search_text)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onRestoreInstanceState(savedInstanceState, persistentState)
-        search_text = savedInstanceState?.getString("search_text", "") ?: ""
-        search.setText(search_text)
     }
 
     fun render(state: SearchState) {
@@ -255,5 +242,12 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+
+        @JvmStatic
+        fun newInstance() =
+            SearchFragment().apply {
+                arguments = Bundle().apply {
+                }
+            }
     }
 }
