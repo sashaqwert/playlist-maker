@@ -1,6 +1,5 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
-import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
-import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerActivity
 import java.util.Locale
 
 class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
