@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,6 +25,7 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
 class SearchFragment : Fragment() {
 
@@ -148,6 +150,9 @@ class SearchFragment : Fragment() {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_playerFragment,
+                    PlayerFragment.createArgs(track))
             }
         })
         search_result.adapter = adapter
@@ -210,6 +215,9 @@ class SearchFragment : Fragment() {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
                 searchViewModel.showSearchHistoryIfNotEmpty()
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_playerFragment,
+                    PlayerFragment.createArgs(track))
             }
         })
         clear_history.visibility = View.VISIBLE
