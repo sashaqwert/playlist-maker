@@ -3,4 +3,5 @@
     <color name="background_main">#1A1B22</color>
     <color name="background">#1A1B22</color>
     <color name="search_background">#FFFFFFFF</color>
+    <color name="nav_not_selected">@color/white</color>
 </resources>
