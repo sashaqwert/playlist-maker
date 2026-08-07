@@ -35,19 +35,19 @@ class PlayerFragment : Fragment() {
         parametersOf(track)
     }
     private lateinit var track: TrackPresentation
-    private lateinit var player_playpause: ImageView
-    private lateinit var player_progress: TextView
+    private var player_playpause: ImageView? = null
+    private var player_progress: TextView? = null
 
-    private lateinit var player_artwork: ImageView
-    private lateinit var player_track_name: TextView
-    private lateinit var player_artist_name: TextView
-    private lateinit var player_duration: TextView
-    private lateinit var player_collection_hint: TextView
-    private lateinit var player_collection_name: TextView
-    private lateinit var player_release_date_hint: TextView
-    private lateinit var player_release_date: TextView
-    private lateinit var player_janr: TextView
-    private lateinit var player_country: TextView
+    private var player_artwork: ImageView? = null
+    private var player_track_name: TextView? = null
+    private var player_artist_name: TextView? = null
+    private var player_duration: TextView? = null
+    private var player_collection_hint: TextView? = null
+    private var player_collection_name: TextView? = null
+    private var player_release_date_hint: TextView? = null
+    private var player_release_date: TextView? = null
+    private var player_janr: TextView? = null
+    private var player_country: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,46 +88,46 @@ class PlayerFragment : Fragment() {
         playerViewModel.observeUiState().observe(viewLifecycleOwner) {
             render(it)
         }
-        player_playpause.setOnClickListener {
+        player_playpause?.setOnClickListener {
             playerViewModel.onPlayButtonClicked()
         }
     }
 
     private fun initialize(track: TrackPresentation) {
-        if (track.artworkUrl100 != null) {
+        if (track.artworkUrl100 != null && player_artwork != null) {
             Glide.with(this)
                 .load(track.getCoverArtwork())
                 .fitCenter()
                 .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
                 .placeholder(R.drawable.artwork_default)
-                .into(player_artwork)
+                .into(player_artwork!!)
         }
         if (track.trackName != null) {
-            player_track_name.setText(track.trackName)
+            player_track_name?.setText(track.trackName)
         }
         if (track.artistName != null) {
-            player_artist_name.setText(track.artistName)
+            player_artist_name?.setText(track.artistName)
         }
         if (track.trackTimeMillis != null) {
-            player_duration.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
+            player_duration?.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis))
         }
         if (track.collectionName == null) {
-            player_collection_hint.visibility = View.GONE
-            player_collection_name.visibility = View.GONE
+            player_collection_hint?.visibility = View.GONE
+            player_collection_name?.visibility = View.GONE
         } else {
-            player_collection_name.setText(track.collectionName)
+            player_collection_name?.setText(track.collectionName)
         }
         if (track.releaseDate == null) {
-            player_release_date_hint.visibility = View.GONE
-            player_release_date.visibility = View.GONE
+            player_release_date_hint?.visibility = View.GONE
+            player_release_date?.visibility = View.GONE
         } else {
-            player_release_date.setText(track.getYear()!!.toString())
+            player_release_date?.setText(track.getYear()!!.toString())
         }
         if (track.primaryGenreName != null) {
-            player_janr.setText(track.primaryGenreName)
+            player_janr?.setText(track.primaryGenreName)
         }
         if (track.country != null) {
-            player_country.setText(track.country)
+            player_country?.setText(track.country)
         }
     }
 
@@ -151,42 +151,42 @@ class PlayerFragment : Fragment() {
                 Glide.with(this)
                     .load(R.drawable.play_dark)
                     .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             } else {
                 Glide.with(this)
                     .load(R.drawable.play)
                     .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             }
 
             PlayerViewModel.STATE_PLAYING -> if (isDarkTheme(requireActivity())) {
                 Glide.with(this)
                     .load(R.drawable.pause_dark)
                     .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             } else {
                 Glide.with(this)
                     .load(R.drawable.pause)
                     .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             }
 
             PlayerViewModel.STATE_PAUSED -> if (isDarkTheme(requireActivity())) {
                 Glide.with(this)
                     .load(R.drawable.play_dark)
                     //  .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             } else {
                 Glide.with(this)
                     .load(R.drawable.play)
                     .fitCenter()
-                    .into(player_playpause)
+                    .into(player_playpause!!)
             }
         }
     }
 
     private fun update_progress(progress: String) {
-        player_progress.text = progress
+        player_progress?.text = progress
     }
 
     override fun onPause() {
@@ -200,6 +200,24 @@ class PlayerFragment : Fragment() {
             is PlayerState.State -> player_state_changed(state.player_state)
             is PlayerState.Progress -> update_progress(state.progress)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        player_playpause = null
+        player_progress = null
+
+        player_artwork = null
+        player_track_name = null
+        player_artist_name = null
+        player_duration = null
+        player_collection_hint = null
+        player_collection_name = null
+        player_release_date_hint = null
+        player_release_date = null
+        player_janr = null
+        player_country = null
     }
 
     companion object {
