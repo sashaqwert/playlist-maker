@@ -134,7 +134,7 @@ class SearchFragment : Fragment() {
             }
             false
         }
-        if (savedInstanceState == null) {
+        if (search_text == "") {
             searchViewModel.showSearchHistoryIfNotEmpty()
         }
     }
