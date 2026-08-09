@@ -2,46 +2,47 @@ package ru.chivarzin.aleksandr.playlistmaker.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
+import kotlin.getValue
 
-class SettingsActivity : AppCompatActivity() {
-
+class SettingsFragment : Fragment() {
     private val settingsViewModel by viewModel<SettingsViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        enableEdgeToEdge()
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        arguments?.let {
         }
-        val action_back = findViewById<ImageView>(R.id.settings_action_back)
-        action_back.setOnClickListener {
-            finish()
-        }
+    }
 
-        val settings_dark_theme = findViewById<SwitchMaterial>(R.id.settings_dark_theme)
-        settingsViewModel.observeIsDarkTheme().observe(this) {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_settings, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val settings_dark_theme = view.findViewById<SwitchMaterial>(R.id.settings_dark_theme)
+        settingsViewModel.observeIsDarkTheme().observe(viewLifecycleOwner) {
             settings_dark_theme.isChecked = it
         }
         settings_dark_theme.setOnCheckedChangeListener { switcher, checked ->
             settingsViewModel.setThame(checked)
         }
 
-        val action_share = findViewById<Button>(R.id.action_share)
+        val action_share = view.findViewById<Button>(R.id.action_share)
         action_share.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
@@ -49,7 +50,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val action_support = findViewById<Button>(R.id.action_support)
+        val action_support = view.findViewById<Button>(R.id.action_support)
         action_support.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SENDTO)
             shareIntent.data = "mailto:".toUri()
@@ -59,11 +60,20 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(shareIntent)
         }
 
-        val action_user_agreement = findViewById<Button>(R.id.action_user_agreement)
+        val action_user_agreement = view.findViewById<Button>(R.id.action_user_agreement)
         action_user_agreement.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setData(getString(R.string.user_agreement_url).toUri())
             startActivity(intent)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            SettingsFragment().apply {
+                arguments = Bundle().apply {
+                }
+            }
     }
 }

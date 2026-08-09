@@ -1,6 +1,5 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.search
 
-import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.view.View
 import android.widget.ImageView
@@ -11,7 +10,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
-import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerActivity
 import java.util.Locale
 
 class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -55,10 +53,6 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener {
             if (clickdebunce()) {
                 callback.callback(model)
-                val intent = Intent(itemView.context, PlayerActivity::class.java)
-                intent.putExtra("track", model)
-                //intent.putExtra("track", Gson().toJson(model))
-                itemView.context.startActivity(intent)
             }
         }
     }
