@@ -8,31 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val callback: OnItemClickCallback) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val clickdebunce: () -> Boolean, val callback: OnItemClickCallback) : RecyclerView.Adapter<TrackViewHolder> () {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)
         return TrackViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position], clickDebounce, callback)
+        holder.bind(tracks[position], clickdebunce, callback)
     }
 
     override fun getItemCount(): Int {
         return tracks.size
-    }
-
-    private var isClickAllowed = true
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private var clickDebounce : (() -> Boolean) = {
-        val current: Boolean = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        current
     }
 
     companion object {

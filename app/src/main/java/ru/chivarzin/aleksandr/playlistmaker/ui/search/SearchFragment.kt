@@ -16,9 +16,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
@@ -42,6 +45,20 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel by viewModel<SearchViewModel>()
     private var textWatcher: TextWatcher? = null
+
+    private var isClickAllowed = true
+
+    private var clickDebounce : (() -> Boolean) = {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        current
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +166,7 @@ class SearchFragment : Fragment() {
     }
 
     fun show_content(tracks: List<TrackPresentation>) {
-        val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
+        val adapter = TrackAdapter(ArrayList(tracks), clickDebounce, object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
                 findNavController().navigate(
@@ -216,7 +233,7 @@ class SearchFragment : Fragment() {
     }
 
     fun showSearchHistory(tracks: List<TrackPresentation>) {
-        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
+        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), clickDebounce, object :
             OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
@@ -265,6 +282,7 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
 
         @JvmStatic
         fun newInstance() =
