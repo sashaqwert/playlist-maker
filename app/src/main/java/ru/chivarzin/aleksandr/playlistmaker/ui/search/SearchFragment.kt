@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
 
     private var isClickAllowed = true
 
-    private var clickDebounce : (() -> Boolean) = {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -57,8 +57,9 @@ class SearchFragment : Fragment() {
                 isClickAllowed = true
             }
         }
-        current
+        return current
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,10 +169,12 @@ class SearchFragment : Fragment() {
     fun show_content(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
-                searchViewModel.addToHistory(track)
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_playerFragment,
-                    PlayerFragment.createArgs(track))
+                if (clickDebounce()) {
+                    searchViewModel.addToHistory(track)
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
+                }
             }
         })
         search_result?.adapter = adapter
@@ -236,11 +239,13 @@ class SearchFragment : Fragment() {
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
             OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
-                searchViewModel.addToHistory(track)
-                searchViewModel.showSearchHistoryIfNotEmpty()
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_playerFragment,
-                    PlayerFragment.createArgs(track))
+                if (clickDebounce()) {
+                    searchViewModel.addToHistory(track)
+                    searchViewModel.showSearchHistoryIfNotEmpty()
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
+                }
             }
         })
         clear_history?.visibility = View.VISIBLE
