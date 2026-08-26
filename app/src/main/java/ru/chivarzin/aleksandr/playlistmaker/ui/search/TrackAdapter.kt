@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val clickdebunce: () -> Boolean, val callback: OnItemClickCallback) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val callback: OnItemClickCallback) : RecyclerView.Adapter<TrackViewHolder> () {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)
         return TrackViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position], clickdebunce, callback)
+        holder.bind(tracks[position], callback)
     }
 
     override fun getItemCount(): Int {

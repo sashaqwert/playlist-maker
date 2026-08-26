@@ -166,7 +166,7 @@ class SearchFragment : Fragment() {
     }
 
     fun show_content(tracks: List<TrackPresentation>) {
-        val adapter = TrackAdapter(ArrayList(tracks), clickDebounce, object : OnItemClickCallback {
+        val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
                 findNavController().navigate(
@@ -233,7 +233,7 @@ class SearchFragment : Fragment() {
     }
 
     fun showSearchHistory(tracks: List<TrackPresentation>) {
-        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), clickDebounce, object :
+        val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
             OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
                 searchViewModel.addToHistory(track)
