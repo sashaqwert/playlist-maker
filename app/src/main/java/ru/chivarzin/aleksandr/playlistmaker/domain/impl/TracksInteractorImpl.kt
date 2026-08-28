@@ -1,19 +1,14 @@
 package ru.chivarzin.aleksandr.playlistmaker.domain.impl
 
+import kotlinx.coroutines.flow.Flow
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksRepository
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import java.util.concurrent.Executors
 
 class TracksInteractorImpl (private val repository: TracksRepository) : TracksInteractor {
 
-    private val executor = Executors.newCachedThreadPool()
-
-    override fun findMusic(
-        expression: String,
-        consumer: TracksInteractor.TracksConsumer
-    ) {
-        executor.execute {
-            consumer.consume(repository.findMusic(expression))
-        }
+    override fun findMusic(expression: String): Flow<List<Track>?> {
+        return repository.findMusic(expression)
     }
 }

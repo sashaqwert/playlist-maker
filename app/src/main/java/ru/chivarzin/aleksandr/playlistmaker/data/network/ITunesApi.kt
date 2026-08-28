@@ -7,5 +7,5 @@ import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchResult
 
 interface ITunesApi  {
     @GET("/search?entity=song")
-    fun findMusic(@Query("term") text: String): Call<SearchResult>
+    suspend fun findMusic(@Query("term") text: String): SearchResult
 }

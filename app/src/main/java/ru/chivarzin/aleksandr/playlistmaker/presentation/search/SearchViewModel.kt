@@ -56,39 +56,36 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
         if (newSearchText.isNotEmpty()) {
             renderState(SearchState.Loading)
 
-            tracksInteractor.findMusic(newSearchText, object : TracksInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?) {
-                    handler.post {
-                        val tracks = mutableListOf<TrackPresentation>()
-                        if (foundTracks != null) {
-                            tracks.addAll(foundTracks.map {
-                                TrackPresentation(it)
-                            })
+            viewModelScope.launch {
+                tracksInteractor.findMusic(newSearchText).collect { foundTracks ->
+                    val tracks = mutableListOf<TrackPresentation>()
+                    if (foundTracks != null) {
+                        tracks.addAll(foundTracks.map {
+                            TrackPresentation(it)
+                        })
+                    }
+
+                    when {
+                        foundTracks == null -> {
+                            renderState(
+                                SearchState.Error(context.getString(R.string.no_internet))
+                            )
                         }
 
-                        when {
-                            foundTracks == null -> {
-                                renderState(
-                                    SearchState.Error(context.getString(R.string.no_internet))
-                                )
-                            }
-
-                            tracks.isEmpty() -> {
-                                renderState(
-                                    SearchState.Empty(context.getString(R.string.search_not_found))
-                                )
-                            }
-
-                            else -> {
-                                renderState(
-                                    SearchState.Content(tracks)
-                                )
-                            }
+                        tracks.isEmpty() -> {
+                            renderState(
+                                SearchState.Empty(context.getString(R.string.search_not_found))
+                            )
                         }
 
+                        else -> {
+                            renderState(
+                                SearchState.Content(tracks)
+                            )
+                        }
                     }
                 }
-            })
+            }
         }
     }
 
