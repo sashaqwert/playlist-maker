@@ -3,6 +3,8 @@ package ru.chivarzin.aleksandr.playlistmaker.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.chivarzin.aleksandr.playlistmaker.data.NetworkClient
@@ -11,17 +13,16 @@ import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchRequest
 
 class RetrofitNetworkClient(private val iTunesService: ITunesApi, private val context: Context) : NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (dto is SearchRequest) {
             if (isConnected()) {
-                try {
-                    val resp = iTunesService.findMusic(dto.expression).execute()
-
-                    val body = resp.body() ?: Response()
-
-                    return body.apply { resultCode = resp.code() }
-                } catch (_: Exception) {
-                    return Response().apply { resultCode = -2 }
+                return withContext(Dispatchers.IO) {
+                    try {
+                        val response = iTunesService.findMusic(dto.expression)
+                        response.apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
                 }
             } else {
                 return Response().apply { resultCode = -1 }

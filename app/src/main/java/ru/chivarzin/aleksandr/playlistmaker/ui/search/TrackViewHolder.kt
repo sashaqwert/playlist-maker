@@ -18,7 +18,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: TrackPresentation, clickdebunce: () -> Boolean, callback: OnItemClickCallback) {
+    fun bind(model: TrackPresentation, callback: OnItemClickCallback) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {
@@ -51,9 +51,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
                 .into(artwork)
         }
         itemView.setOnClickListener {
-            if (clickdebunce()) {
-                callback.callback(model)
-            }
+            callback.callback(model)
         }
     }
 }

@@ -16,9 +16,12 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
@@ -42,6 +45,21 @@ class SearchFragment : Fragment() {
 
     private val searchViewModel by viewModel<SearchViewModel>()
     private var textWatcher: TextWatcher? = null
+
+    private var isClickAllowed = true
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,9 +136,7 @@ class SearchFragment : Fragment() {
         error_text = view.findViewById<TextView>(R.id.error_text)
         refresh_search = view.findViewById<Button>(R.id.refresh_search)
         refresh_search?.setOnClickListener {
-            searchViewModel.searchDebounce(
-                changedText = search_text
-            )
+            searchViewModel.do_search(search_text)
         }
         search?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -151,10 +167,12 @@ class SearchFragment : Fragment() {
     fun show_content(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
-                searchViewModel.addToHistory(track)
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_playerFragment,
-                    PlayerFragment.createArgs(track))
+                if (clickDebounce()) {
+                    searchViewModel.addToHistory(track)
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
+                }
             }
         })
         search_result?.adapter = adapter
@@ -172,6 +190,7 @@ class SearchFragment : Fragment() {
     }
 
     fun show_empty() {
+        search_pb?.visibility = View.GONE
         search_result_sw?.visibility = View.GONE
         error_text?.setText(R.string.search_not_found)
         icon_error?.visibility = View.VISIBLE
@@ -219,11 +238,13 @@ class SearchFragment : Fragment() {
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
             OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
-                searchViewModel.addToHistory(track)
-                searchViewModel.showSearchHistoryIfNotEmpty()
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_playerFragment,
-                    PlayerFragment.createArgs(track))
+                if (clickDebounce()) {
+                    searchViewModel.addToHistory(track)
+                    searchViewModel.showSearchHistoryIfNotEmpty()
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
+                }
             }
         })
         clear_history?.visibility = View.VISIBLE
@@ -265,6 +286,7 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
 
         @JvmStatic
         fun newInstance() =

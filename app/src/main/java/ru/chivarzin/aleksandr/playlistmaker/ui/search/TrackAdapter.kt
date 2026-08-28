@@ -15,24 +15,11 @@ class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val callba
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position], clickDebounce, callback)
+        holder.bind(tracks[position], callback)
     }
 
     override fun getItemCount(): Int {
         return tracks.size
-    }
-
-    private var isClickAllowed = true
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private var clickDebounce : (() -> Boolean) = {
-        val current: Boolean = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        current
     }
 
     companion object {
