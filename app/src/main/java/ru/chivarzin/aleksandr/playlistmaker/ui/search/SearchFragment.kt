@@ -136,9 +136,7 @@ class SearchFragment : Fragment() {
         error_text = view.findViewById<TextView>(R.id.error_text)
         refresh_search = view.findViewById<Button>(R.id.refresh_search)
         refresh_search?.setOnClickListener {
-            searchViewModel.searchDebounce(
-                changedText = search_text
-            )
+            searchViewModel.do_search(search_text)
         }
         search?.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

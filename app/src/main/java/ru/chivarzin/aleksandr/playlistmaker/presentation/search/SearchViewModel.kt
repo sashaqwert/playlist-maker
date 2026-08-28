@@ -45,10 +45,14 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
             }
         }
 
+        do_search(changedText)
+    }
+
+    fun do_search(search_text: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+            searchRequest(search_text)
         }
     }
 
