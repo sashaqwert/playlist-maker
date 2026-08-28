@@ -190,6 +190,7 @@ class SearchFragment : Fragment() {
     }
 
     fun show_empty() {
+        search_pb?.visibility = View.GONE
         search_result_sw?.visibility = View.GONE
         error_text?.setText(R.string.search_not_found)
         icon_error?.visibility = View.VISIBLE
