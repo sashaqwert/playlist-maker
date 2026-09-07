@@ -5,11 +5,9 @@ import androidx.room.RoomDatabase
 import ru.chivarzin.aleksandr.playlistmaker.data.db.dao.TrackDao
 import ru.chivarzin.aleksandr.playlistmaker.data.db.entity.TrackEntity
 
-class AppDatabase {
-    @Database(version = 1, entities = [TrackEntity::class])
-    abstract class AppDatabase : RoomDatabase(){
+@Database(version = 1, entities = [TrackEntity::class])
+abstract class AppDatabase : RoomDatabase(){
 
-        abstract fun trackDao(): TrackDao
+    abstract fun trackDao(): TrackDao
 
     }
-}

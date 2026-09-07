@@ -1,6 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker.data.db
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import ru.chivarzin.aleksandr.playlistmaker.data.converters.TrackDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.db.entity.TrackEntity
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteRepository
@@ -18,7 +19,7 @@ class FavoriteRepositoryImpl(
         appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
     }
 
-    override fun getFavorites(): Flow<List<Track>> {
+    override fun getFavorites(): Flow<List<Track>> = flow {
         val tracks = appDatabase.trackDao().getAllTracks()
         emit(convertFromTrackEntity(tracks))
     }
