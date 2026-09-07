@@ -2,6 +2,7 @@ package ru.chivarzin.aleksandr.playlistmaker.di
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import ru.chivarzin.aleksandr.playlistmaker.data.converters.TrackDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.network.TracksRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.SearchHistoryRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
@@ -20,5 +21,9 @@ val repositoryModule = module {
 
     single<ThemeRepository>{
         ThemeRepositoryImpl(androidContext())
+    }
+
+    single {
+        TrackDbConverter()
     }
 }
