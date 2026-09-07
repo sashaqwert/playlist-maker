@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -40,6 +41,11 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.room.runtime)
+// Kotlin Symbol Processing (KSP)
+    ksp(libs.androidx.room.compiler)
+// Kotlin Extensions для корутин
+    implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
