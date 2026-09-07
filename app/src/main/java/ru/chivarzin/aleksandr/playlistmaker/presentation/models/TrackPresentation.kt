@@ -14,7 +14,8 @@ data class TrackPresentation (
     val releaseDate: String?, // Год трека
     val primaryGenreName: String?, // Жанр
     val country :String?, // Страна исполнителя
-    val previewUrl: String? // 30-и секундный отрезок трека
+    val previewUrl: String?, // 30-и секундный отрезок трека
+    var isFavorite: Boolean = false
 ) : Parcelable
 {
 
@@ -42,7 +43,8 @@ data class TrackPresentation (
         track.releaseDate,
         track.primaryGenreName,
         track.country,
-        track.previewUrl
+        track.previewUrl,
+        track.isFavorite
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

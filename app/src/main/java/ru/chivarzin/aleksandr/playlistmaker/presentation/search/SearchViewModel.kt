@@ -105,7 +105,7 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
     fun addToHistory(track: TrackPresentation) {
         val trackDomain = Track(track.trackId, track.trackName, track.artistName, track.trackTimeMillis,
             track.artworkUrl100, track.collectionName, track.releaseDate, track.primaryGenreName, track.country,
-            track.previewUrl)
+            track.previewUrl, track.isFavorite)
         searchHistoryInteractor.addToHistory(trackDomain)
     }
 
