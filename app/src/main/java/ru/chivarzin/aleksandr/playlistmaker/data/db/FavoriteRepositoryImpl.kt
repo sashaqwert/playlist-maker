@@ -11,11 +11,11 @@ class FavoriteRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val trackDbConvertor: TrackDbConverter
 ): FavoriteRepository {
-    override fun addToFavorite(track: Track) {
+    override suspend fun addToFavorite(track: Track) {
         appDatabase.trackDao().insertTrack(trackDbConvertor.map(track))
     }
 
-    override fun removeFromFavorite(track: Track) {
+    override suspend fun removeFromFavorite(track: Track) {
         appDatabase.trackDao().deleteTrack(trackDbConvertor.map(track))
     }
 

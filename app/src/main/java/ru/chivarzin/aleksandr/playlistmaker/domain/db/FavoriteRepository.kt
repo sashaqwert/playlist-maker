@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 interface FavoriteRepository {
-    fun addToFavorite(track: Track)
-    fun removeFromFavorite(track: Track)
+    suspend fun addToFavorite(track: Track)
+    suspend fun removeFromFavorite(track: Track)
     fun getFavorites(): Flow<List<Track>>
 }
