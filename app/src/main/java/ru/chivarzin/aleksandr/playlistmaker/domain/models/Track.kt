@@ -11,7 +11,8 @@ data class Track (
     val releaseDate: String?, // Год трека
     val primaryGenreName: String?, // Жанр
     val country :String?, // Страна исполнителя
-    val previewUrl: String? // 30-и секундный отрезок трека
+    val previewUrl: String?, // 30-и секундный отрезок трека
+    var isFavorite: Boolean = false
 )
 {
 
