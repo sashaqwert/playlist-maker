@@ -17,7 +17,7 @@ class FavoriteViewModel(val favoriteInteractor: FavoriteInteractor): ViewModel()
         renderState(FavoriteState.Loading)
         viewModelScope.launch {
             favoriteInteractor.getFavorites().collect {
-
+                processResult(it)
             }
         }
     }
