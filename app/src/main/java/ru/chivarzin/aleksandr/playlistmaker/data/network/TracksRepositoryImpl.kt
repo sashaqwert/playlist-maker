@@ -13,7 +13,7 @@ class TracksRepositoryImpl (private val networkClient: NetworkClient, val favori
     override fun findMusic(expression: String): Flow<List<Track>?> = flow {
         val response = networkClient.doRequest(SearchRequest(expression))
         if (response.resultCode == 200) {
-            var ids = listOf<String>()
+            var ids = listOf<Long>()
             favoriteRepository.getFavoritesIDs().collect {
                 ids = it
             }
@@ -30,7 +30,7 @@ class TracksRepositoryImpl (private val networkClient: NetworkClient, val favori
                         it.primaryGenreName,
                         it.country,
                         it.previewUrl,
-                        ids.contains(it.toString())
+                        ids.contains(it.toString().toLong())
                     )
                 }
                 )

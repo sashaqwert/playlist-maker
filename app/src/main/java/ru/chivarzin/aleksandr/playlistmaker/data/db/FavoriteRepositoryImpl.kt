@@ -24,7 +24,7 @@ class FavoriteRepositoryImpl(
         emit(convertFromTrackEntity(tracks))
     }
 
-    override fun getFavoritesIDs(): Flow<List<String>> = flow {
+    override fun getFavoritesIDs(): Flow<List<Long>> = flow {
         emit(appDatabase.trackDao().getTracksIDs())
     }
 
