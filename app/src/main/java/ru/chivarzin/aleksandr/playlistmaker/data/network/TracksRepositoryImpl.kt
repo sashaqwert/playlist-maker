@@ -30,7 +30,7 @@ class TracksRepositoryImpl (private val networkClient: NetworkClient, val favori
                         it.primaryGenreName,
                         it.country,
                         it.previewUrl,
-                        ids.contains(it.toString().toLong())
+                        ids.contains(it.trackId)
                     )
                 }
                 )
