@@ -6,12 +6,17 @@ import ru.chivarzin.aleksandr.playlistmaker.data.NetworkClient
 import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchRequest
 import ru.chivarzin.aleksandr.playlistmaker.data.dto.SearchResult
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksRepository
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
-class TracksRepositoryImpl (private val networkClient: NetworkClient) : TracksRepository {
+class TracksRepositoryImpl (private val networkClient: NetworkClient, val favoriteRepository: FavoriteRepository) : TracksRepository {
     override fun findMusic(expression: String): Flow<List<Track>?> = flow {
         val response = networkClient.doRequest(SearchRequest(expression))
         if (response.resultCode == 200) {
+            var ids = listOf<String>()
+            favoriteRepository.getFavoritesIDs().collect {
+                ids = it
+            }
             with(response as SearchResult) {
                 emit(response.results.map {
                     Track(
@@ -24,7 +29,8 @@ class TracksRepositoryImpl (private val networkClient: NetworkClient) : TracksRe
                         it.releaseDate,
                         it.primaryGenreName,
                         it.country,
-                        it.previewUrl
+                        it.previewUrl,
+                        ids.contains(it.toString())
                     )
                 }
                 )

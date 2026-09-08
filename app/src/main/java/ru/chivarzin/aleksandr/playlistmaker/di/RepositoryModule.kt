@@ -14,7 +14,7 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteRepository
 
 val repositoryModule = module {
     single<TracksRepository> {
-        TracksRepositoryImpl(get())
+        TracksRepositoryImpl(get(), get())
     }
 
     single<SearchHistoryRepository> {
