@@ -39,9 +39,11 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
             if (searchHistoryInteractor.isEmpty()) {
                 renderState(SearchState.emptyHistory)
             } else {
-                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
-                    TrackPresentation(it)
-                }))
+                viewModelScope.launch {
+                    renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                        TrackPresentation(it)
+                    }))
+                }
             }
         }
 
@@ -113,9 +115,11 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
         if (searchHistoryInteractor.isEmpty()) {
             renderState(SearchState.emptyHistory)
         } else {
-            renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
-                TrackPresentation(it)
-            }))
+            viewModelScope.launch {
+                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                    TrackPresentation(it)
+                }))
+            }
         }
     }
 

@@ -6,14 +6,20 @@ import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.data.SearchHistoryDataSource
 import ru.chivarzin.aleksandr.playlistmaker.data.dto.TrackDto
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
-class SearchHistoryRepositoryImpl (val dataSource: SearchHistoryDataSource) : SearchHistoryRepository {
+class SearchHistoryRepositoryImpl (val dataSource: SearchHistoryDataSource, val favoriteRepository: FavoriteRepository) : SearchHistoryRepository {
 
-    override fun getHistory(): List<Track> {
+    override suspend fun getHistory(): List<Track> {
+        var ids = listOf<Long>()
+        favoriteRepository.getFavoritesIDs().collect {
+            ids = it
+        }
         val result: List<Track> = dataSource.getHistory().map {
             Track(it.trackId, it.trackName, it.artistName, it.trackTimeMillis, it.artworkUrl100,
-                it.collectionName, it.releaseDate, it.primaryGenreName, it.country, it.previewUrl)
+                it.collectionName, it.releaseDate, it.primaryGenreName, it.country, it.previewUrl,
+                ids.contains(it.trackId))
         }
         return result
     }

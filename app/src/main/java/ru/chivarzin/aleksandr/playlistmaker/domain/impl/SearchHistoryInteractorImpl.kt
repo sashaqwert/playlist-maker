@@ -5,7 +5,7 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 class SearchHistoryInteractorImpl (private val repository: SearchHistoryRepository) : SearchHistoryInteractor {
-    override fun getHistory(): List<Track> {
+    override suspend fun getHistory(): List<Track> {
         return repository.getHistory()
     }
 
