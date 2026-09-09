@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
 class FavoriteFragment : Fragment() {
     private val favoriteViewModel: FavoriteViewModel by viewModel()
@@ -78,6 +80,9 @@ class FavoriteFragment : Fragment() {
 
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
+                findNavController().navigate(
+                    R.id.action_mediatekaFragment_to_playerFragment,
+                    PlayerFragment.createArgs(track))
             }
         })
         favorite_tracks?.adapter = adapter
