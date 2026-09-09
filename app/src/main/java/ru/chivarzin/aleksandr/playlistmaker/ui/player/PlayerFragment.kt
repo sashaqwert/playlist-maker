@@ -9,9 +9,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
@@ -133,6 +136,31 @@ class PlayerFragment : Fragment() {
         }
         if (track.country != null) {
             player_country?.setText(track.country)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            delay(100) // фикс макета
+            if (track.isFavorite) {
+                if (isDarkTheme(requireActivity())) {
+                    Glide.with(this@PlayerFragment)
+                        .load(R.drawable.favorite_y_dark)
+                        .into(player_favorite!!)
+                } else {
+                    Glide.with(this@PlayerFragment)
+                        .load(R.drawable.favorite_y)
+                        .into(player_favorite!!)
+                }
+            } else {
+                if (isDarkTheme(requireActivity())) {
+                    Glide.with(this@PlayerFragment)
+                        .load(R.drawable.favorite_dark)
+                        .into(player_favorite!!)
+                } else {
+                    Glide.with(this@PlayerFragment)
+                        .load(R.drawable.favorite)
+                        .into(player_favorite!!)
+                }
+            }
         }
     }
 
