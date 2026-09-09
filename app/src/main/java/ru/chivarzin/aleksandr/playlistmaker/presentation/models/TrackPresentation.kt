@@ -30,7 +30,8 @@ data class TrackPresentation (
         parcel.readValue(String::class.java.classLoader) as? String,
         parcel.readValue(String::class.java.classLoader) as? String,
         parcel.readValue(String::class.java.classLoader) as? String,
-        parcel.readValue(String::class.java.classLoader) as? String
+        parcel.readValue(String::class.java.classLoader) as? String,
+        parcel.readBoolean()
     )
 
     constructor (track: Track) : this(
@@ -66,6 +67,7 @@ data class TrackPresentation (
         parcel.writeValue(primaryGenreName)
         parcel.writeValue(country)
         parcel.writeValue(previewUrl)
+        parcel.writeBoolean(isFavorite)
     }
 
     override fun describeContents(): Int {
