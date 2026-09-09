@@ -10,11 +10,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: MediaPlayer) : ViewModel() {
+class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: MediaPlayer, val favoriteInteractor: FavoriteInteractor) : ViewModel() {
 
     private val uiStateLiveData = MutableLiveData<PlayerState>(PlayerState.Initial(track))
     fun observeUiState(): LiveData<PlayerState> = uiStateLiveData
@@ -37,6 +39,25 @@ class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: Med
             STATE_PLAYING -> pausePlayer()
             STATE_PREPARED, STATE_PAUSED -> startPlayer()
         }
+    }
+
+    fun onFavoriteButtonClicked() {
+        viewModelScope.launch {
+            if (track.isFavorite) {
+                favoriteInteractor.removeFromFavorite(toTrackDomain(track))
+                track.isFavorite = false
+            } else {
+                favoriteInteractor.addToFavorite(toTrackDomain(track))
+                track.isFavorite = true
+            }
+            uiStateLiveData.value = PlayerState.Initial(track)
+        }
+    }
+
+    private fun toTrackDomain(track: TrackPresentation): Track {
+        return Track(track.trackId, track.trackName, track.artistName,
+            track.trackTimeMillis, track.artworkUrl100, track.collectionName, track.releaseDate,
+            track.primaryGenreName, track.country, track.previewUrl, track.isFavorite)
     }
 
     private fun preparePlayer() {

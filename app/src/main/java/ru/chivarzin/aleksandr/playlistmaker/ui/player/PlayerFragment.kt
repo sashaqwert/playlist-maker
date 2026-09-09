@@ -36,6 +36,7 @@ class PlayerFragment : Fragment() {
     }
     private lateinit var track: TrackPresentation
     private var player_playpause: ImageView? = null
+    private var player_favorite: ImageView? = null
     private var player_progress: TextView? = null
 
     private var player_artwork: ImageView? = null
@@ -83,6 +84,7 @@ class PlayerFragment : Fragment() {
         player_janr = view.findViewById<TextView>(R.id.player_janr)
         player_country = view.findViewById<TextView>(R.id.player_country)
         player_playpause = view.findViewById<ImageView>(R.id.player_playpause)
+        player_favorite = view.findViewById<ImageView>(R.id.player_favorite)
         player_progress = view.findViewById<TextView>(R.id.player_progress)
 
         playerViewModel.observeUiState().observe(viewLifecycleOwner) {
@@ -90,6 +92,9 @@ class PlayerFragment : Fragment() {
         }
         player_playpause?.setOnClickListener {
             playerViewModel.onPlayButtonClicked()
+        }
+        player_favorite?.setOnClickListener {
+            playerViewModel.onFavoriteButtonClicked()
         }
     }
 
@@ -206,6 +211,7 @@ class PlayerFragment : Fragment() {
         super.onDestroyView()
 
         player_playpause = null
+        player_favorite = null
         player_progress = null
 
         player_artwork = null
