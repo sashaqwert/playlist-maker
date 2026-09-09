@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteState
@@ -23,6 +26,8 @@ class FavoriteFragment : Fragment() {
     private var favorite_pb: ProgressBar? = null
     private var icon_error: ImageView? = null
     private var error_text: TextView? = null
+
+    private var isClickAllowed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,9 +85,11 @@ class FavoriteFragment : Fragment() {
 
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object : OnItemClickCallback {
             override fun callback(track: TrackPresentation) {
-                findNavController().navigate(
-                    R.id.action_mediatekaFragment_to_playerFragment,
-                    PlayerFragment.createArgs(track))
+                if (clickDebounce()) {
+                    findNavController().navigate(
+                        R.id.action_mediatekaFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
+                }
             }
         })
         favorite_tracks?.adapter = adapter
@@ -96,7 +103,21 @@ class FavoriteFragment : Fragment() {
         }
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
     companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+
         @JvmStatic
         fun newInstance() =
             FavoriteFragment().apply {
