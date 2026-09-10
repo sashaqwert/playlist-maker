@@ -14,7 +14,8 @@ data class TrackPresentation (
     val releaseDate: String?, // Год трека
     val primaryGenreName: String?, // Жанр
     val country :String?, // Страна исполнителя
-    val previewUrl: String? // 30-и секундный отрезок трека
+    val previewUrl: String?, // 30-и секундный отрезок трека
+    var isFavorite: Boolean = false
 ) : Parcelable
 {
 
@@ -29,7 +30,8 @@ data class TrackPresentation (
         parcel.readValue(String::class.java.classLoader) as? String,
         parcel.readValue(String::class.java.classLoader) as? String,
         parcel.readValue(String::class.java.classLoader) as? String,
-        parcel.readValue(String::class.java.classLoader) as? String
+        parcel.readValue(String::class.java.classLoader) as? String,
+        parcel.readBoolean()
     )
 
     constructor (track: Track) : this(
@@ -42,7 +44,8 @@ data class TrackPresentation (
         track.releaseDate,
         track.primaryGenreName,
         track.country,
-        track.previewUrl
+        track.previewUrl,
+        track.isFavorite
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -64,6 +67,7 @@ data class TrackPresentation (
         parcel.writeValue(primaryGenreName)
         parcel.writeValue(country)
         parcel.writeValue(previewUrl)
+        parcel.writeBoolean(isFavorite)
     }
 
     override fun describeContents(): Int {

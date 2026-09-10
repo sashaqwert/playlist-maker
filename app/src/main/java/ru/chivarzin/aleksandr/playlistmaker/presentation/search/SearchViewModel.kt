@@ -39,9 +39,11 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
             if (searchHistoryInteractor.isEmpty()) {
                 renderState(SearchState.emptyHistory)
             } else {
-                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
-                    TrackPresentation(it)
-                }))
+                viewModelScope.launch {
+                    renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                        TrackPresentation(it)
+                    }))
+                }
             }
         }
 
@@ -105,7 +107,7 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
     fun addToHistory(track: TrackPresentation) {
         val trackDomain = Track(track.trackId, track.trackName, track.artistName, track.trackTimeMillis,
             track.artworkUrl100, track.collectionName, track.releaseDate, track.primaryGenreName, track.country,
-            track.previewUrl)
+            track.previewUrl, track.isFavorite)
         searchHistoryInteractor.addToHistory(trackDomain)
     }
 
@@ -113,9 +115,11 @@ class SearchViewModel (private val tracksInteractor: TracksInteractor, private v
         if (searchHistoryInteractor.isEmpty()) {
             renderState(SearchState.emptyHistory)
         } else {
-            renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
-                TrackPresentation(it)
-            }))
+            viewModelScope.launch {
+                renderState(SearchState.History(searchHistoryInteractor.getHistory().map {
+                    TrackPresentation(it)
+                }))
+            }
         }
     }
 

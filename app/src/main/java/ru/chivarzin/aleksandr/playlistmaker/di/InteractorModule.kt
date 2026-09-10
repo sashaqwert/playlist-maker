@@ -4,6 +4,8 @@ import org.koin.dsl.module
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.ThemeInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.impl.FavoriteInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.ThemeInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.TracksInteractorImpl
@@ -20,5 +22,9 @@ val interactorModule = module {
 
     single<ThemeInteractor> {
         ThemeInteractorImpl(get())
+    }
+
+    single<FavoriteInteractor> {
+        FavoriteInteractorImpl(get())
     }
 }

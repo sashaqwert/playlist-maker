@@ -1,6 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker.di
 
 import android.content.Context
+import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -10,12 +11,9 @@ import ru.chivarzin.aleksandr.playlistmaker.APP_PREFERENCES
 import ru.chivarzin.aleksandr.playlistmaker.data.NetworkClient
 import ru.chivarzin.aleksandr.playlistmaker.data.SearchHistoryDataSource
 import ru.chivarzin.aleksandr.playlistmaker.data.ThemeDataSource
+import ru.chivarzin.aleksandr.playlistmaker.data.db.AppDatabase
 import ru.chivarzin.aleksandr.playlistmaker.data.network.ITunesApi
 import ru.chivarzin.aleksandr.playlistmaker.data.network.RetrofitNetworkClient
-import ru.chivarzin.aleksandr.playlistmaker.data.storage.SearchHistoryRepositoryImpl
-import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
-import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
-import ru.chivarzin.aleksandr.playlistmaker.domain.api.ThemeRepository
 
 val dataModule = module {
 
@@ -44,5 +42,9 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
+    }
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
     }
 }

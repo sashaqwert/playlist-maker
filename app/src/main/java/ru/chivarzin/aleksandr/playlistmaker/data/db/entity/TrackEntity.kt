@@ -1,7 +1,12 @@
-package ru.chivarzin.aleksandr.playlistmaker.domain.models
+package ru.chivarzin.aleksandr.playlistmaker.data.db.entity
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Track (
+@Entity(tableName = "track_table")
+data class TrackEntity (
+    @PrimaryKey
     val trackId: Long,
     val trackName: String?, // Название композиции
     val artistName: String?, // Имя исполнителя
@@ -12,22 +17,7 @@ data class Track (
     val primaryGenreName: String?, // Жанр
     val country :String?, // Страна исполнителя
     val previewUrl: String?, // 30-и секундный отрезок трека
-    var isFavorite: Boolean = false
+
+    @ColumnInfo(name = "created_at", defaultValue = "(strftime('%s','now') * 1000)")
+    val createdAt: Long = System.currentTimeMillis()
 )
-{
-
-    fun getCoverArtwork() : String? {
-        if (artworkUrl100 != null) {
-            return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-        }
-        return null
-    }
-
-    fun getYear() : Int? {
-        if (releaseDate == null) {
-            return null
-        }
-        return releaseDate.replaceAfter('-', "").replace("-", "").toInt()
-    }
-
-}
