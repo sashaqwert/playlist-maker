@@ -28,6 +28,8 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnItemClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
 class SearchFragment : Fragment() {
@@ -171,7 +173,8 @@ class SearchFragment : Fragment() {
                     searchViewModel.addToHistory(track)
                     findNavController().navigate(
                         R.id.action_searchFragment_to_playerFragment,
-                        PlayerFragment.createArgs(track))
+                        PlayerFragment.createArgs(track)
+                    )
                 }
             }
         })
@@ -243,7 +246,8 @@ class SearchFragment : Fragment() {
                     searchViewModel.showSearchHistoryIfNotEmpty()
                     findNavController().navigate(
                         R.id.action_searchFragment_to_playerFragment,
-                        PlayerFragment.createArgs(track))
+                        PlayerFragment.createArgs(track)
+                    )
                 }
             }
         })

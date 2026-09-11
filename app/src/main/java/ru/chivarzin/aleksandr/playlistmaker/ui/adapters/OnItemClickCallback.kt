@@ -1,6 +1,5 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.adapters
 
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
 fun interface OnItemClickCallback {

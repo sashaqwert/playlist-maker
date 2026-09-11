@@ -1,7 +1,5 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.adapters
 
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

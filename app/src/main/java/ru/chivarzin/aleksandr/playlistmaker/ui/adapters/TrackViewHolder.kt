@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.adapters
 
 import android.icu.text.SimpleDateFormat
 import android.view.View
