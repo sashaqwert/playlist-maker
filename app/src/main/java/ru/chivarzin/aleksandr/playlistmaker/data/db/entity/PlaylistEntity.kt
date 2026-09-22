@@ -11,7 +11,7 @@ class PlaylistEntity
     val name: String,
     val description: String,
     val artwork_path: String,
-    val track_IDs: String = "[]",
+    val tracks: String = "[]",
     val tracks_count : Int = 0
     ) {
 }
