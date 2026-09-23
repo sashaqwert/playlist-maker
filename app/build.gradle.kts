@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.peko)
     implementation(libs.androidx.room.runtime)
 // Kotlin Symbol Processing (KSP)
     ksp(libs.androidx.room.compiler)
