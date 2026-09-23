@@ -1,18 +1,19 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
+import com.google.android.material.textfield.TextInputEditText
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_TRACK = "track"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -21,6 +22,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class NewPlaylistFragment : Fragment() {
     private var track: TrackPresentation? = null
+
+    var create: AppCompatButton? = null
+    var newplaylist_name: TextInputEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,30 @@ class NewPlaylistFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_new_playlist, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        create = view.findViewById<AppCompatButton>(R.id.create)
+        newplaylist_name = view.findViewById<TextInputEditText>(R.id.newplaylist_name)
+        newplaylist_name?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val str = s.toString()
+                create?.isEnabled = str != ""
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        create = null
+        newplaylist_name = null
     }
 
     companion object {
