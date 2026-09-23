@@ -12,8 +12,11 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 
 private const val ARG_TRACK = "track"
 
@@ -24,10 +27,14 @@ private const val ARG_TRACK = "track"
  */
 class NewPlaylistFragment : Fragment() {
     private var track: TrackPresentation? = null
+    private val newPlaylistViewModel: NewPlaylistViewModel by viewModel {
+        parametersOf(track) //Как здесь обработать не NULL случай?
+    }
 
     var new_playlist_action_back: ImageView? = null
     var create: AppCompatButton? = null
     var newplaylist_name: TextInputEditText? = null
+    var newplaylist_description: TextInputEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +71,10 @@ class NewPlaylistFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
+        newplaylist_description = view.findViewById<TextInputEditText>(R.id.newplaylist_description)
+        create?.setOnClickListener {
+            newPlaylistViewModel.createButtonClicked()
+        }
     }
 
     override fun onDestroyView() {
@@ -71,6 +82,7 @@ class NewPlaylistFragment : Fragment() {
         new_playlist_action_back = null
         create = null
         newplaylist_name = null
+        newplaylist_description = null
     }
 
     companion object {
