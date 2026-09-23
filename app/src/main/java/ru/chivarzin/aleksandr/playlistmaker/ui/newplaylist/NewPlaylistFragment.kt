@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
@@ -23,6 +25,7 @@ private const val ARG_TRACK = "track"
 class NewPlaylistFragment : Fragment() {
     private var track: TrackPresentation? = null
 
+    var new_playlist_action_back: ImageView? = null
     var create: AppCompatButton? = null
     var newplaylist_name: TextInputEditText? = null
 
@@ -43,6 +46,10 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        new_playlist_action_back = view.findViewById<ImageView>(R.id.new_playlist_action_back)
+        new_playlist_action_back?.setOnClickListener {
+            findNavController().navigateUp()
+        }
         create = view.findViewById<AppCompatButton>(R.id.create)
         newplaylist_name = view.findViewById<TextInputEditText>(R.id.newplaylist_name)
         newplaylist_name?.addTextChangedListener(object : TextWatcher {
@@ -61,6 +68,7 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        new_playlist_action_back = null
         create = null
         newplaylist_name = null
     }
@@ -73,7 +81,6 @@ class NewPlaylistFragment : Fragment() {
          * @param track Parameter 1.
          * @return A new instance of fragment NewPlaylistFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(track: TrackPresentation?) =
             NewPlaylistFragment().apply {
