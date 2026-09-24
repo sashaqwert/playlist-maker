@@ -26,6 +26,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentatio
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.random.Random
 
 private const val ARG_TRACK = "track"
 
@@ -82,16 +83,16 @@ class NewPlaylistFragment : Fragment() {
             }
         })
         newplaylist_description = view.findViewById<TextInputEditText>(R.id.newplaylist_description)
-        create?.setOnClickListener {
-            newPlaylistViewModel.createButtonClicked()
-        }
         newplaylist_artwork = view.findViewById<ImageView>(R.id.newplaylist_artwork)
+        var filename = ""
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
                     newplaylist_artwork?.setImageURI(uri)
-                    saveImageToPrivateStorage(uri, newplaylist_name?.text?.toString()!!)
+                    val name = Random.nextInt().toString()
+                    saveImageToPrivateStorage(uri, name)
+                    filename = name
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -99,6 +100,14 @@ class NewPlaylistFragment : Fragment() {
         //по нажатию на кнопку pickImage запускаем photo picker
         newplaylist_artwork?.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+        create?.setOnClickListener {
+            newPlaylistViewModel.createButtonClicked(newplaylist_name?.text?.toString()!!, newplaylist_description?.text?.toString()!!, filename)
+        }
+        newPlaylistViewModel.obsorveSave().observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigateUp()
+            }
         }
     }
 
