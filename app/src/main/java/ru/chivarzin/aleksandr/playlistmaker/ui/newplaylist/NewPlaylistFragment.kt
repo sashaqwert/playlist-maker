@@ -1,13 +1,20 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -17,6 +24,8 @@ import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
+import java.io.File
+import java.io.FileOutputStream
 
 private const val ARG_TRACK = "track"
 
@@ -35,6 +44,7 @@ class NewPlaylistFragment : Fragment() {
     var create: AppCompatButton? = null
     var newplaylist_name: TextInputEditText? = null
     var newplaylist_description: TextInputEditText? = null
+    var newplaylist_artwork: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +85,21 @@ class NewPlaylistFragment : Fragment() {
         create?.setOnClickListener {
             newPlaylistViewModel.createButtonClicked()
         }
+        newplaylist_artwork = view.findViewById<ImageView>(R.id.newplaylist_artwork)
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                //обрабатываем событие выбора пользователем фотографии
+                if (uri != null) {
+                    newplaylist_artwork?.setImageURI(uri)
+                    saveImageToPrivateStorage(uri)
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+        //по нажатию на кнопку pickImage запускаем photo picker
+        newplaylist_artwork?.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     }
 
     override fun onDestroyView() {
@@ -83,6 +108,26 @@ class NewPlaylistFragment : Fragment() {
         create = null
         newplaylist_name = null
         newplaylist_description = null
+        newplaylist_artwork = null
+    }
+
+    private fun saveImageToPrivateStorage(uri: Uri) {
+        //создаём экземпляр класса File, который указывает на нужный каталог
+        val filePath = File(activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        //создаем каталог, если он не создан
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
+        //создаём экземпляр класса File, который указывает на файл внутри каталога
+        val file = File(filePath, "first_cover.jpg")
+        // создаём входящий поток байтов из выбранной картинки
+        val inputStream = activity?.contentResolver?.openInputStream(uri)
+        // создаём исходящий поток байтов в созданный выше файл
+        val outputStream = FileOutputStream(file)
+        // записываем картинку с помощью BitmapFactory
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
     companion object {
