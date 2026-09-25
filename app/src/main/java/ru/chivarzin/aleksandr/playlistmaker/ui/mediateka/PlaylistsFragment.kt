@@ -81,7 +81,7 @@ class PlaylistsFragment : Fragment() {
         error_text?.visibility = View.GONE
         icon_error?.visibility = View.GONE
 
-        val adapter = PlaylistAdapter(playlists)
+        val adapter = PlaylistAdapter(playlists, requireActivity().getString(R.string.treka))
         playlist_list?.adapter = adapter
     }
 
