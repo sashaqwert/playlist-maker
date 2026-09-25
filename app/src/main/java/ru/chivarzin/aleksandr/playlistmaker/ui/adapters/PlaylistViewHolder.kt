@@ -14,7 +14,8 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Playlist, treka: String) {
         playlist_name.setText("${model.name}\n${model.tracks_count} ${treka}")
-        playlist_artwork.setImageURI(model.artwork_path.toUri())
-
+        if (model.artwork_path != "") {
+            playlist_artwork.setImageURI(model.artwork_path.toUri())
+        }
     }
 }
