@@ -63,7 +63,7 @@
     <string name="add_playlist_name">Название*</string>
     <string name="add_playlist_description">Описание</string>
     <string name="create_playlist_button_text">Создать</string>
-    <string name="treka">трека</string>
+    <string name="treka">треков</string>
     <string name="playlist">Плейлист</string>
     <string name="created">создан</string>
 </resources>
