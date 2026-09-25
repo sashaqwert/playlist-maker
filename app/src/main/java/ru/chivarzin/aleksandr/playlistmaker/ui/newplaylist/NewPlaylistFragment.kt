@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -120,6 +121,22 @@ class NewPlaylistFragment : Fragment() {
         newplaylist_name = null
         newplaylist_description = null
         newplaylist_artwork = null
+    }
+
+    private fun showDialog() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(getString(R.string.dialog_title)) // Заголовок диалога
+            .setMessage(getString(R.string.dialog_content)) // Описание диалога
+            .setNeutralButton(activity?.getString(R.string.cancel)) { dialog, which -> // Добавляет кнопку «Отмена»
+                // Действия, выполняемые при нажатии на кнопку «Отмена»
+            }
+            //.setNegativeButton("Нет") { dialog, which -> // Добавляет кнопку «Нет»
+                // Действия, выполняемые при нажатии на кнопку «Нет»
+            //}
+            .setPositiveButton(getString(R.string.compate)) { dialog, which -> // Добавляет кнопку «Да»
+                // Действия, выполняемые при нажатии на кнопку «Да»
+            }
+            .show()
     }
 
     private fun saveImageToPrivateStorage(uri: Uri, filename_without_extension: String): Uri {
