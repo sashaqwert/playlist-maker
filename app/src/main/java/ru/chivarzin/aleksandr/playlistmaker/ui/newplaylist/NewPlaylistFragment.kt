@@ -16,6 +16,7 @@ import android.widget.ImageView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
@@ -91,8 +92,7 @@ class NewPlaylistFragment : Fragment() {
                 if (uri != null) {
                     newplaylist_artwork?.setImageURI(uri)
                     val name = Random.nextInt().toString()
-                    saveImageToPrivateStorage(uri, name)
-                    filename = name
+                    filename = saveImageToPrivateStorage(uri, name).toString()
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -120,7 +120,7 @@ class NewPlaylistFragment : Fragment() {
         newplaylist_artwork = null
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri, filename_without_extension: String) {
+    private fun saveImageToPrivateStorage(uri: Uri, filename_without_extension: String): Uri {
         //создаём экземпляр класса File, который указывает на нужный каталог
         val filePath = File(activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
         //создаем каталог, если он не создан
@@ -137,6 +137,7 @@ class NewPlaylistFragment : Fragment() {
         BitmapFactory
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+        return file.toUri()
     }
 
     companion object {

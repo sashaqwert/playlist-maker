@@ -3,6 +3,7 @@ package ru.chivarzin.aleksandr.playlistmaker.ui.adapters
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
@@ -13,5 +14,7 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(model: Playlist, treka: String) {
         playlist_name.setText("${model.name}\n${model.tracks_count} ${treka}")
+        playlist_artwork.setImageURI(model.artwork_path.toUri())
+
     }
 }
