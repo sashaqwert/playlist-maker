@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
@@ -106,6 +107,7 @@ class NewPlaylistFragment : Fragment() {
         }
         newPlaylistViewModel.obsorveSave().observe(viewLifecycleOwner) {
             if (it) {
+                Toast.makeText(requireActivity().applicationContext, "${getString(R.string.playlist)} ${newplaylist_name?.text.toString()} ${getString(R.string.created)}", Toast.LENGTH_LONG).show()
                 findNavController().navigateUp()
             }
         }
