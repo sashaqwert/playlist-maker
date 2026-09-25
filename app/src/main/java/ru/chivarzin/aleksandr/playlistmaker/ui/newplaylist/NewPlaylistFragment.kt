@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
@@ -44,11 +46,15 @@ class NewPlaylistFragment : Fragment() {
         parametersOf(track) //Как здесь обработать не NULL случай?
     }
 
+    private var backCallback: OnBackPressedCallback? = null
+
     var new_playlist_action_back: ImageView? = null
     var create: AppCompatButton? = null
     var newplaylist_name: TextInputEditText? = null
     var newplaylist_description: TextInputEditText? = null
     var newplaylist_artwork: ImageView? = null
+
+    var filename = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +75,12 @@ class NewPlaylistFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         new_playlist_action_back = view.findViewById<ImageView>(R.id.new_playlist_action_back)
         new_playlist_action_back?.setOnClickListener {
-            findNavController().navigateUp()
+            if (!ne_pusto()) {
+                findNavController().navigateUp()
+            }
+            else {
+                showDialog()
+            }
         }
         create = view.findViewById<AppCompatButton>(R.id.create)
         newplaylist_name = view.findViewById<TextInputEditText>(R.id.newplaylist_name)
@@ -87,7 +98,6 @@ class NewPlaylistFragment : Fragment() {
         })
         newplaylist_description = view.findViewById<TextInputEditText>(R.id.newplaylist_description)
         newplaylist_artwork = view.findViewById<ImageView>(R.id.newplaylist_artwork)
-        var filename = ""
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
@@ -112,6 +122,17 @@ class NewPlaylistFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
+
+        backCallback = requireActivity().onBackPressedDispatcher.addCallback( viewLifecycleOwner, // Привязка к lifecycle фрагмента
+     true // isEnabled - можно включить сразу или позже
+    ) {
+        // Логика обработки кнопки назад
+        if (ne_pusto()) {
+            showDialog()
+        } else {
+            findNavController().navigateUp()
+        }
+        }
     }
 
     override fun onDestroyView() {
@@ -135,8 +156,16 @@ class NewPlaylistFragment : Fragment() {
             //}
             .setPositiveButton(getString(R.string.compate)) { dialog, which -> // Добавляет кнопку «Да»
                 // Действия, выполняемые при нажатии на кнопку «Да»
+                findNavController().navigateUp()
             }
             .show()
+    }
+
+    private fun ne_pusto(): Boolean {
+        if (filename != "") return true
+        if (newplaylist_name?.text.toString() != "") return true
+        if (newplaylist_description?.text.toString() != "") return true
+        return false
     }
 
     private fun saveImageToPrivateStorage(uri: Uri, filename_without_extension: String): Uri {
