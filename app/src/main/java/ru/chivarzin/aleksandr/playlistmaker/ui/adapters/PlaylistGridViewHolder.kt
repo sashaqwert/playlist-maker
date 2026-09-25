@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 
-class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val playlist_artwork = itemView.findViewById<ImageView>(R.id.playlist_artwork)
     val playlist_name = itemView.findViewById<TextView>(R.id.playlist_name)
 
