@@ -3,7 +3,6 @@ package ru.chivarzin.aleksandr.playlistmaker.di
 import android.media.MediaPlayer
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
@@ -35,7 +34,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(get())
     }
 
     viewModel { (track: TrackPresentation?) ->

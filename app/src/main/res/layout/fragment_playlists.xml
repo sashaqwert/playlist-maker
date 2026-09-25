@@ -16,12 +16,28 @@
         android:layout_marginTop="30dp"
         android:text="@string/new_playlist" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:listitem="@layout/view_playlist" />
+
+    <ProgressBar
+        android:id="@+id/playlists_pb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/progressbar"
+        android:layout_marginTop="124dp"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/icon_error"
         style="@style/NotFoundStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="46dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/error_text"
@@ -29,5 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/you_not_created_not_one_playlist" />
+        android:text="@string/you_not_created_not_one_playlist"
+        android:visibility="gone" />
+
 </LinearLayout>
