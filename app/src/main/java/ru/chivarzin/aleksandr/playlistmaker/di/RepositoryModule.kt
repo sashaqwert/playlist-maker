@@ -6,9 +6,11 @@ import ru.chivarzin.aleksandr.playlistmaker.data.converters.PlaylistDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.converters.TrackDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.db.FavoriteRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.db.PlaylistRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.data.filestorage.FileRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.network.TracksRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.SearchHistoryRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.ThemeRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksRepository
@@ -42,5 +44,9 @@ val repositoryModule = module {
 
     single<PlaylistRepository> {
         PlaylistRepositoryImpl(get(), get())
+    }
+
+    single<FileRepository> {
+        FileRepositoryImpl(androidContext())
     }
 }
