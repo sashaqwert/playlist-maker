@@ -104,7 +104,7 @@ class NewPlaylistFragment : Fragment() {
                 if (uri != null) {
                     newplaylist_artwork?.setImageURI(uri)
                     val name = Random.nextInt().toString()
-                    filename = saveImageToPrivateStorage(uri, name).toString()
+                    filename = newPlaylistViewModel.saveFile(uri, name).toString()
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -166,26 +166,6 @@ class NewPlaylistFragment : Fragment() {
         if (newplaylist_name?.text.toString() != "") return true
         if (newplaylist_description?.text.toString() != "") return true
         return false
-    }
-
-    private fun saveImageToPrivateStorage(uri: Uri, filename_without_extension: String): Uri {
-        //создаём экземпляр класса File, который указывает на нужный каталог
-        val filePath = File(activity?.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        //создаем каталог, если он не создан
-        if (!filePath.exists()){
-            filePath.mkdirs()
-        }
-        //создаём экземпляр класса File, который указывает на файл внутри каталога
-        val file = File(filePath, "${filename_without_extension}.jpg")
-        // создаём входящий поток байтов из выбранной картинки
-        val inputStream = activity?.contentResolver?.openInputStream(uri)
-        // создаём исходящий поток байтов в созданный выше файл
-        val outputStream = FileOutputStream(file)
-        // записываем картинку с помощью BitmapFactory
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-        return file.toUri()
     }
 
     companion object {

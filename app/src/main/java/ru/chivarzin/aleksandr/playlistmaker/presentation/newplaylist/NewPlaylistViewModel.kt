@@ -1,15 +1,19 @@
 package ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist
 
+import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class NewPlaylistViewModel(private val track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor): ViewModel() {
+class NewPlaylistViewModel(private val track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor,
+    private val fileInteractor: FileInteractor): ViewModel() {
     private val saveMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
 
@@ -18,5 +22,9 @@ class NewPlaylistViewModel(private val track: TrackPresentation? = null, private
             playlistInteractor.addPlaylist(Playlist(name = playlist_name, description = playlist_description, artwork_path = artwork_name))
             saveMutableLiveData.value = true
         }
+    }
+
+    fun saveFile(sourceUri: Uri, filename_without_extension: String): Uri {
+        return fileInteractor.saveFile(sourceUri.toString(), filename_without_extension).toUri()
     }
 }
