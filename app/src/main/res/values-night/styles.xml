@@ -109,4 +109,7 @@
         <item name="android:background">@color/background</item>
         <item name="tabTextAppearance">@style/AppTabTextAppearance</item>
     </style>
+    <style name="TextInputEditTextStyle">
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

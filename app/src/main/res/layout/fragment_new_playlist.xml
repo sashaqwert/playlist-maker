@@ -37,6 +37,7 @@
         android:src="@drawable/add_artwork_m" />
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -44,12 +45,14 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newplaylist_name"
+            style="@style/TextInputEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_playlist_name" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -57,6 +60,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/newplaylist_description"
+            style="@style/TextInputEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_playlist_description" />
