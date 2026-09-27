@@ -133,6 +133,13 @@ class NewPlaylistFragment : Fragment() {
             findNavController().navigateUp()
         }
         }
+
+        if (savedInstanceState != null) {
+            filename = savedInstanceState.getString("artwork", "")
+            if (filename != "") {
+                newplaylist_artwork?.setImageURI(filename.toUri())
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -166,6 +173,11 @@ class NewPlaylistFragment : Fragment() {
         if (newplaylist_name?.text.toString() != "") return true
         if (newplaylist_description?.text.toString() != "") return true
         return false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("artwork", filename)
     }
 
     companion object {
