@@ -119,7 +119,7 @@ class PlayerFragment : Fragment() {
             bottomSheet.show(parentFragmentManager, PlayerControlsBottomSheet.TAG)
         }
 
-        //playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
+        playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
     }
 
     private fun initialize(track: TrackPresentation) {
