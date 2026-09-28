@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -98,6 +100,18 @@ class PlayerFragment : Fragment() {
         }
         player_favorite?.setOnClickListener {
             playerViewModel.onFavoriteButtonClicked()
+        }
+
+        val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+
+        //  BottomSheetBehavior.from() — вспомогательная функция, позволяющая получить объект BottomSheetBehavior, связанный с контейнером BottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        val player_addto = view.findViewById<ImageView>(R.id.player_addto)
+        player_addto.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
