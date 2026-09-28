@@ -34,6 +34,10 @@ class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: Med
         mediaPlayer.release()
     }
 
+    fun reinit() {
+        uiStateLiveData.postValue(PlayerState.Initial(track))
+    }
+
     fun onPlayButtonClicked() {
         when(playerState) {
             STATE_PLAYING -> pausePlayer()

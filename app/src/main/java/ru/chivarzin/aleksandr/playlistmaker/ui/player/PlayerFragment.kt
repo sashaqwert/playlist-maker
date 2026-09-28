@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,6 +26,7 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 import java.util.Locale
 import kotlin.getValue
 
@@ -54,6 +56,7 @@ class PlayerFragment : Fragment() {
     private var player_release_date: TextView? = null
     private var player_janr: TextView? = null
     private var player_country: TextView? = null
+    private var new_playlist_button: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +116,7 @@ class PlayerFragment : Fragment() {
         player_addto.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+        new_playlist_button = view.findViewById<Button>(R.id.new_playlist_button)
     }
 
     private fun initialize(track: TrackPresentation) {
@@ -150,6 +154,12 @@ class PlayerFragment : Fragment() {
         }
         if (track.country != null) {
             player_country?.setText(track.country)
+        }
+
+        new_playlist_button?.setOnClickListener {
+            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment,
+                NewPlaylistFragment.createArgs(track))
+            playerViewModel.reinit()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -266,6 +276,7 @@ class PlayerFragment : Fragment() {
         player_release_date = null
         player_janr = null
         player_country = null
+        new_playlist_button = null
     }
 
     companion object {
