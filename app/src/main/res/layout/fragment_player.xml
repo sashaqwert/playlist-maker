@@ -259,7 +259,7 @@
         android:id="@+id/standard_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#323233"
+        android:background="@color/background"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
         app:behavior_hideable="true"
@@ -267,22 +267,29 @@
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-<!--        <View-->
-<!--            android:layout_width="40dp"-->
-<!--            android:layout_height="4dp"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:background="@drawable/rounder" />-->
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bottom_sheet_up_down" />
 
         <TextView
+            style="@style/YouSearchedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="Добавить в список просмотра"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="18dp"
+            android:text="@string/add_to_playlist" />
+
+        <Button
+            android:id="@+id/new_playlist_button"
+            style="@style/ButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:text="@string/new_playlist" />
 
     </LinearLayout>
 
