@@ -39,6 +39,7 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
         new_playlist_button.setOnClickListener {
             findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment,
                 NewPlaylistFragment.createArgs(track))
+            dismiss()
         }
     }
 
