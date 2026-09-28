@@ -11,7 +11,7 @@ class PlaylistGridAdapter(private val playlists: List<Playlist>, val treka: Stri
         parent: ViewGroup,
         viewType: Int
     ): PlaylistGridViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_playlist, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_playlist_grid, parent, false)
         return PlaylistGridViewHolder(view)
     }
 
