@@ -56,7 +56,6 @@ class PlayerFragment : Fragment() {
     private var player_release_date: TextView? = null
     private var player_janr: TextView? = null
     private var player_country: TextView? = null
-    private var new_playlist_button: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,11 +113,13 @@ class PlayerFragment : Fragment() {
 
         val player_addto = view.findViewById<ImageView>(R.id.player_addto)
         player_addto.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            //bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            val bottomSheet = PlayerControlsBottomSheet
+                .newInstance(track)
+            bottomSheet.show(parentFragmentManager, PlayerControlsBottomSheet.TAG)
         }
-        new_playlist_button = view.findViewById<Button>(R.id.new_playlist_button)
 
-        playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
+        //playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
     }
 
     private fun initialize(track: TrackPresentation) {
@@ -156,12 +157,6 @@ class PlayerFragment : Fragment() {
         }
         if (track.country != null) {
             player_country?.setText(track.country)
-        }
-
-        new_playlist_button?.setOnClickListener {
-            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment,
-                NewPlaylistFragment.createArgs(track))
-            playerViewModel.reinit()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -278,7 +273,6 @@ class PlayerFragment : Fragment() {
         player_release_date = null
         player_janr = null
         player_country = null
-        new_playlist_button = null
     }
 
     companion object {
