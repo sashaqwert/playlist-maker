@@ -41,7 +41,7 @@
         android:paddingHorizontal="@dimen/search_padding_horizontal"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/view_track"
+        tools:listitem="@layout/view_playlist"
         tools:visibility="visible" />
 
 </LinearLayout>
