@@ -117,6 +117,8 @@ class PlayerFragment : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         new_playlist_button = view.findViewById<Button>(R.id.new_playlist_button)
+
+        playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
     }
 
     private fun initialize(track: TrackPresentation) {
