@@ -61,6 +61,9 @@ class NewPlaylistFragment : Fragment() {
         arguments?.let {
             track = it.getParcelable(ARG_TRACK, TrackPresentation::class.java)
         }
+        if (track != null) {
+            newPlaylistViewModel.set_track(track)
+        }
     }
 
     override fun onCreateView(

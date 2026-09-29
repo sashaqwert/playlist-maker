@@ -12,19 +12,27 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class NewPlaylistViewModel(private val track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor,
-    private val fileInteractor: FileInteractor): ViewModel() {
+class NewPlaylistViewModel(private var track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor,
+                           private val fileInteractor: FileInteractor): ViewModel() {
     private val saveMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
 
     fun createButtonClicked(playlist_name: String, playlist_description: String, artwork_name: String) {
         viewModelScope.launch {
-            playlistInteractor.addPlaylist(Playlist(name = playlist_name, description = playlist_description, artwork_path = artwork_name))
+            val pl = Playlist(name = playlist_name, description = playlist_description, artwork_path = artwork_name)
+            if (track != null) {
+                pl.add_track(track!!.toTrackDomain())
+            }
+            playlistInteractor.addPlaylist(pl)
             saveMutableLiveData.value = true
         }
     }
 
     fun saveFile(sourceUri: Uri, filename_without_extension: String): Uri {
         return fileInteractor.saveFile(sourceUri.toString(), filename_without_extension).toUri()
+    }
+
+    fun set_track(track: TrackPresentation?) {
+        this.track = track
     }
 }
