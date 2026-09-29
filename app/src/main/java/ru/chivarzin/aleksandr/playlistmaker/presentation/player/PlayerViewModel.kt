@@ -48,20 +48,14 @@ class PlayerViewModel(private val track: TrackPresentation, val mediaPlayer: Med
     fun onFavoriteButtonClicked() {
         viewModelScope.launch {
             if (track.isFavorite) {
-                favoriteInteractor.removeFromFavorite(toTrackDomain(track))
+                favoriteInteractor.removeFromFavorite(track.toTrackDomain())
                 track.isFavorite = false
             } else {
-                favoriteInteractor.addToFavorite(toTrackDomain(track))
+                favoriteInteractor.addToFavorite(track.toTrackDomain())
                 track.isFavorite = true
             }
             uiStateLiveData.value = PlayerState.Initial(track)
         }
-    }
-
-    private fun toTrackDomain(track: TrackPresentation): Track {
-        return Track(track.trackId, track.trackName, track.artistName,
-            track.trackTimeMillis, track.artworkUrl100, track.collectionName, track.releaseDate,
-            track.primaryGenreName, track.country, track.previewUrl, track.isFavorite)
     }
 
     private fun preparePlayer() {

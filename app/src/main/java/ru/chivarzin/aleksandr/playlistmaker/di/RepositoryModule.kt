@@ -39,7 +39,7 @@ val repositoryModule = module {
     }
 
     single {
-        PlaylistDbConverter()
+        PlaylistDbConverter(get())
     }
 
     single<PlaylistRepository> {

@@ -74,6 +74,12 @@ data class TrackPresentation (
         return 0
     }
 
+    fun toTrackDomain(): Track {
+        return Track(trackId, trackName, artistName,
+            trackTimeMillis, artworkUrl100, collectionName, releaseDate,
+            primaryGenreName, country, previewUrl, isFavorite)
+    }
+
     fun getCoverArtwork() : String? {
         if (artworkUrl100 != null) {
             return artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
