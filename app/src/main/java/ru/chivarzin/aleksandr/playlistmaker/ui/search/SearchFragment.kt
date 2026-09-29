@@ -28,7 +28,7 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnItemClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
@@ -167,7 +167,7 @@ class SearchFragment : Fragment() {
     }
 
     fun show_content(tracks: List<TrackPresentation>) {
-        val adapter = TrackAdapter(ArrayList(tracks), object : OnItemClickCallback {
+        val adapter = TrackAdapter(ArrayList(tracks), object : OnTrackClickCallback {
             override fun callback(track: TrackPresentation) {
                 if (clickDebounce()) {
                     searchViewModel.addToHistory(track)
@@ -239,7 +239,7 @@ class SearchFragment : Fragment() {
 
     fun showSearchHistory(tracks: List<TrackPresentation>) {
         val adapter = TrackAdapter(ArrayList<TrackPresentation>(tracks), object :
-            OnItemClickCallback {
+            OnTrackClickCallback {
             override fun callback(track: TrackPresentation) {
                 if (clickDebounce()) {
                     searchViewModel.addToHistory(track)

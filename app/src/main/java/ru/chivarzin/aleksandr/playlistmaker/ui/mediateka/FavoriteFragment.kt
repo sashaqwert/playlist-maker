@@ -18,7 +18,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnItemClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
@@ -86,7 +86,7 @@ class FavoriteFragment : Fragment() {
         error_text?.visibility = View.GONE
 
         val adapter =
-            TrackAdapter(ArrayList<TrackPresentation>(tracks), object : OnItemClickCallback {
+            TrackAdapter(ArrayList<TrackPresentation>(tracks), object : OnTrackClickCallback {
                 override fun callback(track: TrackPresentation) {
                     if (clickDebounce()) {
                         findNavController().navigate(
