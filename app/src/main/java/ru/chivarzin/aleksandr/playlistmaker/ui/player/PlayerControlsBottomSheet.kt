@@ -85,6 +85,7 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         pb = null
+        playlists?.adapter = null
         playlists = null
     }
 
