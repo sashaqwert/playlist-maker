@@ -5,14 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.player.DialogState
+import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 
 class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
     private lateinit var track: TrackPresentation
+    private val playerControlsBottomSheetViewModel: PlayerControlsBottomSheetViewModel by viewModel {
+        parametersOf(track)
+    }
+    private var pb: ProgressBar? = null
+    private var playlists: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +54,38 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
                 NewPlaylistFragment.createArgs(track))
             dismiss()
         }
+        pb = view.findViewById<ProgressBar>(R.id.pb)
+        playlists = view.findViewById<RecyclerView>(R.id.playlists)
+        playerControlsBottomSheetViewModel.fillData()
+        playerControlsBottomSheetViewModel.observeUiState().observe(viewLifecycleOwner) {
+            render(it)
+        }
+    }
+
+    fun show_loading() {
+        pb?.visibility = View.VISIBLE
+        playlists?.visibility = View.GONE
+    }
+
+    fun show_content(playlists_: List<Playlist>) {
+        pb?.visibility = View.GONE
+        playlists?.visibility = View.VISIBLE
+
+        val adapter = PlaylistAdapter(playlists_)
+        playlists?.adapter = adapter
+    }
+
+    fun render(state: DialogState) {
+        when(state) {
+            is DialogState.Loading -> show_loading()
+            is DialogState.Content -> show_content(state.playlists)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        pb = null
+        playlists = null
     }
 
     companion object {

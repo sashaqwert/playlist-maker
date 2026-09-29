@@ -7,6 +7,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteViewM
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
+import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
@@ -39,5 +40,9 @@ val viewModelModule = module {
 
     viewModel { (track: TrackPresentation?) ->
         NewPlaylistViewModel(track, get(), get())
+    }
+
+    viewModel { (track: TrackPresentation) ->
+        PlayerControlsBottomSheetViewModel(track, get())
     }
 }
