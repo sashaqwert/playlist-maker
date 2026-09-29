@@ -22,11 +22,14 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 import java.io.File
@@ -105,7 +108,11 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
-                    newplaylist_artwork?.setImageURI(uri)
+                    Glide.with(this)
+                        .load(uri)
+                        .fitCenter()
+                        .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
+                        .into(newplaylist_artwork!!)
                     val name = Random.nextInt().toString()
                     filename = newPlaylistViewModel.saveFile(uri, name).toString()
                 } else {
@@ -140,7 +147,11 @@ class NewPlaylistFragment : Fragment() {
         if (savedInstanceState != null) {
             filename = savedInstanceState.getString("artwork", "")
             if (filename != "") {
-                newplaylist_artwork?.setImageURI(filename.toUri())
+                Glide.with(this)
+                    .load(filename.toUri())
+                    .fitCenter()
+                    .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
+                    .into(newplaylist_artwork!!)
             }
         }
     }
