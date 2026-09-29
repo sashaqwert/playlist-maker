@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 
-class PlaylistAdapter(private val playlists: List<Playlist>): RecyclerView.Adapter<PlaylistViewHolder>() {
+class PlaylistAdapter(private val playlists: List<Playlist>,  private val callback: OnPlaylistClickCallback): RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -19,7 +19,7 @@ class PlaylistAdapter(private val playlists: List<Playlist>): RecyclerView.Adapt
         holder: PlaylistViewHolder,
         position: Int
     ) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position], callback)
     }
 
     override fun getItemCount(): Int {

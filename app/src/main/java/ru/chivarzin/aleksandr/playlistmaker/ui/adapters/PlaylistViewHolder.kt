@@ -16,7 +16,7 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val playlist_name = itemView.findViewById<TextView>(R.id.playlist_name)
     val tracks_count = itemView.findViewById<TextView>(R.id.tracks_count)
 
-    fun bind(model: Playlist) {
+    fun bind(model: Playlist, callback: OnPlaylistClickCallback) {
         Glide.with(itemView)
             .load(model.artwork_path.toUri())
             .fitCenter()
@@ -25,5 +25,6 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(artwork)
         playlist_name.setText(model.name)
         tracks_count.setText("${model.tracks_count} ${itemView.context.getString(R.string.treka)}")
+        callback.callback(model)
     }
 }

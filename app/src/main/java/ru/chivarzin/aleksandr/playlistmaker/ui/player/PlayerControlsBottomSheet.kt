@@ -16,6 +16,7 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.DialogState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnPlaylistClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 
@@ -71,7 +72,11 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
         pb?.visibility = View.GONE
         playlists?.visibility = View.VISIBLE
 
-        val adapter = PlaylistAdapter(playlists_)
+        val adapter = PlaylistAdapter(playlists_, object : OnPlaylistClickCallback {
+            override fun callback(playlist: Playlist) {
+                playerControlsBottomSheetViewModel.add_track_to_playlist(playlist)
+            }
+        })
         playlists?.adapter = adapter
     }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
 class PlayerControlsBottomSheetViewModel(private val track: TrackPresentation, private val playlistInteractor: PlaylistInteractor): ViewModel() {
@@ -17,6 +18,15 @@ class PlayerControlsBottomSheetViewModel(private val track: TrackPresentation, p
         viewModelScope.launch {
             playlistInteractor.getPlaylists().collect {
                 uiStateLiveData.value = DialogState.Content(it)
+            }
+        }
+    }
+
+    fun add_track_to_playlist(playlist: Playlist) {
+        val _is = playlist.add_track(track.toTrackDomain())
+        if (_is) {
+            viewModelScope.launch {
+                playlistInteractor.addPlaylist(playlist)
             }
         }
     }
