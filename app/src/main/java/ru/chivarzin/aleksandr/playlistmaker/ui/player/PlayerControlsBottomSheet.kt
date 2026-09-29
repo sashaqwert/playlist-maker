@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -80,10 +81,21 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
         playlists?.adapter = adapter
     }
 
+    fun added(playlist_name: String) {
+        Toast.makeText(activity?.applicationContext, "${activity?.getString(R.string.added_to_playlist)} ${playlist_name}", Toast.LENGTH_LONG).show()
+        dismiss()
+    }
+
+    fun already_added(playlist_name: String) {
+        Toast.makeText(activity?.applicationContext, "${activity?.getString(R.string.already_added_to_playlist)} ${playlist_name}", Toast.LENGTH_LONG).show()
+    }
+
     fun render(state: DialogState) {
         when(state) {
             is DialogState.Loading -> show_loading()
             is DialogState.Content -> show_content(state.playlists)
+            is DialogState.Added -> added(state.playlist_name)
+            is DialogState.AlreadyAdded -> already_added(state.playlist_name)
         }
     }
 

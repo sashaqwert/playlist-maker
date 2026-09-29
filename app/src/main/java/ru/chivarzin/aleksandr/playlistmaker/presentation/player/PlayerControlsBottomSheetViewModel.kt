@@ -27,7 +27,10 @@ class PlayerControlsBottomSheetViewModel(private val track: TrackPresentation, p
         if (_is) {
             viewModelScope.launch {
                 playlistInteractor.addPlaylist(playlist)
+                uiStateLiveData.value = DialogState.Added(playlist.name)
             }
+        } else {
+            uiStateLiveData.value = DialogState.AlreadyAdded(playlist.name)
         }
     }
 }
