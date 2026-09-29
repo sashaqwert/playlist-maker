@@ -25,6 +25,8 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(artwork)
         playlist_name.setText(model.name)
         tracks_count.setText("${model.tracks_count} ${itemView.context.getString(R.string.treka)}")
-        callback.callback(model)
+        itemView.setOnClickListener {
+            callback.callback(model)
+        }
     }
 }
