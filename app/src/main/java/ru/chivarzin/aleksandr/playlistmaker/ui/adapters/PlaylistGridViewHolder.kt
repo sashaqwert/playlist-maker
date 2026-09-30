@@ -23,6 +23,12 @@ class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
                 .centerCrop()
                 .transform(RoundedCorners(dpToPx(8.0f, itemView.context)))
                 .into(playlist_artwork)
+        } else {
+            Glide.with(itemView)
+                .load(R.drawable.artwork_default)
+                .centerCrop()
+                .transform(RoundedCorners(dpToPx(8.0f, itemView.context)))
+                .into(playlist_artwork)
         }
     }
 }

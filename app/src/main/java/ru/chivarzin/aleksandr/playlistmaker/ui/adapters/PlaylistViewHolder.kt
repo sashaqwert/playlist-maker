@@ -17,12 +17,21 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val tracks_count = itemView.findViewById<TextView>(R.id.tracks_count)
 
     fun bind(model: Playlist, callback: OnPlaylistClickCallback) {
-        Glide.with(itemView)
-            .load(model.artwork_path.toUri())
-            .centerCrop()
-            .placeholder(R.drawable.artwork_default)
-            .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
-            .into(artwork)
+        if (model.artwork_path != "") {
+            Glide.with(itemView)
+                .load(model.artwork_path.toUri())
+                .centerCrop()
+                .placeholder(R.drawable.artwork_default)
+                .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
+                .into(artwork)
+        }
+        else {
+            Glide.with(itemView)
+                .load(R.drawable.artwork_default)
+                .centerCrop()
+                .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
+                .into(artwork)
+        }
         playlist_name.setText(model.name)
         tracks_count.setText("${model.tracks_count} ${itemView.context.getString(R.string.treka)}")
         itemView.setOnClickListener {
