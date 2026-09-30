@@ -21,7 +21,9 @@ class NewPlaylistViewModel(private var track: TrackPresentation? = null, private
         viewModelScope.launch {
             val pl = Playlist(name = playlist_name, description = playlist_description, artwork_path = artwork_name)
             if (track != null) {
-                pl.add_track(track!!.toTrackDomain())
+                if (ADD_TRACK_TO_NEW_PLAYLIST) {
+                    pl.add_track(track!!.toTrackDomain())
+                }
             }
             playlistInteractor.addPlaylist(pl)
             saveMutableLiveData.value = true
@@ -34,5 +36,9 @@ class NewPlaylistViewModel(private var track: TrackPresentation? = null, private
 
     fun set_track(track: TrackPresentation?) {
         this.track = track
+    }
+
+    companion object {
+        private  const val ADD_TRACK_TO_NEW_PLAYLIST = false
     }
 }
