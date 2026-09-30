@@ -110,7 +110,7 @@ class NewPlaylistFragment : Fragment() {
                 if (uri != null) {
                     Glide.with(this)
                         .load(uri)
-                        .fitCenter()
+                        .centerCrop()
                         .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
                         .into(newplaylist_artwork!!)
                     val name = Random.nextInt().toString()
@@ -149,7 +149,7 @@ class NewPlaylistFragment : Fragment() {
             if (filename != "") {
                 Glide.with(this)
                     .load(filename.toUri())
-                    .fitCenter()
+                    .centerCrop()
                     .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
                     .into(newplaylist_artwork!!)
             }

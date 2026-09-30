@@ -19,7 +19,7 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(model: Playlist, callback: OnPlaylistClickCallback) {
         Glide.with(itemView)
             .load(model.artwork_path.toUri())
-            .fitCenter()
+            .centerCrop()
             .placeholder(R.drawable.artwork_default)
             .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
             .into(artwork)

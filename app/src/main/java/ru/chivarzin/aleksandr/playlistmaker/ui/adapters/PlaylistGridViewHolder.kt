@@ -5,8 +5,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 
 class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val playlist_artwork = itemView.findViewById<ImageView>(R.id.playlist_artwork)
@@ -15,7 +18,11 @@ class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
     fun bind(model: Playlist, treka: String) {
         playlist_name.setText("${model.name}\n${model.tracks_count} ${treka}")
         if (model.artwork_path != "") {
-            playlist_artwork.setImageURI(model.artwork_path.toUri())
+            Glide.with(itemView)
+                .load(model.artwork_path.toUri())
+                .centerCrop()
+                .transform(RoundedCorners(dpToPx(8.0f, itemView.context)))
+                .into(playlist_artwork)
         }
     }
 }
