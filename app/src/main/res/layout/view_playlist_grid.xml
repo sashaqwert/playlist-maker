@@ -13,7 +13,8 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:backgroundTint="@color/background"
-        android:paddingHorizontal="13dp">
+        android:paddingHorizontal="13dp"
+        android:paddingVertical="10dp">
 
 
         <ImageView
