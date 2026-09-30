@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/playlist_artwork"
             android:layout_width="match_parent"
-            android:layout_height="103dp"
+            android:layout_height="136dp"
             android:scaleType="centerCrop"
             card_view:srcCompat="@drawable/artwork_default" />
 
@@ -27,8 +27,7 @@
             android:id="@+id/playlist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="33dp"
             tools:text="The best playlist\n123 трека" />
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>
