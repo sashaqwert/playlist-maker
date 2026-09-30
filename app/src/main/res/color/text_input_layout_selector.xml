@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет рамки, когда TextInputLayout в фокусе -->
+    <item android:state_focused="true" android:color="@color/white" />
+    <!-- Цвет рамки, когда поле задизейблено (опционально) -->
+    <item android:state_enabled="false" android:color="@color/white" />
+    <!-- Цвет рамки по умолчанию (обычное состояние) -->
+    <item android:color="@color/white" />
+</selector>
