@@ -23,6 +23,7 @@ import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
@@ -110,8 +111,7 @@ class NewPlaylistFragment : Fragment() {
                 if (uri != null) {
                     Glide.with(this)
                         .load(uri)
-                        .centerCrop()
-                        .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
+                        .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
                         .into(newplaylist_artwork!!)
                     val name = Random.nextInt().toString()
                     filename = newPlaylistViewModel.saveFile(uri, name).toString()
@@ -149,8 +149,7 @@ class NewPlaylistFragment : Fragment() {
             if (filename != "") {
                 Glide.with(this)
                     .load(filename.toUri())
-                    .centerCrop()
-                    .transform(RoundedCorners(dpToPx(8.0f, requireActivity())))
+                    .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
                     .into(newplaylist_artwork!!)
             }
         }

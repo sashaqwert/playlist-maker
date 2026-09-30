@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
@@ -20,9 +21,8 @@ class PlaylistViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         if (model.artwork_path != "") {
             Glide.with(itemView)
                 .load(model.artwork_path.toUri())
-                .centerCrop()
                 .placeholder(R.drawable.artwork_default)
-                .transform(RoundedCorners(dpToPx(2.0f, itemView.context)))
+                .transform(CenterCrop(), RoundedCorners(dpToPx(2.0f, itemView.context)))
                 .into(artwork)
         }
         else {
