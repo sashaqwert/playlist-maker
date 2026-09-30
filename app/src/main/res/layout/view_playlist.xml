@@ -11,7 +11,7 @@
         android:id="@+id/artwork"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:srcCompat="@drawable/artwork_default" />
 
     <LinearLayout

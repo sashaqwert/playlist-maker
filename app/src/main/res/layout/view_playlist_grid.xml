@@ -20,7 +20,7 @@
             android:id="@+id/playlist_artwork"
             android:layout_width="match_parent"
             android:layout_height="103dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             card_view:srcCompat="@drawable/artwork_default" />
 
         <TextView
