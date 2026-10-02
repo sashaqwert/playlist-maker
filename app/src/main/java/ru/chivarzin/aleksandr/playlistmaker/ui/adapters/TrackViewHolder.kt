@@ -1,4 +1,4 @@
-package ru.chivarzin.aleksandr.playlistmaker.ui.search
+package ru.chivarzin.aleksandr.playlistmaker.ui.adapters
 
 import android.icu.text.SimpleDateFormat
 import android.view.View
@@ -18,7 +18,7 @@ class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
     val artist_name = itemView.findViewById<TextView>(R.id.artist_name)
     val track_time = itemView.findViewById<TextView>(R.id.track_time)
 
-    fun bind(model: TrackPresentation, callback: OnItemClickCallback) {
+    fun bind(model: TrackPresentation, callback: OnTrackClickCallback) {
         if (model.trackName != null) {
             track_name.setText(model.trackName)
         } else {

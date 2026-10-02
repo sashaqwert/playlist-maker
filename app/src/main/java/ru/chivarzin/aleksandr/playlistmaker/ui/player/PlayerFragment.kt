@@ -6,13 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,6 +26,7 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 import java.util.Locale
 import kotlin.getValue
 
@@ -99,6 +103,23 @@ class PlayerFragment : Fragment() {
         player_favorite?.setOnClickListener {
             playerViewModel.onFavoriteButtonClicked()
         }
+
+        val bottomSheetContainer = view.findViewById<LinearLayout>(R.id.standard_bottom_sheet)
+
+        //  BottomSheetBehavior.from() — вспомогательная функция, позволяющая получить объект BottomSheetBehavior, связанный с контейнером BottomSheet
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer)
+
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        val player_addto = view.findViewById<ImageView>(R.id.player_addto)
+        player_addto.setOnClickListener {
+            //bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            val bottomSheet = PlayerControlsBottomSheet
+                .newInstance(track)
+            bottomSheet.show(parentFragmentManager, PlayerControlsBottomSheet.TAG)
+        }
+
+        playerViewModel.reinit() //bugfix нет информации о треке после возврата с экрана создания плейлиста)
     }
 
     private fun initialize(track: TrackPresentation) {

@@ -1,11 +1,15 @@
 package ru.chivarzin.aleksandr.playlistmaker.di
 
 import org.koin.dsl.module
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.ThemeInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.FavoriteInteractorImpl
+import ru.chivarzin.aleksandr.playlistmaker.domain.impl.FileInteractorImpl
+import ru.chivarzin.aleksandr.playlistmaker.domain.impl.PlaylistInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.SearchHistoryInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.ThemeInteractorImpl
 import ru.chivarzin.aleksandr.playlistmaker.domain.impl.TracksInteractorImpl
@@ -26,5 +30,13 @@ val interactorModule = module {
 
     single<FavoriteInteractor> {
         FavoriteInteractorImpl(get())
+    }
+
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
+    }
+
+    single<FileInteractor> {
+        FileInteractorImpl(get())
     }
 }

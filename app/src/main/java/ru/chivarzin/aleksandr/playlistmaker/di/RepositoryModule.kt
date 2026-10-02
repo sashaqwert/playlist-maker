@@ -2,15 +2,20 @@ package ru.chivarzin.aleksandr.playlistmaker.di
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import ru.chivarzin.aleksandr.playlistmaker.data.converters.PlaylistDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.converters.TrackDbConverter
 import ru.chivarzin.aleksandr.playlistmaker.data.db.FavoriteRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.data.db.PlaylistRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.data.filestorage.FileRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.network.TracksRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.SearchHistoryRepositoryImpl
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.SearchHistoryRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.ThemeRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.TracksRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.FavoriteRepository
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistRepository
 
 val repositoryModule = module {
     single<TracksRepository> {
@@ -31,5 +36,17 @@ val repositoryModule = module {
 
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(get(), get())
+    }
+
+    single {
+        PlaylistDbConverter(get())
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get())
+    }
+
+    single<FileRepository> {
+        FileRepositoryImpl(androidContext())
     }
 }

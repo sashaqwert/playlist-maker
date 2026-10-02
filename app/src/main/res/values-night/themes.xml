@@ -1,7 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.PlaylistMaker.BottomSheetDialog</item>
+    </style>
+
+    <style name="ThemeOverlay.PlaylistMaker.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.PlaylistMaker.BottomSheet</item>
+    </style>
+
+    <style name="Widget.PlaylistMaker.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/background</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.PlaylistMaker.BottomSheet</item>
+        <item name="shouldRemoveExpandedCorners">false</item>
+    </style>
+
+    <!-- Заменяет родительский overlay целиком, поэтому нижние углы обнуляем явно -->
+    <style name="ShapeAppearanceOverlay.PlaylistMaker.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 </resources>

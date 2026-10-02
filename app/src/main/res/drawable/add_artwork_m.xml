@@ -1,0 +1,23 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="250dp"
+        android:height="250dp"
+        android:gravity="center">
+
+        <shape
+            android:shape="rectangle">
+
+            <stroke
+                android:color="#AEAFB4"
+                android:width="1dp"
+                android:dashWidth="16dp"
+                android:dashGap="16dp"/>
+
+            <corners android:radius="10dp"/>
+        </shape>
+    </item>
+
+    <item
+        android:drawable="@drawable/add_artwork_center"
+        android:gravity="center"/>
+</layer-list>

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
+import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import ru.chivarzin.aleksandr.playlistmaker.data.storage.ThemeRepositoryImpl
@@ -29,6 +30,7 @@ class App : Application() {
             modules(dataModule, repositoryModule, interactorModule, viewModelModule)
         }
         switchTheme(ThemeInteractorImpl(ThemeRepositoryImpl(this)).getTheme())
+        PermissionRequester.initialize(applicationContext)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

@@ -1,0 +1,215 @@
+package ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Bundle
+import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
+import androidx.core.net.toUri
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import ru.chivarzin.aleksandr.playlistmaker.R
+import ru.chivarzin.aleksandr.playlistmaker.dpToPx
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
+import java.io.File
+import java.io.FileOutputStream
+import kotlin.random.Random
+
+private const val ARG_TRACK = "track"
+
+/**
+ * A simple [Fragment] subclass.
+ * Use the [NewPlaylistFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class NewPlaylistFragment : Fragment() {
+    private var track: TrackPresentation? = null
+    private val newPlaylistViewModel: NewPlaylistViewModel by viewModel {
+        parametersOf(track) //Как здесь обработать не NULL случай?
+    }
+
+    private var backCallback: OnBackPressedCallback? = null
+
+    var new_playlist_action_back: ImageView? = null
+    var create: AppCompatButton? = null
+    var newplaylist_name: TextInputEditText? = null
+    var newplaylist_description: TextInputEditText? = null
+    var newplaylist_artwork: ImageView? = null
+
+    var filename = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            track = it.getParcelable(ARG_TRACK, TrackPresentation::class.java)
+        }
+        if (track != null) {
+            newPlaylistViewModel.set_track(track)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_new_playlist, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        new_playlist_action_back = view.findViewById<ImageView>(R.id.new_playlist_action_back)
+        new_playlist_action_back?.setOnClickListener {
+            if (!ne_pusto()) {
+                findNavController().navigateUp()
+            }
+            else {
+                showDialog()
+            }
+        }
+        create = view.findViewById<AppCompatButton>(R.id.create)
+        newplaylist_name = view.findViewById<TextInputEditText>(R.id.newplaylist_name)
+        newplaylist_name?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val str = s.toString()
+                create?.isEnabled = str != "" && !str.isBlank()
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+        newplaylist_description = view.findViewById<TextInputEditText>(R.id.newplaylist_description)
+        newplaylist_artwork = view.findViewById<ImageView>(R.id.newplaylist_artwork)
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                //обрабатываем событие выбора пользователем фотографии
+                if (uri != null) {
+                    Glide.with(this)
+                        .load(uri)
+                        .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
+                        .into(newplaylist_artwork!!)
+                    val name = Random.nextInt().toString()
+                    filename = newPlaylistViewModel.saveFile(uri, name).toString()
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+        //по нажатию на кнопку pickImage запускаем photo picker
+        newplaylist_artwork?.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+        create?.setOnClickListener {
+            newPlaylistViewModel.createButtonClicked(newplaylist_name?.text?.toString()!!, newplaylist_description?.text?.toString()!!, filename)
+        }
+        newPlaylistViewModel.obsorveSave().observe(viewLifecycleOwner) {
+            if (it) {
+                Toast.makeText(requireActivity().applicationContext, "${getString(R.string.playlist)} ${newplaylist_name?.text.toString()} ${getString(R.string.created)}", Toast.LENGTH_LONG).show()
+                findNavController().navigateUp()
+            }
+        }
+
+        backCallback = requireActivity().onBackPressedDispatcher.addCallback( viewLifecycleOwner, // Привязка к lifecycle фрагмента
+     true // isEnabled - можно включить сразу или позже
+    ) {
+        // Логика обработки кнопки назад
+        if (ne_pusto()) {
+            showDialog()
+        } else {
+            findNavController().navigateUp()
+        }
+        }
+
+        if (savedInstanceState != null) {
+            filename = savedInstanceState.getString("artwork", "")
+            if (filename != "") {
+                Glide.with(this)
+                    .load(filename.toUri())
+                    .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
+                    .into(newplaylist_artwork!!)
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        new_playlist_action_back = null
+        create = null
+        newplaylist_name = null
+        newplaylist_description = null
+        newplaylist_artwork = null
+    }
+
+    private fun showDialog() {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(getString(R.string.dialog_title)) // Заголовок диалога
+            .setMessage(getString(R.string.dialog_content)) // Описание диалога
+            .setNeutralButton(activity?.getString(R.string.cancel)) { dialog, which -> // Добавляет кнопку «Отмена»
+                // Действия, выполняемые при нажатии на кнопку «Отмена»
+            }
+            //.setNegativeButton("Нет") { dialog, which -> // Добавляет кнопку «Нет»
+                // Действия, выполняемые при нажатии на кнопку «Нет»
+            //}
+            .setPositiveButton(getString(R.string.compate)) { dialog, which -> // Добавляет кнопку «Да»
+                // Действия, выполняемые при нажатии на кнопку «Да»
+                findNavController().navigateUp()
+            }
+            .show()
+    }
+
+    private fun ne_pusto(): Boolean {
+        if (filename != "") return true
+        if (newplaylist_name?.text.toString() != "") return true
+        if (newplaylist_description?.text.toString() != "") return true
+        return false
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("artwork", filename)
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param track Parameter 1.
+         * @return A new instance of fragment NewPlaylistFragment.
+         */
+        @JvmStatic
+        fun newInstance(track: TrackPresentation?) =
+            NewPlaylistFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_TRACK, track)
+                }
+            }
+
+        fun createArgs(track: TrackPresentation): Bundle =
+            bundleOf(ARG_TRACK to track)
+    }
+}
