@@ -9,6 +9,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentatio
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
+import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNodel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
 
@@ -44,5 +45,9 @@ val viewModelModule = module {
 
     viewModel { (track: TrackPresentation) ->
         PlayerControlsBottomSheetViewModel(track, get())
+    }
+
+    viewModel {
+        PlaylistViewNodel()
     }
 }
