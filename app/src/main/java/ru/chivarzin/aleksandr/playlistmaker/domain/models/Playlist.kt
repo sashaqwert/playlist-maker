@@ -4,12 +4,12 @@ data class Playlist(val id: Long = 0L,
                     val name: String,
                     val description: String,
                     val artwork_path: String,
-                    val tracks: MutableList<Long> = mutableListOf<Long>(),
+                    val tracks: MutableList<Track> = mutableListOf<Track>(),
                     var tracks_count : Int = 0)
 {
     fun add_track(track: Track): Boolean {
-        if (track.trackId !in tracks) {
-            tracks.add(track.trackId)
+        if (track !in tracks) {
+            tracks.add(track)
             tracks_count += 1
             return true
         }
