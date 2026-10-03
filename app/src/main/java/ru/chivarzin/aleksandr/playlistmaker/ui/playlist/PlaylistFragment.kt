@@ -5,7 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
@@ -23,6 +27,8 @@ private const val ARG_PLAYLIST = "playlist"
 class PlaylistFragment : Fragment() {
     private var playlist: PlaylistPresentation? = null
     private val playlistViewModel: PlaylistViewNodel by viewModel()
+    private var playlist_name: TextView? = null
+    private var playlist_artwork: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +48,24 @@ class PlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        playlist_name = view.findViewById<TextView>(R.id.playlist_name)
+        playlist_artwork = view.findViewById<ImageView>(R.id.playlist_artwork)
+
+        playlistViewModel.observeState().observe(viewLifecycleOwner) {
+            playlist_name?.setText(it.name)
+            if (it.artwork_path != "") {
+                Glide.with(this)
+                    .load(it.artwork_path.toUri())
+                    .centerCrop()
+                    .into(playlist_artwork!!)
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        playlist_name = null
+        playlist_artwork = null
     }
 
     companion object {
