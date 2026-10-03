@@ -74,4 +74,5 @@
     <string name="added_to_playlist">Добавлено в плейлист</string>
     <string name="already_added_to_playlist">Трек уже добавлен в плейлист</string>
     <string name="playlist_name_tools">The best playlist</string>
+    <string name="playlist_description_tools">Super music 1765</string>
 </resources>

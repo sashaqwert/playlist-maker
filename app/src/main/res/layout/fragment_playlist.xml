@@ -8,7 +8,7 @@
     tools:context=".ui.playlist.PlaylistFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/playlist_artwork"
         android:layout_width="0dp"
         android:layout_height="360dp"
         android:scaleType="centerCrop"
@@ -33,7 +33,7 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintTop_toBottomOf="@+id/playlist_artwork">
 
         <TextView
             android:id="@+id/playlist_name"
@@ -41,5 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@string/playlist_name_tools" />
+
+        <TextView
+            android:id="@+id/playlist_description"
+            style="@style/PlaylistDescriptionStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:text="@string/playlist_description_tools" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
