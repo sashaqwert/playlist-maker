@@ -30,6 +30,8 @@ class PlaylistFragment : Fragment() {
     private var playlist_name: TextView? = null
     private var playlist_artwork: ImageView? = null
     private var playlist_description: TextView? = null
+    private var playlist_time: TextView? = null
+    private var playlist_track_count: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,8 @@ class PlaylistFragment : Fragment() {
         playlist_name = view.findViewById<TextView>(R.id.playlist_name)
         playlist_description = view.findViewById<TextView>(R.id.playlist_description)
         playlist_artwork = view.findViewById<ImageView>(R.id.playlist_artwork)
+        playlist_time = view.findViewById<TextView>(R.id.playlist_time)
+        playlist_track_count = view.findViewById<TextView>(R.id.playlist_track_count)
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             playlist_name?.setText(it.name)
@@ -62,6 +66,8 @@ class PlaylistFragment : Fragment() {
                     .centerCrop()
                     .into(playlist_artwork!!)
             }
+            playlist_time?.setText("${it.total_time()} ${getString(R.string.minut)}")
+            playlist_track_count?.setText("${it.tracks_count} ${getString(R.string.treka)}")
         }
     }
 
@@ -70,6 +76,8 @@ class PlaylistFragment : Fragment() {
         playlist_name = null
         playlist_description = null
         playlist_artwork = null
+        playlist_time = null
+        playlist_track_count = null
     }
 
     companion object {

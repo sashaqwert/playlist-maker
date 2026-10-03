@@ -77,4 +77,5 @@
     <string name="playlist_description_tools">Super music 1765</string>
     <string name="playlist_time_tools">555 минут</string>
     <string name="playlist_track_count_tools">10 треков</string>
+    <string name="minut">минут</string>
 </resources>
