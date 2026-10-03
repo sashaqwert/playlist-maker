@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
@@ -51,6 +52,10 @@ class PlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val playlist_action_back = view.findViewById<ImageView>(R.id.playlist_action_back)
+        playlist_action_back.setOnClickListener {
+            findNavController().navigateUp()
+        }
         playlist_name = view.findViewById<TextView>(R.id.playlist_name)
         playlist_description = view.findViewById<TextView>(R.id.playlist_description)
         playlist_artwork = view.findViewById<ImageView>(R.id.playlist_artwork)
