@@ -17,6 +17,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnPlaylistClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistGridAdapter
 
 class PlaylistsFragment : Fragment() {
@@ -81,7 +82,10 @@ class PlaylistsFragment : Fragment() {
         error_text?.visibility = View.GONE
         icon_error?.visibility = View.GONE
 
-        val adapter = PlaylistGridAdapter(playlists, requireActivity().getString(R.string.treka))
+        val adapter = PlaylistGridAdapter(playlists,object : OnPlaylistClickCallback {
+            override fun callback(playlist: Playlist) {
+            }
+        } ,requireActivity().getString(R.string.treka))
         playlist_list?.adapter = adapter
     }
 

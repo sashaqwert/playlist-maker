@@ -16,7 +16,7 @@ class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
     val playlist_artwork = itemView.findViewById<ImageView>(R.id.playlist_artwork)
     val playlist_name = itemView.findViewById<TextView>(R.id.playlist_name)
 
-    fun bind(model: Playlist, treka: String) {
+    fun bind(model: Playlist, treka: String, callback: OnPlaylistClickCallback) {
         playlist_name.setText("${model.name}\n${model.tracks_count} ${treka}")
         if (model.artwork_path != "") {
             Glide.with(itemView)
@@ -28,6 +28,9 @@ class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
                 .load(R.drawable.artwork_default)
                 .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, itemView.context)))
                 .into(playlist_artwork)
+        }
+        itemView.setOnClickListener {
+            callback.callback(model)
         }
     }
 }
