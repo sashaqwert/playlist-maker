@@ -47,6 +47,18 @@ data class PlaylistPresentation(val id: Long = 0L,
         return false
     }
 
+    //Суммарное время треков плейлиста в минутах
+    fun total_time(): Int {
+        var resultMS: Long = 0
+        for (track in tracks) {
+            if (track.trackTimeMillis != null) {
+                resultMS += track.trackTimeMillis
+            }
+        }
+        val resultSecs = resultMS / 1000
+        return (resultSecs / 60).toInt()
+    }
+
     // https://giga.chat/link/gcsHhqwrRI
 
     // Описание содержимого (битовые флаги). 0 означает, что файловых дескрипторов нет.
