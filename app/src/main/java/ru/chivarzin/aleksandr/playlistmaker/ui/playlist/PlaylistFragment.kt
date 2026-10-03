@@ -29,6 +29,7 @@ class PlaylistFragment : Fragment() {
     private val playlistViewModel: PlaylistViewNodel by viewModel()
     private var playlist_name: TextView? = null
     private var playlist_artwork: ImageView? = null
+    private var playlist_description: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,10 +50,12 @@ class PlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         playlist_name = view.findViewById<TextView>(R.id.playlist_name)
+        playlist_description = view.findViewById<TextView>(R.id.playlist_description)
         playlist_artwork = view.findViewById<ImageView>(R.id.playlist_artwork)
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             playlist_name?.setText(it.name)
+            playlist_description?.setText(it.description)
             if (it.artwork_path != "") {
                 Glide.with(this)
                     .load(it.artwork_path.toUri())
@@ -65,6 +68,7 @@ class PlaylistFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         playlist_name = null
+        playlist_description = null
         playlist_artwork = null
     }
 
