@@ -5,8 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
 
-class PlaylistGridAdapter(private val playlists: List<Playlist>,val callback: OnPlaylistClickCallback, val treka: String = "трека"): RecyclerView.Adapter<PlaylistGridViewHolder>() {
+class PlaylistGridAdapter(private val playlists: List<PlaylistPresentation>, val callback: OnPlaylistClickCallback, val treka: String = "трека"): RecyclerView.Adapter<PlaylistGridViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

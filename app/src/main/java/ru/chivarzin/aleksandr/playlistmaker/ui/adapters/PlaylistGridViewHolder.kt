@@ -11,12 +11,13 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
 
 class PlaylistGridViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     val playlist_artwork = itemView.findViewById<ImageView>(R.id.playlist_artwork)
     val playlist_name = itemView.findViewById<TextView>(R.id.playlist_name)
 
-    fun bind(model: Playlist, treka: String, callback: OnPlaylistClickCallback) {
+    fun bind(model: PlaylistPresentation, treka: String, callback: OnPlaylistClickCallback) {
         playlist_name.setText("${model.name}\n${model.tracks_count} ${treka}")
         if (model.artwork_path != "") {
             Glide.with(itemView)
