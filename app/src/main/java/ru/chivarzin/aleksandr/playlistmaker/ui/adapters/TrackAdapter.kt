@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val callback: OnTrackClickCallback) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter (private val tracks: ArrayList<TrackPresentation>, val callback: OnTrackClickCallback, val longClickCallback: OnTrackLongClickCallback? = null) : RecyclerView.Adapter<TrackViewHolder> () {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)
         return TrackViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position], callback)
+        holder.bind(tracks[position], callback, longClickCallback)
     }
 
     override fun getItemCount(): Int {
