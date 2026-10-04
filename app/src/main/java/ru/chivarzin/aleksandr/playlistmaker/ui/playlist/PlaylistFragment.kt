@@ -1,5 +1,7 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.playlist
 
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.Nullable
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -22,6 +26,7 @@ import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCal
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackLongClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +46,7 @@ class PlaylistFragment : Fragment() {
     private var playlist_time: TextView? = null
     private var playlist_track_count: TextView? = null
     private var playlist_tracks: RecyclerView? = null
+    private var playlist_share: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +76,7 @@ class PlaylistFragment : Fragment() {
         playlist_time = view.findViewById<TextView>(R.id.playlist_time)
         playlist_track_count = view.findViewById<TextView>(R.id.playlist_track_count)
         playlist_tracks = view.findViewById<RecyclerView>(R.id.playlist_tracks)
+        playlist_share = view.findViewById<ImageView>(R.id.playlist_share)
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             playlist_name?.setText(it.name)
@@ -102,6 +109,38 @@ class PlaylistFragment : Fragment() {
                 }
             })
             playlist_tracks?.adapter = adapter
+            playlist_share?.setOnClickListener { v ->
+                share(it)
+            }
+        }
+    }
+
+    private fun share(playlist: PlaylistPresentation) {
+        if (playlist.tracks_count == 0) {
+            Toast.makeText(requireActivity().applicationContext, R.string.no_tracks_to_share, Toast.LENGTH_LONG).show()
+        } else {
+            /*
+            * Сообщение для получателя должно содержать простой текст со списком треков плейлиста с названием плейлиста,
+            * описанием на следующей строке, количеством треков в формате «[xx] треков»,
+            * где «[xx]» — количество треков на следующей строке,
+            * пронумерованным списком треков плейлиста в формате: «[номер]. [имя исполнителя] - [название трека] ([продолжительность трека])».
+            */
+            var result = ""
+            result += playlist.name + "\n"
+            result += playlist.description + "\n"
+            result += playlist.tracks_count.toString() + " " + getString(R.string.treka) + "\n"
+            var i = 1
+            for (track in playlist.tracks) {
+                result += i.toString() + ". " + track.artistName!! + " - " + track.trackName!! + " (" + SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis) + ")" + "\n"
+                i += 1
+            }
+
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, result)
+                type = "text/plain"
+            }
+            activity?.startActivity(sendIntent)
         }
     }
 
@@ -114,6 +153,7 @@ class PlaylistFragment : Fragment() {
         playlist_track_count = null
         playlist_tracks?.adapter = null
         playlist_tracks = null
+        playlist_share = null
     }
 
     companion object {
