@@ -10,6 +10,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackLongClickCallback
 import java.util.Locale
 
 class TrackViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {

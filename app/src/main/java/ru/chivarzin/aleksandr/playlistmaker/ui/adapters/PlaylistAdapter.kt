@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnPlaylistClickCallback
 
 class PlaylistAdapter(private val playlists: List<PlaylistPresentation>, private val callback: OnPlaylistClickCallback): RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(

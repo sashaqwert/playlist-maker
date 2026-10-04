@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnPlaylistClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnPlaylistClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistGridAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.playlist.PlaylistFragment
 

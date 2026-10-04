@@ -17,7 +17,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNodel
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnTrackClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 
 // TODO: Rename parameter arguments, choose names that match
