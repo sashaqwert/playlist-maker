@@ -21,6 +21,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNo
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackLongClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,6 +84,8 @@ class PlaylistFragment : Fragment() {
             playlist_track_count?.setText("${it.tracks_count} ${getString(R.string.treka)}")
             val adapter = TrackAdapter((ArrayList<TrackPresentation>(it.tracks)), object : OnTrackClickCallback {
                 override fun callback(track: TrackPresentation) {
+                    findNavController().navigate(R.id.action_playlistFragment_to_playerFragment,
+                        PlayerFragment.createArgs(track))
                 }
             }, object : OnTrackLongClickCallback {
                 override fun callback(track: TrackPresentation) {
