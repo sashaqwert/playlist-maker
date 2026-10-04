@@ -118,11 +118,19 @@
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <View
-        android:layout_width="50dp"
-        android:layout_height="4dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bottom_sheet_up_down" />
+        <View
+            android:layout_width="50dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bottom_sheet_up_down" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/playlist_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/view_track"/>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

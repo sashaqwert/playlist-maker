@@ -10,11 +10,15 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNodel
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnTrackClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,6 +37,7 @@ class PlaylistFragment : Fragment() {
     private var playlist_description: TextView? = null
     private var playlist_time: TextView? = null
     private var playlist_track_count: TextView? = null
+    private var playlist_tracks: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +66,7 @@ class PlaylistFragment : Fragment() {
         playlist_artwork = view.findViewById<ImageView>(R.id.playlist_artwork)
         playlist_time = view.findViewById<TextView>(R.id.playlist_time)
         playlist_track_count = view.findViewById<TextView>(R.id.playlist_track_count)
+        playlist_tracks = view.findViewById<RecyclerView>(R.id.playlist_tracks)
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             playlist_name?.setText(it.name)
@@ -73,6 +79,11 @@ class PlaylistFragment : Fragment() {
             }
             playlist_time?.setText("${it.total_time()} ${getString(R.string.minut)}")
             playlist_track_count?.setText("${it.tracks_count} ${getString(R.string.treka)}")
+            val adapter = TrackAdapter((ArrayList<TrackPresentation>(it.tracks)), object : OnTrackClickCallback {
+                override fun callback(track: TrackPresentation) {
+                }
+            })
+            playlist_tracks?.adapter = adapter
         }
     }
 
@@ -83,6 +94,8 @@ class PlaylistFragment : Fragment() {
         playlist_artwork = null
         playlist_time = null
         playlist_track_count = null
+        playlist_tracks?.adapter = null
+        playlist_tracks = null
     }
 
     companion object {
