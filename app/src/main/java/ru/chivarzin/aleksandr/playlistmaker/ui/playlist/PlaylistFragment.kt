@@ -47,6 +47,7 @@ class PlaylistFragment : Fragment() {
     private var playlist_track_count: TextView? = null
     private var playlist_tracks: RecyclerView? = null
     private var playlist_share: ImageView? = null
+    private var playlist_menu: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,7 @@ class PlaylistFragment : Fragment() {
         playlist_track_count = view.findViewById<TextView>(R.id.playlist_track_count)
         playlist_tracks = view.findViewById<RecyclerView>(R.id.playlist_tracks)
         playlist_share = view.findViewById<ImageView>(R.id.playlist_share)
+        playlist_menu = view.findViewById<ImageView>(R.id.playlist_menu)
 
         playlistViewModel.observeState().observe(viewLifecycleOwner) {
             playlist_name?.setText(it.name)
@@ -111,6 +113,10 @@ class PlaylistFragment : Fragment() {
             playlist_tracks?.adapter = adapter
             playlist_share?.setOnClickListener { v ->
                 share(it)
+            }
+            playlist_menu?.setOnClickListener { v ->
+                val bottomSheet = PlaylistBottomSheet.newInstance(it)
+                bottomSheet.show(parentFragmentManager, PlaylistBottomSheet.TAG)
             }
         }
     }
@@ -154,6 +160,7 @@ class PlaylistFragment : Fragment() {
         playlist_tracks?.adapter = null
         playlist_tracks = null
         playlist_share = null
+        playlist_menu = null
     }
 
     companion object {
