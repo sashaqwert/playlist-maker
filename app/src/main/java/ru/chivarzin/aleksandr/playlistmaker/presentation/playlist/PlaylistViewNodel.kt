@@ -21,6 +21,7 @@ class PlaylistViewNodel(val playlistInteractor: PlaylistInteractor): ViewModel()
 
     fun removeTrack(track: TrackPresentation) {
         playlist?.tracks?.removeIf { it.trackId == track.trackId }
+        playlist?.tracks_count -= 1
         viewModelScope.launch {
             playlistInteractor.addPlaylist(playlist!!.toPlaylistDomain())
             stateLiveData.value = playlist
