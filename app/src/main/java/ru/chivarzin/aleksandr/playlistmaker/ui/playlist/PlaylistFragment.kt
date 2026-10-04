@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
@@ -85,7 +86,16 @@ class PlaylistFragment : Fragment() {
                 }
             }, object : OnTrackLongClickCallback {
                 override fun callback(track: TrackPresentation) {
-                    playlistViewModel.removeTrack(track)
+                    MaterialAlertDialogBuilder(requireActivity())
+                        .setMessage(getString(R.string.want_to_remove_track)) // Описание диалога
+                        .setNegativeButton(getString(R.string.no)) { dialog, which -> // Добавляет кнопку «Нет»
+                            // Действия, выполняемые при нажатии на кнопку «Нет»
+                        }
+                        .setPositiveButton(getString(R.string.yes)) { dialog, which -> // Добавляет кнопку «Да»
+                            // Действия, выполняемые при нажатии на кнопку «Да»
+                            playlistViewModel.removeTrack(track)
+                        }
+                        .show()
                 }
             })
             playlist_tracks?.adapter = adapter

@@ -78,4 +78,7 @@
     <string name="playlist_time_tools">555 минут</string>
     <string name="playlist_track_count_tools">10 треков</string>
     <string name="minut">минут</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="want_to_remove_track">Хотите удалить трек?</string>
 </resources>
