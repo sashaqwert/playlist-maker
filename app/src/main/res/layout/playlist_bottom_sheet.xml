@@ -65,4 +65,26 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/action_share"
+        style="@style/PlaylistMenuButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:layout_marginTop="16dp"
+        android:text="@string/share" />
+
+    <Button
+        android:id="@+id/action_edit"
+        style="@style/PlaylistMenuButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/edit_information" />
+
+    <Button
+        android:id="@+id/action_delete"
+        style="@style/PlaylistMenuButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/settings_item_height"
+        android:text="@string/remove_playlist" />
 </LinearLayout>
