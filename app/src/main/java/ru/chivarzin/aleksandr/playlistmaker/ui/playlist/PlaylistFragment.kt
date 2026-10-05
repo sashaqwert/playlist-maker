@@ -25,6 +25,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNo
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackLongClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.editplaylist.EditPlaylistFragment
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 import java.util.Locale
 
@@ -126,7 +127,8 @@ class PlaylistFragment : Fragment() {
             if (action != null) {
                 when (action) {
                     "edit" -> {
-                        // Логика редактирования
+                        findNavController().navigate(R.id.action_playlistFragment_to_editPlaylistFragment,
+                            EditPlaylistFragment.createArgs(updatedPlaylist!!))
                     }
                     "delete" -> {
                         MaterialAlertDialogBuilder(requireActivity())
