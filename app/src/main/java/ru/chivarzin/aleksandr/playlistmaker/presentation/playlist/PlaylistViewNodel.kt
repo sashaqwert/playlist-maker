@@ -27,4 +27,10 @@ class PlaylistViewNodel(val playlistInteractor: PlaylistInteractor): ViewModel()
             stateLiveData.value = playlist
         }
     }
+
+    fun deletePlaylist() {
+        viewModelScope.launch {
+            playlistInteractor.deletePlaylist(playlist!!.toPlaylistDomain())
+        }
+    }
 }

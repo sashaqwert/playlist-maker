@@ -1,5 +1,6 @@
 package ru.chivarzin.aleksandr.playlistmaker.ui.playlist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresenta
 
 class PlaylistBottomSheet : BottomSheetDialogFragment() {
     private var playlist: PlaylistPresentation? = null
+    private var listener: PlaylistBottomSheetListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,17 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
     ): View {
         // Используем ту же разметку, которую мы вырезали из основного XML
         return inflater.inflate(R.layout.playlist_bottom_sheet, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Получаем ссылку на родительский фрагмент
+        val parentFragment = parentFragment
+        if (parentFragment is PlaylistBottomSheetListener) {
+            listener = parentFragment
+        } else {
+            throw ClassCastException("$parentFragment must implement PlaylistBottomSheetListener")
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +71,29 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
         }
         playlist_name.setText(playlist?.name)
         tracks_count.setText("${playlist?.tracks_count} ${getString(R.string.treka)}")
+
+        // Пример для кнопки "Редактировать"
+        view.findViewById<View>(R.id.action_edit).setOnClickListener {
+            listener?.onPlaylistAction("edit", playlist)
+            dismiss() // Закрываем BottomSheet после действия
+        }
+
+        // Пример для кнопки "Удалить"
+        view.findViewById<View>(R.id.action_delete).setOnClickListener {
+            listener?.onPlaylistAction("delete", playlist)
+            dismiss()
+        }
+
+        // Пример для кнопки "Поделиться"
+        view.findViewById<View>(R.id.action_share).setOnClickListener {
+            listener?.onPlaylistAction("share", playlist)
+            dismiss()
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null // Избегаем утечки памяти
     }
 
     companion object {

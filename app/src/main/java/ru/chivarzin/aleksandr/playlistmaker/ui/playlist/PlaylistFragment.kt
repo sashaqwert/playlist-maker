@@ -28,8 +28,6 @@ import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackLongClic
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 import java.util.Locale
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PLAYLIST = "playlist"
 
 /**
@@ -37,7 +35,7 @@ private const val ARG_PLAYLIST = "playlist"
  * Use the [PlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlaylistFragment : Fragment() {
+class PlaylistFragment : Fragment(), PlaylistBottomSheetListener {
     private var playlist: PlaylistPresentation? = null
     private val playlistViewModel: PlaylistViewNodel by viewModel()
     private var playlist_name: TextView? = null
@@ -147,6 +145,19 @@ class PlaylistFragment : Fragment() {
                 type = "text/plain"
             }
             activity?.startActivity(sendIntent)
+        }
+    }
+
+    override fun onPlaylistAction(
+        action: String,
+        playlist: PlaylistPresentation?
+    ) {
+        when (action) {
+            "share" -> share(playlist!!)
+            "delete" -> {
+                playlistViewModel.deletePlaylist()
+                findNavController().navigateUp()
+            }
         }
     }
 
