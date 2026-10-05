@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
+import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -18,7 +19,6 @@ import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresenta
 
 class PlaylistBottomSheet : BottomSheetDialogFragment() {
     private var playlist: PlaylistPresentation? = null
-    private var listener: PlaylistBottomSheetListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +35,6 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
     ): View {
         // Используем ту же разметку, которую мы вырезали из основного XML
         return inflater.inflate(R.layout.playlist_bottom_sheet, container, false)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        // Получаем ссылку на родительский фрагмент
-        val parentFragment = parentFragment
-        if (parentFragment is PlaylistBottomSheetListener) {
-            listener = parentFragment
-        } else {
-            throw ClassCastException("$parentFragment must implement PlaylistBottomSheetListener")
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,26 +63,33 @@ class PlaylistBottomSheet : BottomSheetDialogFragment() {
 
         // Пример для кнопки "Редактировать"
         view.findViewById<View>(R.id.action_edit).setOnClickListener {
-            listener?.onPlaylistAction("edit", playlist)
-            dismiss() // Закрываем BottomSheet после действия
+            val result = Bundle().apply {
+                putString("action", "edit")
+                putParcelable("playlist", playlist)
+            }
+            setFragmentResult("playlist_sheet_request", result)
+            dismiss()
         }
 
         // Пример для кнопки "Удалить"
         view.findViewById<View>(R.id.action_delete).setOnClickListener {
-            listener?.onPlaylistAction("delete", playlist)
+            val result = Bundle().apply {
+                putString("action", "delete")
+                putParcelable("playlist", playlist)
+            }
+            setFragmentResult("playlist_sheet_request", result)
             dismiss()
         }
 
         // Пример для кнопки "Поделиться"
         view.findViewById<View>(R.id.action_share).setOnClickListener {
-            listener?.onPlaylistAction("share", playlist)
+            val result = Bundle().apply {
+                putString("action", "share")
+                putParcelable("playlist", playlist)
+            }
+            setFragmentResult("playlist_sheet_request", result)
             dismiss()
         }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null // Избегаем утечки памяти
     }
 
     companion object {

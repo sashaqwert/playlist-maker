@@ -35,7 +35,7 @@ private const val ARG_PLAYLIST = "playlist"
  * Use the [PlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlaylistFragment : Fragment(), PlaylistBottomSheetListener {
+class PlaylistFragment : Fragment() {
     private var playlist: PlaylistPresentation? = null
     private val playlistViewModel: PlaylistViewNodel by viewModel()
     private var playlist_name: TextView? = null
@@ -117,6 +117,37 @@ class PlaylistFragment : Fragment(), PlaylistBottomSheetListener {
                 bottomSheet.show(parentFragmentManager, PlaylistBottomSheet.TAG)
             }
         }
+
+        // В onViewCreated, после инициализации вьюх
+        parentFragmentManager.setFragmentResultListener("playlist_sheet_request", viewLifecycleOwner) { requestKey, bundle ->
+            val action = bundle.getString("action")
+            val updatedPlaylist = bundle.getParcelable("playlist", PlaylistPresentation::class.java)
+
+            if (action != null) {
+                when (action) {
+                    "edit" -> {
+                        // Логика редактирования
+                    }
+                    "delete" -> {
+                        MaterialAlertDialogBuilder(requireActivity())
+                            .setTitle(getString(R.string.remove_playlist))
+                            .setMessage(getString(R.string.want_to_delete_playlist) + "«" + playlist!!.name + "»?") // Описание диалога
+                            .setNeutralButton(getString(R.string.cancel)) { dialog, which -> // Добавляет кнопку «Нет»
+                                // Действия, выполняемые при нажатии на кнопку «Нет»
+                            }
+                            .setPositiveButton(getString(R.string.yes)) { dialog, which -> // Добавляет кнопку «Да»
+                                // Действия, выполняемые при нажатии на кнопку «Да»
+                                playlistViewModel.deletePlaylist()
+                                findNavController().navigateUp()
+                            }
+                            .show()
+                    }
+                    "share" -> {
+                        share(updatedPlaylist!!)
+                    }
+                }
+            }
+        }
     }
 
     private fun share(playlist: PlaylistPresentation) {
@@ -145,19 +176,6 @@ class PlaylistFragment : Fragment(), PlaylistBottomSheetListener {
                 type = "text/plain"
             }
             activity?.startActivity(sendIntent)
-        }
-    }
-
-    override fun onPlaylistAction(
-        action: String,
-        playlist: PlaylistPresentation?
-    ) {
-        when (action) {
-            "share" -> share(playlist!!)
-            "delete" -> {
-                playlistViewModel.deletePlaylist()
-                findNavController().navigateUp()
-            }
         }
     }
 
