@@ -1,0 +1,29 @@
+package ru.chivarzin.aleksandr.playlistmaker.presentation.editplaylist
+
+import android.net.Uri
+import androidx.core.net.toUri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileInteractor
+import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+
+class EditPlaylistViewModel(private val playlistInteractor: PlaylistInteractor,
+                            private val fileInteractor: FileInteractor): ViewModel() {
+    private val saveMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
+
+    fun saveFile(sourceUri: Uri, filename_without_extension: String): Uri {
+        return fileInteractor.saveFile(sourceUri.toString(), filename_without_extension).toUri()
+    }
+
+    fun saveButtonClicked(playlist: PlaylistPresentation) {
+        viewModelScope.launch {
+            playlistInteractor.addPlaylist(playlist.toPlaylistDomain())
+            saveMutableLiveData.value = true
+        }
+    }
+}

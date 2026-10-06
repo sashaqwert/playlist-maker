@@ -150,6 +150,10 @@ class PlaylistFragment : Fragment() {
                 }
             }
         }
+        parentFragmentManager.setFragmentResultListener("edit_playlistrequest", viewLifecycleOwner) { requestKey, bundle ->
+            val updatedPlaylist = bundle.getParcelable("playlist", PlaylistPresentation::class.java)
+            playlistViewModel.setPlaylist(updatedPlaylist!!)
+        }
     }
 
     private fun share(playlist: PlaylistPresentation) {

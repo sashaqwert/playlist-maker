@@ -7,9 +7,9 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 import kotlin.collections.mutableListOf
 
 data class PlaylistPresentation(val id: Long = 0L,
-                                val name: String,
-                                val description: String,
-                                val artwork_path: String,
+                                var name: String,
+                                var description: String,
+                                var artwork_path: String,
                                 val tracks: MutableList<TrackPresentation> = mutableListOf<TrackPresentation>(),
                                 var tracks_count : Int = 0) : Parcelable
 {
