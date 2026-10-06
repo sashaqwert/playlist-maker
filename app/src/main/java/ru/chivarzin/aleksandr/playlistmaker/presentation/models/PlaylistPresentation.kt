@@ -40,7 +40,7 @@ data class PlaylistPresentation(val id: Long = 0L,
 
     fun add_track(track: TrackPresentation): Boolean {
         if (track !in tracks) {
-            tracks.add(track)
+            tracks.add(0, track)
             tracks_count += 1
             return true
         }
