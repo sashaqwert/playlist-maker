@@ -24,6 +24,7 @@ class PlaylistRepositoryImpl(private val appDatabase: AppDatabase, val converter
 
     override suspend fun deleteTrackFromPlaylist(track: Track, playlist: Playlist) {
         playlist.tracks.remove(track)
+        playlist.tracks_count -= 1
         addPlaylist(playlist) // conflict --> replace
         //Проверка на присутствие в других плейлистах (чтобы просто соответствовало критерию)
         val playlists = appDatabase.playlistDao().getPlaylists()
