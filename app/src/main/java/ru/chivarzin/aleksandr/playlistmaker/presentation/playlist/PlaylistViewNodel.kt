@@ -20,11 +20,15 @@ class PlaylistViewNodel(val playlistInteractor: PlaylistInteractor): ViewModel()
     }
 
     fun removeTrack(track: TrackPresentation) {
-        playlist?.tracks?.removeIf { it.trackId == track.trackId }
-        playlist?.tracks_count -= 1
+//        playlist?.tracks?.removeIf { it.trackId == track.trackId }
+//        playlist?.tracks_count -= 1
         viewModelScope.launch {
-            playlistInteractor.addPlaylist(playlist!!.toPlaylistDomain())
-            stateLiveData.value = playlist
+            playlistInteractor.deleteTrackFromPlaylist(track.toTrackDomain(), playlist!!.toPlaylistDomain())
+            //playlistInteractor.addPlaylist(playlist!!.toPlaylistDomain())
+            playlistInteractor.getPlaylistByID(playlist!!.id).collect {
+                playlist = PlaylistPresentation(it)
+                stateLiveData.value = playlist
+            }
         }
     }
 
