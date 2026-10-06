@@ -27,7 +27,7 @@ class PlaylistViewNodel(val playlistInteractor: PlaylistInteractor): ViewModel()
             //playlistInteractor.addPlaylist(playlist!!.toPlaylistDomain())
             playlistInteractor.getPlaylistByID(playlist!!.id).collect {
                 playlist = PlaylistPresentation(it)
-                stateLiveData.value = playlist
+                stateLiveData.value = playlist!!
             }
         }
     }
