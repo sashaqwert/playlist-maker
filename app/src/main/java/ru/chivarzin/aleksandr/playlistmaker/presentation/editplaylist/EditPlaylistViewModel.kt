@@ -10,15 +10,12 @@ import kotlinx.coroutines.launch
 import ru.chivarzin.aleksandr.playlistmaker.domain.api.FileInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 
 class EditPlaylistViewModel(private val playlistInteractor: PlaylistInteractor,
-                            private val fileInteractor: FileInteractor): ViewModel() {
+                            private val fileInteractor: FileInteractor): NewPlaylistViewModel(null, playlistInteractor, fileInteractor) {
     private val saveMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
-    fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
-
-    fun saveFile(sourceUri: Uri, filename_without_extension: String): Uri {
-        return fileInteractor.saveFile(sourceUri.toString(), filename_without_extension).toUri()
-    }
+    override fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
 
     fun saveButtonClicked(playlist: PlaylistPresentation) {
         viewModelScope.launch {

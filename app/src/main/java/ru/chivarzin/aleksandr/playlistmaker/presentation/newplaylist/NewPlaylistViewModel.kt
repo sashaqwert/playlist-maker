@@ -12,10 +12,10 @@ import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 
-class NewPlaylistViewModel(private var track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor,
-                           private val fileInteractor: FileInteractor): ViewModel() {
+open class NewPlaylistViewModel(private var track: TrackPresentation? = null, private val playlistInteractor: PlaylistInteractor,
+                                private val fileInteractor: FileInteractor): ViewModel() {
     private val saveMutableLiveData: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
-    fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
+    open fun obsorveSave(): LiveData<Boolean> = saveMutableLiveData
 
     fun createButtonClicked(playlist_name: String, playlist_description: String, artwork_name: String) {
         viewModelScope.launch {
