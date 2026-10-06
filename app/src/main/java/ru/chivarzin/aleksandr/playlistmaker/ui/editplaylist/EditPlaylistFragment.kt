@@ -55,6 +55,9 @@ class EditPlaylistFragment : NewPlaylistFragment() {
 
         val title = view.findViewById<TextView>(R.id.title_new_playlist)
         title.setText(R.string.edit)
+        new_playlist_action_back?.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         if (playlist?.artwork_path != "") {
             filename = playlist!!.artwork_path
