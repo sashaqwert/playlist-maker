@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
@@ -40,12 +41,6 @@ class EditPlaylistFragment : NewPlaylistFragment() {
     private var playlist: PlaylistPresentation? = null
     private val editPlaylistViewModel: EditPlaylistViewModel by viewModel()
 
-    private var edit_playlist_action_back: ImageView? = null
-    private var save: AppCompatButton? = null
-    private var edit_playlist_name: TextInputEditText? = null
-    private var edit_playlist_description: TextInputEditText? = null
-    private var edit_playlist_artwork: ImageView? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,45 +49,22 @@ class EditPlaylistFragment : NewPlaylistFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_playlist, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edit_playlist_action_back = view.findViewById<ImageView>(R.id.edit_playlist_action_back)
-        edit_playlist_action_back?.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        save = view.findViewById<AppCompatButton>(R.id.save)
-        edit_playlist_name = view.findViewById<TextInputEditText>(R.id.edit_playlist_name)
-        edit_playlist_description = view.findViewById<TextInputEditText>(R.id.edit_playlist_description)
-        edit_playlist_name?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val str = s.toString()
-                save?.isEnabled = str != "" && !str.isBlank()
-            }
+        backCallback?.isEnabled = false
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+        val title = view.findViewById<TextView>(R.id.title_new_playlist)
+        title.setText(R.string.edit)
 
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-        edit_playlist_artwork = view.findViewById<ImageView>(R.id.edit_playlist_artwork)
         if (playlist?.artwork_path != "") {
             filename = playlist!!.artwork_path
             Glide.with(this)
                 .load(playlist!!.artwork_path.toUri())
                 .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
-                .into(edit_playlist_artwork!!)
+                .into(newplaylist_artwork!!)
         }
-        edit_playlist_name?.setText(playlist?.name)
-        edit_playlist_description?.setText(playlist?.description)
+        newplaylist_name?.setText(playlist?.name)
+        newplaylist_description?.setText(playlist?.description)
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -101,23 +73,24 @@ class EditPlaylistFragment : NewPlaylistFragment() {
                     Glide.with(this)
                         .load(uri)
                         .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
-                        .into(edit_playlist_artwork!!)
+                        .into(newplaylist_artwork!!)
                     filename = uri.toString()
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
-        edit_playlist_artwork?.setOnClickListener {
+        newplaylist_artwork?.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        save?.setOnClickListener {
+        create?.setText(R.string.save_playlist_button_text)
+        create?.setOnClickListener {
             val name = Random.nextInt().toString()
             if (filename != "") {
                 filename = editPlaylistViewModel.saveFile(filename.toUri(), name).toString()
             }
             if (playlist != null) {
-                playlist!!.name = edit_playlist_name?.text.toString()
-                playlist!!.description = edit_playlist_description!!.text!!.toString()
+                playlist!!.name = newplaylist_name?.text.toString()
+                playlist!!.description = newplaylist_description!!.text!!.toString()
                 playlist!!.artwork_path = filename
                 editPlaylistViewModel.saveButtonClicked(playlist!!)
             }
@@ -133,29 +106,23 @@ class EditPlaylistFragment : NewPlaylistFragment() {
             }
         }
         if (savedInstanceState != null) {
-            filename = savedInstanceState.getString("artwork", "")
+            filename = savedInstanceState.getString("artwork_", "")
             if (filename != "") {
                 Glide.with(this)
                     .load(filename.toUri())
                     .transform(CenterCrop(), RoundedCorners(dpToPx(8.0f, requireActivity())))
-                    .into(edit_playlist_artwork!!)
+                    .into(newplaylist_artwork!!)
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
-        edit_playlist_action_back = null
-        save = null
-        edit_playlist_name = null
-        edit_playlist_description = null
-        edit_playlist_artwork = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("artwork", filename)
+        outState.putString("artwork_", filename)
     }
 
     companion object {

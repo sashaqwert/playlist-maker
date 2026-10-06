@@ -50,7 +50,7 @@ open class NewPlaylistFragment : Fragment() {
         parametersOf(track) //Как здесь обработать не NULL случай?
     }
 
-    private var backCallback: OnBackPressedCallback? = null
+    protected var backCallback: OnBackPressedCallback? = null
 
     var new_playlist_action_back: ImageView? = null
     var create: AppCompatButton? = null
