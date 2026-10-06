@@ -25,6 +25,7 @@ import ru.chivarzin.aleksandr.playlistmaker.R
 import ru.chivarzin.aleksandr.playlistmaker.dpToPx
 import ru.chivarzin.aleksandr.playlistmaker.presentation.editplaylist.EditPlaylistViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 import kotlin.random.Random
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +36,7 @@ private const val ARG_PLAYLIST = "playlist"
  * Use the [EditPlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class EditPlaylistFragment : Fragment() {
+class EditPlaylistFragment : NewPlaylistFragment() {
     private var playlist: PlaylistPresentation? = null
     private val editPlaylistViewModel: EditPlaylistViewModel by viewModel()
 
@@ -45,7 +46,6 @@ class EditPlaylistFragment : Fragment() {
     private var edit_playlist_description: TextInputEditText? = null
     private var edit_playlist_artwork: ImageView? = null
 
-    private var filename = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
