@@ -45,6 +45,7 @@ class PlaylistFragment : Fragment() {
     private var playlist_time: TextView? = null
     private var playlist_track_count: TextView? = null
     private var playlist_tracks: RecyclerView? = null
+    private var playlist_no_tracks: TextView? = null
     private var playlist_share: ImageView? = null
     private var playlist_menu: ImageView? = null
 
@@ -76,6 +77,7 @@ class PlaylistFragment : Fragment() {
         playlist_time = view.findViewById<TextView>(R.id.playlist_time)
         playlist_track_count = view.findViewById<TextView>(R.id.playlist_track_count)
         playlist_tracks = view.findViewById<RecyclerView>(R.id.playlist_tracks)
+        playlist_no_tracks = view.findViewById<TextView>(R.id.playlist_no_tracks)
         playlist_share = view.findViewById<ImageView>(R.id.playlist_share)
         playlist_menu = view.findViewById<ImageView>(R.id.playlist_menu)
 
@@ -110,6 +112,11 @@ class PlaylistFragment : Fragment() {
                 }
             })
             playlist_tracks?.adapter = adapter
+            if (it.tracks.isEmpty()) {
+                playlist_no_tracks?.visibility = View.VISIBLE
+            } else {
+                playlist_no_tracks?.visibility = View.GONE
+            }
             playlist_share?.setOnClickListener { v ->
                 share(it)
             }
@@ -194,6 +201,7 @@ class PlaylistFragment : Fragment() {
         playlist_track_count = null
         playlist_tracks?.adapter = null
         playlist_tracks = null
+        playlist_no_tracks = null
         playlist_share = null
         playlist_menu = null
     }
