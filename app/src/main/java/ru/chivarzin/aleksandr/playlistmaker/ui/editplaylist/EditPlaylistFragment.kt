@@ -87,9 +87,11 @@ class EditPlaylistFragment : NewPlaylistFragment() {
         }
         create?.setText(R.string.save_playlist_button_text)
         create?.setOnClickListener {
-            val name = Random.nextInt().toString()
-            if (filename != "") {
-                filename = editPlaylistViewModel.saveFile(filename.toUri(), name).toString()
+            if (filename != playlist!!.artwork_path) {
+                val name = Random.nextInt().toString()
+                if (filename != "") {
+                    filename = editPlaylistViewModel.saveFile(filename.toUri(), name).toString()
+                }
             }
             if (playlist != null) {
                 playlist!!.name = newplaylist_name?.text.toString()
