@@ -44,13 +44,13 @@ private const val ARG_TRACK = "track"
  * Use the [NewPlaylistFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
     private var track: TrackPresentation? = null
     private val newPlaylistViewModel: NewPlaylistViewModel by viewModel {
         parametersOf(track) //Как здесь обработать не NULL случай?
     }
 
-    private var backCallback: OnBackPressedCallback? = null
+    protected var backCallback: OnBackPressedCallback? = null
 
     var new_playlist_action_back: ImageView? = null
     var create: AppCompatButton? = null
@@ -58,7 +58,7 @@ class NewPlaylistFragment : Fragment() {
     var newplaylist_description: TextInputEditText? = null
     var newplaylist_artwork: ImageView? = null
 
-    var filename = ""
+    protected var filename = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

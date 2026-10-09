@@ -3,12 +3,14 @@ package ru.chivarzin.aleksandr.playlistmaker.di
 import android.media.MediaPlayer
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+import ru.chivarzin.aleksandr.playlistmaker.presentation.editplaylist.EditPlaylistViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.FavoriteViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.newplaylist.NewPlaylistViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerViewModel
+import ru.chivarzin.aleksandr.playlistmaker.presentation.playlist.PlaylistViewNodel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
 import ru.chivarzin.aleksandr.playlistmaker.presentation.settings.SettingsViewModel
 
@@ -44,5 +46,13 @@ val viewModelModule = module {
 
     viewModel { (track: TrackPresentation) ->
         PlayerControlsBottomSheetViewModel(track, get())
+    }
+
+    viewModel {
+        PlaylistViewNodel(get())
+    }
+
+    viewModel {
+        EditPlaylistViewModel(get(), get())
     }
 }

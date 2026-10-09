@@ -28,7 +28,7 @@ import ru.chivarzin.aleksandr.playlistmaker.isDarkTheme
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.search.SearchViewModel
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnTrackClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnTrackClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.TrackAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.player.PlayerFragment
 

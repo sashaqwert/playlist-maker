@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
 
 class PlaylistsViewModel(val playlistInteractor: PlaylistInteractor): ViewModel() {
     private val stateLiveData = MutableLiveData<PlaylistsState>()
@@ -19,7 +20,7 @@ class PlaylistsViewModel(val playlistInteractor: PlaylistInteractor): ViewModel(
                 if (it.isEmpty()) {
                    stateLiveData.value = PlaylistsState.Empty
                 } else {
-                    stateLiveData.value = PlaylistsState.Content(it)
+                    stateLiveData.value = PlaylistsState.Content(it.map { PlaylistPresentation(it) })
                 }
             }
         }

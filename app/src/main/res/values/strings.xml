@@ -73,4 +73,20 @@
     <string name="add_to_playlist">Добавить в плейлист</string>
     <string name="added_to_playlist">Добавлено в плейлист</string>
     <string name="already_added_to_playlist">Трек уже добавлен в плейлист</string>
+    <string name="playlist_name_tools">The best playlist</string>
+    <string name="playlist_description_tools">Super music 1765</string>
+    <string name="playlist_time_tools">555 минут</string>
+    <string name="playlist_track_count_tools">10 треков</string>
+    <string name="minut">минут</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="want_to_remove_track">Хотите удалить трек?</string>
+    <string name="no_tracks_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="remove_playlist">Удалить плейлист</string>
+    <string name="want_to_delete_playlist">Хотите удалить плейлист</string>
+    <string name="edit">Редактировать</string>
+    <string name="save_playlist_button_text">Сохранить</string>
+    <string name="playlist_no_tracks">В этом плейлисте нет треков</string>
 </resources>

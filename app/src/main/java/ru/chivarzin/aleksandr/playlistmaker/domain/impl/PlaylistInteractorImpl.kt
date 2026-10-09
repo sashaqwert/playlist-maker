@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistInteractor
 import ru.chivarzin.aleksandr.playlistmaker.domain.db.PlaylistRepository
 import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.domain.models.Track
 
 class PlaylistInteractorImpl(private val repository: PlaylistRepository): PlaylistInteractor {
     override fun getPlaylists(): Flow<List<Playlist>> {
@@ -16,6 +17,10 @@ class PlaylistInteractorImpl(private val repository: PlaylistRepository): Playli
 
     override fun getPlaylistByID(id: Long): Flow<Playlist> {
         return repository.getPlaylistByID(id)
+    }
+
+    override suspend fun deleteTrackFromPlaylist(track: Track, playlist: Playlist) {
+        repository.deleteTrackFromPlaylist(track, playlist)
     }
 
     override suspend fun deletePlaylist(playlist: Playlist) {

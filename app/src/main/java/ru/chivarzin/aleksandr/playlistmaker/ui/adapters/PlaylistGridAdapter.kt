@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnPlaylistClickCallback
 
-class PlaylistGridAdapter(private val playlists: List<Playlist>, val treka: String = "трека"): RecyclerView.Adapter<PlaylistGridViewHolder>() {
+class PlaylistGridAdapter(private val playlists: List<PlaylistPresentation>, val callback: OnPlaylistClickCallback, val treka: String = "трека"): RecyclerView.Adapter<PlaylistGridViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -19,7 +20,7 @@ class PlaylistGridAdapter(private val playlists: List<Playlist>, val treka: Stri
         holder: PlaylistGridViewHolder,
         position: Int
     ) {
-        holder.bind(playlists[position], treka)
+        holder.bind(playlists[position], treka, callback)
     }
 
     override fun getItemCount(): Int {

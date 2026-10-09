@@ -13,11 +13,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.models.TrackPresentation
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.DialogState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.player.PlayerControlsBottomSheetViewModel
-import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.OnPlaylistClickCallback
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnPlaylistClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistAdapter
 import ru.chivarzin.aleksandr.playlistmaker.ui.newplaylist.NewPlaylistFragment
 
@@ -69,12 +69,12 @@ class PlayerControlsBottomSheet : BottomSheetDialogFragment() {
         playlists?.visibility = View.GONE
     }
 
-    fun show_content(playlists_: List<Playlist>) {
+    fun show_content(playlists_: List<PlaylistPresentation>) {
         pb?.visibility = View.GONE
         playlists?.visibility = View.VISIBLE
 
         val adapter = PlaylistAdapter(playlists_, object : OnPlaylistClickCallback {
-            override fun callback(playlist: Playlist) {
+            override fun callback(playlist: PlaylistPresentation) {
                 playerControlsBottomSheetViewModel.add_track_to_playlist(playlist)
             }
         })

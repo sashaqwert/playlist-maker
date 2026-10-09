@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.chivarzin.aleksandr.playlistmaker.R
-import ru.chivarzin.aleksandr.playlistmaker.domain.models.Playlist
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsState
 import ru.chivarzin.aleksandr.playlistmaker.presentation.mediateka.PlaylistsViewModel
+import ru.chivarzin.aleksandr.playlistmaker.presentation.models.PlaylistPresentation
+import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.callback.OnPlaylistClickCallback
 import ru.chivarzin.aleksandr.playlistmaker.ui.adapters.PlaylistGridAdapter
+import ru.chivarzin.aleksandr.playlistmaker.ui.playlist.PlaylistFragment
 
 class PlaylistsFragment : Fragment() {
     private val playlistsViewModel: PlaylistsViewModel by viewModel()
@@ -75,13 +77,18 @@ class PlaylistsFragment : Fragment() {
         icon_error?.visibility = View.VISIBLE
     }
 
-    fun showContent(playlists: List<Playlist>) {
+    fun showContent(playlists: List<PlaylistPresentation>) {
         playlist_list?.visibility = View.VISIBLE
         playlists_pb?.visibility = View.GONE
         error_text?.visibility = View.GONE
         icon_error?.visibility = View.GONE
 
-        val adapter = PlaylistGridAdapter(playlists, requireActivity().getString(R.string.treka))
+        val adapter = PlaylistGridAdapter(playlists,object : OnPlaylistClickCallback {
+            override fun callback(playlist: PlaylistPresentation) {
+                findNavController().navigate(R.id.action_mediatekaFragment_to_playlistFragment,
+                    PlaylistFragment.createArgs(playlist))
+            }
+        } ,requireActivity().getString(R.string.treka))
         playlist_list?.adapter = adapter
     }
 

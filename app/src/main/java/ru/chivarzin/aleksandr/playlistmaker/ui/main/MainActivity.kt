@@ -33,7 +33,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.playerFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
+                R.id.playlistFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
                 R.id.newPlaylistFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                R.id.editPlaylistFragment -> {
                     bottomNavigationView.visibility = View.GONE
                 }
 
